@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HYUABOT</string>
+    <string name="menu">메뉴</string>
+    <string name="cafeteria">학식</string>
+    <string name="subway">전철</string>
+    <string name="bus">버스</string>
+    <string name="shuttle">셔틀버스</string>
 </resources>
