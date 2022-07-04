@@ -73,6 +73,7 @@ android {
     apollo {
         packageName.set("app.kobuggi.graphql")
     }
+    namespace 'app.kobuggi.hyuabot'
 }
 
 dependencies {
@@ -113,5 +114,5 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // Apollo GraphQL
-    implementation 'com.apollographql.apollo:apollo-runtime:3.3.2'
+    implementation 'com.apollographql.apollo3:apollo-runtime:3.3.2'
 }
