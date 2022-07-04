@@ -3,8 +3,27 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
 android {
     compileSdk 33
+
+    signingConfigs {
+        debugWithSignedKey {
+            storeFile file(properties["SIGNED_STORE_FILE"])
+            storePassword properties["SIGNED_STORE_PASSWORD"]
+            keyAlias properties["SIGNED_KEY_ALIAS"]
+            keyPassword properties["SIGNED_KEY_PASSWORD"]
+        }
+        releaseWithSignedKey {
+            storeFile file(properties["SIGNED_STORE_FILE"])
+            storePassword properties["SIGNED_STORE_PASSWORD"]
+            keyAlias properties["SIGNED_KEY_ALIAS"]
+            keyPassword properties["SIGNED_KEY_PASSWORD"]
+        }
+    }
 
     defaultConfig {
         applicationId "app.kobuggi.hyuabot"
@@ -12,16 +31,25 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "admob_id", properties['ADMOB_ID']
+        buildConfigField "String", "admob_unit_id", properties['ADMOB_UNIT_ID']
+        buildConfigField "String", "server_url", properties["API_URL"]
+        manifestPlaceholders = [mapKey: "${properties.getProperty('MAP_KEY')}"]
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseWithSignedKey
+        }
+
+        debug {
+            signingConfig signingConfigs.debugWithSignedKey
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
