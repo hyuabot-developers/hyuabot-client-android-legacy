@@ -57,6 +57,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'armeabi'
+            universalApk false
+        }
+    }
 }
 
 dependencies {
