@@ -1,11 +1,10 @@
 package app.kobuggi.hyuabot.ui.main
 
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import app.kobuggi.hyuabot.GlobalActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : GlobalActivity() {
     private val vm by viewModels<MainViewModel>()
-
 }
