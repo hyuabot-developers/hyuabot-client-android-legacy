@@ -5,4 +5,13 @@
     <string name="subway">전철</string>
     <string name="bus">버스</string>
     <string name="shuttle">셔틀버스</string>
+    <string name="dormitory">기숙사</string>
+    <string name="shuttlecock_o">셔틀콕</string>
+    <string name="station">한대앞역</string>
+    <string name="terminal">예술인(터미널)</string>
+    <string name="shuttlecock_i">셔틀콕 건너편</string>
+    <string name="shuttle_type_DH">한대앞 직행</string>
+    <string name="shuttle_type_DY">예술인 직행</string>
+    <string name="shuttle_type_C">순환 버스</string>
+    <string name="shuttle_time">%d시 %d분 출발(%d 분 후)</string>
 </resources>
