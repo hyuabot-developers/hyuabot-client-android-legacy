@@ -71,7 +71,8 @@ android {
     }
 
     apollo {
-        packageName.set("app.kobuggi.graphql")
+        packageName.set("app.kobuggi.hyuabot")
+        generateKotlinModels = true
     }
     namespace 'app.kobuggi.hyuabot'
 }

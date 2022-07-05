@@ -1,0 +1,19 @@
+query Subway($stations : [String!]!, $routes : [String!]!, $heading : String!, $weekday : String!, $startTime : Time!, $endTime : Time!) {
+    subway(stations: $stations, routes: $routes) {
+        stationName,
+        routeName,
+        timetable(heading: $heading, weekday: $weekday, startTime: $startTime, endTime: $endTime) {
+            terminalStation,
+            departureTime,
+        }
+        realtime(heading: $heading) {
+            updateTime,
+            trainNumber,
+            lastTrain,
+            terminalStation,
+            currentStation,
+            remainedTime,
+            status
+        }
+    }
+}
