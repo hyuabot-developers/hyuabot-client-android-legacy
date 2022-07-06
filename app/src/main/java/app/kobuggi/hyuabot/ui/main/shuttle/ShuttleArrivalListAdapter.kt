@@ -19,7 +19,7 @@ class ShuttleArrivalListAdapter(private val context: Context, private val timeta
     private val timeDelta = hashMapOf(
         R.string.dormitory to arrayListOf(-5, -5, -5),
         R.string.shuttlecock_o to arrayListOf(0, 0, 0),
-        R.string.station to arrayListOf(10, 10, 0),
+        R.string.station to arrayListOf(10, 0, 10),
         R.string.terminal to arrayListOf(0, 10, 15),
         R.string.shuttlecock_i to arrayListOf(20, 20, 25)
     )
