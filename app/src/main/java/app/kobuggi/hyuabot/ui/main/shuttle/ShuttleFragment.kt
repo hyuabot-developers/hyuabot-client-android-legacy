@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.databinding.FragmentShuttleBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,15 @@ class ShuttleFragment : Fragment() {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
+        vm.fetchShuttleTimetable()
+
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf())
+        binding.shuttleArrivalList.adapter = shuttleArrivalListAdapter
+        binding.shuttleArrivalList.layoutManager = LinearLayoutManager(requireContext())
+        vm.shuttleTimetable.observe(viewLifecycleOwner) {
+            shuttleArrivalListAdapter.setShuttleTimetable(it)
+        }
+
         return binding.root
     }
 }
