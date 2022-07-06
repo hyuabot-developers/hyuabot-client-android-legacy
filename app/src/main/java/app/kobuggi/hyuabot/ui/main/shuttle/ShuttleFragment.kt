@@ -23,7 +23,6 @@ class ShuttleFragment : Fragment() {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
-        vm.startFetchData()
 
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf())
         binding.shuttleArrivalList.adapter = shuttleArrivalListAdapter
@@ -33,6 +32,11 @@ class ShuttleFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.startFetchData()
     }
 
     override fun onPause() {
