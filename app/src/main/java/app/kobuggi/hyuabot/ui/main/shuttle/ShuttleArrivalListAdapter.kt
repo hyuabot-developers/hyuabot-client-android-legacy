@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.ShuttleTimetableQuery
 import app.kobuggi.hyuabot.databinding.ItemShuttleArrivalBinding
+import com.google.android.gms.maps.model.LatLng
 import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class ShuttleArrivalListAdapter(private val context: Context, private val timetable: List<ShuttleTimetableQuery.Timetable>) : RecyclerView.Adapter<ShuttleArrivalListAdapter.ShuttleArrivalViewHolder>() {
+class ShuttleArrivalListAdapter(private val context: Context, timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit) : RecyclerView.Adapter<ShuttleArrivalListAdapter.ShuttleArrivalViewHolder>() {
     private val shuttleStopNameList = listOf(R.string.dormitory, R.string.shuttlecock_o, R.string.station, R.string.terminal, R.string.shuttlecock_i)
     private var shuttleTimetable: List<ShuttleTimetableQuery.Timetable> = timetable
     private val timeDelta = hashMapOf(
@@ -22,6 +23,13 @@ class ShuttleArrivalListAdapter(private val context: Context, private val timeta
         R.string.station to arrayListOf(10, 0, 10),
         R.string.terminal to arrayListOf(0, 10, 15),
         R.string.shuttlecock_i to arrayListOf(20, 20, 25)
+    )
+    private val stopLocationList = listOf(
+        LatLng(37.29339607529377, 126.83630604103446),
+        LatLng(37.29875417910844, 126.83784054072336),
+        LatLng(37.308494476826155, 126.85310236423418),
+        LatLng(37.31945164682341, 126.8455453372041),
+        LatLng(37.29869328231496, 126.8377767466817)
     )
     private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
     inner class ShuttleArrivalViewHolder(private val binding: ItemShuttleArrivalBinding) : RecyclerView.ViewHolder(binding.root){
@@ -76,6 +84,10 @@ class ShuttleArrivalListAdapter(private val context: Context, private val timeta
                 } else if(index == 1){
                     binding.shuttleTimeCSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
                 }
+            }
+
+            binding.shuttleStopLocation.setOnClickListener {
+                onClickLocationButton(stopLocationList[position], shuttleStopNameList[position])
             }
         }
     }
