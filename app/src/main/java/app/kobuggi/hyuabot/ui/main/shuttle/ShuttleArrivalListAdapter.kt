@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter
 class ShuttleArrivalListAdapter(private val context: Context, timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit) : RecyclerView.Adapter<ShuttleArrivalListAdapter.ShuttleArrivalViewHolder>() {
     private val shuttleStopNameList = listOf(R.string.dormitory, R.string.shuttlecock_o, R.string.station, R.string.terminal, R.string.shuttlecock_i)
     private var shuttleTimetable: List<ShuttleTimetableQuery.Timetable> = timetable
+    private var closestStopIndex = -1
     private val timeDelta = hashMapOf(
         R.string.dormitory to arrayListOf(-5, -5, -5),
         R.string.shuttlecock_o to arrayListOf(0, 0, 0),
@@ -89,6 +90,12 @@ class ShuttleArrivalListAdapter(private val context: Context, timetable: List<Sh
             binding.shuttleStopLocation.setOnClickListener {
                 onClickLocationButton(stopLocationList[position], shuttleStopNameList[position])
             }
+
+            if (position == closestStopIndex) {
+                binding.homeShuttleArrivalCard.strokeWidth = 3
+            } else {
+                binding.homeShuttleArrivalCard.strokeWidth = 0
+            }
         }
     }
 
@@ -107,6 +114,11 @@ class ShuttleArrivalListAdapter(private val context: Context, timetable: List<Sh
 
     fun setShuttleTimetable(shuttleTimetable: List<ShuttleTimetableQuery.Timetable>) {
         this.shuttleTimetable = shuttleTimetable
+        notifyDataSetChanged()
+    }
+
+    fun setClosestShuttleStop(index: Int) {
+        closestStopIndex = index
         notifyDataSetChanged()
     }
 }

@@ -33,7 +33,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
         shuttlePeriod = client.query(ShuttlePeriodQuery()).execute().data?.shuttle?.period!!
     }
 
-    private fun fetchShuttleTimetable() {
+    fun fetchShuttleTimetable() {
         val startTime = LocalTime.now().minusMinutes(30).toString()
         viewModelScope.launch {
             if (shuttlePeriod == null){
