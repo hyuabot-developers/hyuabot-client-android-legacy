@@ -5,13 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.ShuttleTimetableQuery
-import app.kobuggi.hyuabot.databinding.CardShuttleArrivalBinding
+import app.kobuggi.hyuabot.databinding.ItemShuttleArrivalBinding
 import com.google.android.gms.maps.model.LatLng
-import java.lang.Integer.min
+import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -34,7 +33,7 @@ class ShuttleArrivalListAdapter(private val context: Context, timetable: List<Sh
         LatLng(37.29869328231496, 126.8377767466817)
     )
     private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-    inner class ShuttleArrivalViewHolder(private val binding: CardShuttleArrivalBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ShuttleArrivalViewHolder(private val binding: ItemShuttleArrivalBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
             binding.shuttleStopName.text = context.getString(shuttleStopNameList[position])
 
@@ -53,34 +52,124 @@ class ShuttleArrivalListAdapter(private val context: Context, timetable: List<Sh
                 shuttleTimetable
             }
 
+            binding.shuttleTimeDHFirst.text = "운행 종료"
+            binding.shuttleTimeDHSecond.visibility = View.GONE
+            binding.shuttleTimeDHThird.visibility = View.GONE
+            binding.shuttleTimeDHFourth.visibility = View.GONE
+            binding.shuttleTimeDHFifth.visibility = View.GONE
+            binding.shuttleTimeDHSecond.text = ""
+            binding.shuttleTimeDHThird.text = ""
+            binding.shuttleTimeDHFourth.text = ""
+            binding.shuttleTimeDHFifth.text = ""
+
+            binding.shuttleTimeDYFirst.text = "운행 종료"
+            binding.shuttleTimeDYSecond.visibility = View.GONE
+            binding.shuttleTimeDYThird.visibility = View.GONE
+            binding.shuttleTimeDYFourth.visibility = View.GONE
+            binding.shuttleTimeDYFifth.visibility = View.GONE
+            binding.shuttleTimeDYSecond.text = ""
+            binding.shuttleTimeDYThird.text = ""
+            binding.shuttleTimeDYFourth.text = ""
+            binding.shuttleTimeDYFifth.text = ""
+
+            binding.shuttleTimeCFirst.text = "운행 종료"
+            binding.shuttleTimeCSecond.visibility = View.GONE
+            binding.shuttleTimeCThird.visibility = View.GONE
+            binding.shuttleTimeCFourth.visibility = View.GONE
+            binding.shuttleTimeCFifth.visibility = View.GONE
+            binding.shuttleTimeCSecond.text = ""
+            binding.shuttleTimeCThird.text = ""
+            binding.shuttleTimeCFourth.text = ""
+            binding.shuttleTimeCFifth.text = ""
+
             Log.d("ShuttleArrivalListAdapter", "timetableByStop: ${timetableByStop.size}")
-            val shuttleDHTime = timetableByStop.filter { it.shuttleType == "DH" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![0].toLong()) > now }.map {
-                LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![0].toLong())
-            }.toList()
-            val shuttleDHListAdapter = ShuttleArrivalTimeAdapter(context, now, shuttleDHTime.subList(0, if(binding.expandButton.isSelected) min(shuttleDHTime.size, 5) else min(shuttleDHTime.size, 2)))
-            binding.shuttleDHList.adapter = shuttleDHListAdapter
-            binding.shuttleDHList.layoutManager = LinearLayoutManager(context)
-
-            val shuttleDYTime = timetableByStop.filter { it.shuttleType == "DY" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![1].toLong()) > now }.map {
-                LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![1].toLong())
-            }.toList()
-            val shuttleDYListAdapter = ShuttleArrivalTimeAdapter(context, now, shuttleDYTime.subList(0, if(binding.expandButton.isSelected) min(shuttleDYTime.size, 5) else min(shuttleDYTime.size, 2)))
-            binding.shuttleDYList.adapter = shuttleDYListAdapter
-            binding.shuttleDYList.layoutManager = LinearLayoutManager(context)
-
-            val shuttleCTime = timetableByStop.filter { it.shuttleType == "C" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![2].toLong()) > now }.map {
-                LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![2].toLong())
-            }.toList()
-            val shuttleCListAdapter = ShuttleArrivalTimeAdapter(context, now, shuttleCTime.subList(0, if(binding.expandButton.isSelected) min(shuttleCTime.size, 5) else min(shuttleCTime.size, 2)))
-            binding.shuttleCList.adapter = shuttleCListAdapter
-            binding.shuttleCList.layoutManager = LinearLayoutManager(context)
+            timetableByStop.filter { it.shuttleType == "DH" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![0].toLong()) > now }.forEachIndexed { index, timetable ->
+                val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![0].toLong())
+                val remainedTime = Duration.between(now, shuttleTime).toMinutes()
+                when (index) {
+                    0 -> {
+                        binding.shuttleTimeDHFirst.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    1 -> {
+                        binding.shuttleTimeDHSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                        binding.shuttleTimeDHSecond.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        binding.shuttleTimeDHThird.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    3 -> {
+                        binding.shuttleTimeDHFourth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    4 -> {
+                        binding.shuttleTimeDHFifth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                }
+            }
+            timetableByStop.filter { it.shuttleType == "DY" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![1].toLong()) > now }.forEachIndexed { index, timetable ->
+                val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![1].toLong())
+                val remainedTime = Duration.between(now, shuttleTime).toMinutes()
+                when (index) {
+                    0 -> {
+                        binding.shuttleTimeDYFirst.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    1 -> {
+                        binding.shuttleTimeDYSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                        binding.shuttleTimeDYSecond.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        binding.shuttleTimeDYThird.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    3 -> {
+                        binding.shuttleTimeDYFourth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    4 -> {
+                        binding.shuttleTimeDYFifth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                }
+            }
+            timetableByStop.filter { it.shuttleType == "C" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![2].toLong()) > now }.forEachIndexed { index, timetable ->
+                val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[shuttleStopNameList[position]]!![2].toLong())
+                val remainedTime = Duration.between(now, shuttleTime).toMinutes()
+                when (index) {
+                    0 -> {
+                        binding.shuttleTimeCFirst.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    1 -> {
+                        binding.shuttleTimeCSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                        binding.shuttleTimeCSecond.visibility = View.VISIBLE
+                    }
+                    2 -> {
+                        binding.shuttleTimeCThird.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    3 -> {
+                        binding.shuttleTimeCFourth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                    4 -> {
+                        binding.shuttleTimeCFifth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
+                    }
+                }
+            }
 
             binding.shuttleStopLocation.setOnClickListener {
                 onClickLocationButton(stopLocationList[position], shuttleStopNameList[position])
             }
             binding.expandButton.setOnClickListener {
                 binding.expandButton.isSelected = !binding.expandButton.isSelected
-                notifyDataSetChanged()
+
+                val visible = if(binding.expandButton.isSelected){
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                binding.shuttleTimeDHThird.visibility = if(binding.shuttleTimeDHThird.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeDHFourth.visibility = if(binding.shuttleTimeDHFourth.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeDHFifth.visibility = if(binding.shuttleTimeDHFifth.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeDYThird.visibility = if(binding.shuttleTimeDYThird.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeDYFourth.visibility = if(binding.shuttleTimeDYFourth.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeDYFifth.visibility = if(binding.shuttleTimeDYFifth.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeCThird.visibility = if(binding.shuttleTimeCThird.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeCFourth.visibility = if(binding.shuttleTimeCFourth.text.isNotEmpty()) visible else View.GONE
+                binding.shuttleTimeCFifth.visibility = if(binding.shuttleTimeCFifth.text.isNotEmpty()) visible else View.GONE
             }
 
             if (position == closestStopIndex) {
@@ -92,8 +181,8 @@ class ShuttleArrivalListAdapter(private val context: Context, timetable: List<Sh
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShuttleArrivalViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_shuttle_arrival, parent, false)
-        return ShuttleArrivalViewHolder(CardShuttleArrivalBinding.bind(view))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shuttle_arrival, parent, false)
+        return ShuttleArrivalViewHolder(ItemShuttleArrivalBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: ShuttleArrivalViewHolder, position: Int) {
