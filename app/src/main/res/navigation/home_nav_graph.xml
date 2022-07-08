@@ -8,4 +8,20 @@
         android:id="@+id/fragment_shuttle"
         android:name="app.kobuggi.hyuabot.ui.main.shuttle.ShuttleFragment"
         app:layout="@layout/fragment_shuttle" />
+    <fragment
+        android:id="@+id/fragment_bus"
+        android:name="app.kobuggi.hyuabot.ui.main.bus.BusFragment"
+        app:layout="@layout/fragment_bus" />
+    <fragment
+        android:id="@+id/fragment_subway"
+        android:name="app.kobuggi.hyuabot.ui.main.subway.SubwayFragment"
+        app:layout="@layout/fragment_subway" />
+    <fragment
+        android:id="@+id/fragment_cafeteria"
+        android:name="app.kobuggi.hyuabot.ui.main.cafeteria.CafeteriaFragment"
+        app:layout="@layout/fragment_cafeteria" />
+    <fragment
+        android:id="@+id/fragment_menu"
+        android:name="app.kobuggi.hyuabot.ui.main.menu.MenuFragment"
+        app:layout="@layout/fragment_menu" />
 </navigation>
