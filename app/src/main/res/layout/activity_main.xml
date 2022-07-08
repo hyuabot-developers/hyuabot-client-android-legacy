@@ -29,6 +29,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navigation_menu" />
+            app:menu="@menu/bottom_navigation_menu"
+            android:background="@color/hanyang_primary"
+            app:itemTextColor="@drawable/menu_selector_color"
+            app:itemIconTint="@drawable/menu_selector_color"
+        />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
