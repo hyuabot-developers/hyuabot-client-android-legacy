@@ -1,17 +1,17 @@
 package app.kobuggi.hyuabot.ui.main.bus
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.databinding.FragmentBusBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BusFragment : Fragment(), DialogInterface.OnDismissListener {
+class BusFragment : Fragment() {
     private val vm by viewModels<BusViewModel>()
     private lateinit var binding: FragmentBusBinding
 
@@ -23,6 +23,13 @@ class BusFragment : Fragment(), DialogInterface.OnDismissListener {
         binding = FragmentBusBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
+        val busArrivalListAdapter = BusArrivalListAdapter(requireContext(), listOf())
+        binding.busArrivalList.adapter = busArrivalListAdapter
+        binding.busArrivalList.layoutManager = LinearLayoutManager(requireContext())
+        vm.busData.observe(viewLifecycleOwner) {
+            busArrivalListAdapter.setBusTimetable(it)
+        }
+
         return binding.root
     }
 
@@ -34,9 +41,5 @@ class BusFragment : Fragment(), DialogInterface.OnDismissListener {
     override fun onPause() {
         super.onPause()
         vm.stopFetchData()
-    }
-
-    override fun onDismiss(p0: DialogInterface?) {
-        vm.startFetchData()
     }
 }
