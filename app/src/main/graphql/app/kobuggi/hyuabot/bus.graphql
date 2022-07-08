@@ -1,0 +1,20 @@
+query Bus($stopList : [String!]!, $routes : [String!]!, $weekday : String!) {
+    bus(stopList: $stopList, routes: $routes) {
+        stopName,
+        routeName,
+        stopId,
+        routeId,
+        startStop,
+        terminalStop,
+        timeFromStartStop,
+        timetable(weekday: $weekday) {
+            departureTime,
+        }
+        realtime {
+            lowFloor,
+            remainedStop,
+            remainedTime,
+            remainedSeat,
+        }
+    }
+}

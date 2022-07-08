@@ -1,0 +1,10 @@
+query CafeteriaMenu($campusId : Int!, $cafeteriaIdList : [Int!]!, $timeType: String!) {
+    cafeteria(campusId: $campusId, cafeteriaIdList: $cafeteriaIdList) {
+        cafeteriaName
+        menu(timeType: $timeType){
+            timeType,
+            menu,
+            price,
+        }
+    }
+}
