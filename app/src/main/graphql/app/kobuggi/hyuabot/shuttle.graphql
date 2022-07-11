@@ -8,3 +8,9 @@ query ShuttleTimetable($period : String!, $weekday : String!, $shuttleType : Str
         }
     }
 }
+
+query ShuttlePeriod {
+    shuttle{
+        period
+    }
+}
