@@ -82,6 +82,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
 
     override fun onStart() {
         super.onStart()
+        vm.showShuttleStopLocationDialog.value = Event(false)
         vm.startFetchData()
     }
 
