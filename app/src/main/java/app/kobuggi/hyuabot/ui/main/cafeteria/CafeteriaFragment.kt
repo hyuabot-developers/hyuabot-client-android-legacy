@@ -38,13 +38,18 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         }
 
         vm.showCafeteriaLocationDialog.observe(viewLifecycleOwner) {
-            if(it.peekContent()) {
+            if(it.peekContent() && vm.cafeteriaLocation.value != null && vm.cafeteriaName.value != null) {
                 val dialog = CafeteriaLocationDialog(vm.cafeteriaLocation.value!!, vm.cafeteriaName.value!!)
                 dialog.show(requireActivity().supportFragmentManager, "cafeteria_location_dialog")
                 requireActivity().supportFragmentManager.executePendingTransactions()
             }
         }
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        vm.showCafeteriaLocationDialog.value = Event(false)
     }
 
     override fun onDismiss(p0: DialogInterface?) {
