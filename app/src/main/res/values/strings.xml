@@ -18,4 +18,9 @@
     <string name="bus_realtime_item_without_seat">%d분 후 도착 (%d 전)</string>
     <string name="bus_timetable_item">%s시 %s분 출발 (회차점 대기)</string>
     <string name="out_of_service">운행 종료</string>
+    <string name="subway_up">상행</string>
+    <string name="subway_down">하행</string>
+    <string name="subway_arrival_item">%d분 후 도착</string>
+    <string name="subway_terminal_item">%s행</string>
+    <string name="subway_timetable">시간표</string>
 </resources>

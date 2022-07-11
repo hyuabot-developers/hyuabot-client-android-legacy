@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.databinding.FragmentSubwayBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,13 @@ class SubwayFragment : Fragment() {
         binding = FragmentSubwayBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
+
+        val subwayArrivalListAdapter = SubwayArrivalListAdapter(requireContext(), listOf())
+        binding.subwayArrivalList.adapter = subwayArrivalListAdapter
+        binding.subwayArrivalList.layoutManager = LinearLayoutManager(requireContext())
+        vm.subwayData.observe(viewLifecycleOwner) {
+            subwayArrivalListAdapter.setSubwayData(it)
+        }
         return binding.root
     }
 
