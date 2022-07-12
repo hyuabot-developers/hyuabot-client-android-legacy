@@ -47,8 +47,8 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         vm.showCafeteriaLocationDialog.value = Event(false)
     }
 

@@ -20,8 +20,4 @@
         android:id="@+id/fragment_cafeteria"
         android:name="app.kobuggi.hyuabot.ui.main.cafeteria.CafeteriaFragment"
         app:layout="@layout/fragment_cafeteria" />
-    <fragment
-        android:id="@+id/fragment_menu"
-        android:name="app.kobuggi.hyuabot.ui.main.menu.MenuFragment"
-        app:layout="@layout/fragment_menu" />
 </navigation>
