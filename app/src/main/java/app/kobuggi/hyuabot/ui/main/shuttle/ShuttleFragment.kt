@@ -80,8 +80,8 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         vm.showShuttleStopLocationDialog.value = Event(false)
         vm.startFetchData()
     }
