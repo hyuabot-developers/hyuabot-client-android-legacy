@@ -33,7 +33,7 @@
             app:layout_constraintBottom_toTopOf="@id/bottom_navigation_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:cardBackgroundColor="@color/hanyang_primary"
+            app:cardBackgroundColor="@color/hanyang_secondary"
             android:visibility="gone" >
             <LinearLayout
                 android:layout_width="match_parent"
