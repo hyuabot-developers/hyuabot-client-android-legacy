@@ -35,7 +35,9 @@ class MainActivity : GlobalActivity() {
                     return@setOnItemSelectedListener true
                 }
                 else -> {
-                    navController.navigate(it.itemId)
+                    if(it.itemId != binding.bottomNavigationMenu.selectedItemId){
+                        navController.navigate(it.itemId)
+                    }
                 }
             }
             return@setOnItemSelectedListener false
