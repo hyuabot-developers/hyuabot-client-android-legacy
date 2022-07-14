@@ -125,4 +125,7 @@ dependencies {
 
     // Apollo GraphQL
     implementation 'com.apollographql.apollo3:apollo-runtime:3.3.2'
+
+    // ViewPager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }

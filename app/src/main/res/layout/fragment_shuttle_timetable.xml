@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="app.kobuggi.hyuabot.ui.main.shuttle.ShuttleViewModel" />
+            type="app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetableViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,5 +21,21 @@
             android:layout_height="?attr/actionBarSize"
             app:titleTextColor="@color/white"
             android:background="@color/hanyang_primary" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/shuttle_timetable_tab"
+            app:layout_constraintTop_toBottomOf="@id/shuttle_timetable_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/shuttle_timetable_viewpager"
+            app:layout_constraintTop_toBottomOf="@id/shuttle_timetable_tab"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
