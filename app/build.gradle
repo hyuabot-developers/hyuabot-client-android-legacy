@@ -12,7 +12,7 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 
 
 android {
-    compileSdk 33
+    compileSdk 32
 
     signingConfigs {
         debugWithSignedKey {
