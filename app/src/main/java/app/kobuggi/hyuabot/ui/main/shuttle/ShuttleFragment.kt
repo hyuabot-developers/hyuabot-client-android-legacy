@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,9 +45,11 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
 
         checkLocationPermission()
 
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf()){
-            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
-        }
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), {
+           location, titleID -> vm.clickShuttleStopLocation(location, titleID)
+        }, {
+            stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
+        })
         binding.shuttleArrivalList.adapter = shuttleArrivalListAdapter
         binding.shuttleArrivalList.layoutManager = LinearLayoutManager(requireContext())
         vm.shuttleTimetable.observe(viewLifecycleOwner) {
@@ -77,12 +80,19 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             }
         }
 
+        vm.openShuttleTimetableEvent.observe(viewLifecycleOwner) {
+            if(it.peekContent()){
+                Log.d("ShuttleFragment", "openShuttleTimetableEvent")
+            }
+        }
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         vm.showShuttleStopLocationDialog.value = Event(false)
+        vm.openShuttleTimetableEvent.value = Event(false)
         vm.startFetchData()
     }
 
