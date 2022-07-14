@@ -27,5 +27,10 @@
     <fragment
         android:id="@+id/fragment_shuttle_timetable"
         android:name="app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetableFragment"
-        app:layout="@layout/fragment_shuttle_timetable" />
+        app:layout="@layout/fragment_shuttle_timetable">
+        <argument
+            android:name="shuttle_timetable_item"
+            android:id="@+id/shuttle_timetable_item"
+            app:argType="app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetable" />
+    </fragment>
 </navigation>

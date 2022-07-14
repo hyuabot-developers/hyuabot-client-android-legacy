@@ -13,11 +13,13 @@
         android:background="@color/background"
         >
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/shuttle_timetable_toolbar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/white"
             android:background="@color/hanyang_primary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
