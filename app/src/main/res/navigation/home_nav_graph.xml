@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/fragment_shuttle"
         android:name="app.kobuggi.hyuabot.ui.main.shuttle.ShuttleFragment"
-        app:layout="@layout/fragment_shuttle" />
+        app:layout="@layout/fragment_shuttle" >
+        <action
+            android:id="@+id/open_shuttle_timetable"
+            app:destination="@id/fragment_shuttle_timetable" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_bus"
         android:name="app.kobuggi.hyuabot.ui.main.bus.BusFragment"
@@ -20,4 +24,8 @@
         android:id="@+id/fragment_cafeteria"
         android:name="app.kobuggi.hyuabot.ui.main.cafeteria.CafeteriaFragment"
         app:layout="@layout/fragment_cafeteria" />
+    <fragment
+        android:id="@+id/fragment_shuttle_timetable"
+        android:name="app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetableFragment"
+        app:layout="@layout/fragment_shuttle_timetable" />
 </navigation>

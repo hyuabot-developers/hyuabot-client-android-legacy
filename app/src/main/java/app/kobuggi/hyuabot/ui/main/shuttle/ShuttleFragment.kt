@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentShuttleBinding
+import app.kobuggi.hyuabot.ui.main.MainActivity
 import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -81,8 +82,9 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         }
 
         vm.openShuttleTimetableEvent.observe(viewLifecycleOwner) {
-            if(it.peekContent()){
-                Log.d("ShuttleFragment", "openShuttleTimetableEvent")
+            if(it.peekContent() && requireActivity() is MainActivity) {
+                vm.openShuttleTimetableEvent.value = Event(false)
+                (requireActivity() as MainActivity).navController.navigate(R.id.open_shuttle_timetable)
             }
         }
 
