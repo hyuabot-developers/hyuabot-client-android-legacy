@@ -3,18 +3,18 @@ package app.kobuggi.hyuabot.ui.main.shuttle.timetable
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.kobuggi.hyuabot.R
-import app.kobuggi.hyuabot.ShuttleTimetableQuery
 import app.kobuggi.hyuabot.databinding.ItemShuttleTimetableBinding
-import app.kobuggi.hyuabot.ui.main.shuttle.ShuttleArrivalListAdapter
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 
-class ShuttleTimetableAdapter(private val context: Context, private val timetable : List<LocalTime>): RecyclerView.Adapter<ShuttleTimetableAdapter.ShuttleTimetableViewHolder>() {
+class ShuttleTimetableAdapter(
+    private val context: Context,
+    private val timetable: List<LocalTime>,
+    private val startStopList: List<String>,
+    private val openShuttleRouteDialog: (arrivalTime: LocalTime, startStop: String) -> Unit
+): RecyclerView.Adapter<ShuttleTimetableAdapter.ShuttleTimetableViewHolder>() {
     inner class ShuttleTimetableViewHolder(private val binding: ItemShuttleTimetableBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             binding.shuttleArrivalTime.text = context.getString(
@@ -24,6 +24,9 @@ class ShuttleTimetableAdapter(private val context: Context, private val timetabl
                 binding.shuttleArrivalTime.setTextColor(context.getColor(android.R.color.darker_gray))
             } else {
                 binding.shuttleArrivalTime.setTextColor(context.getColor(R.color.primaryTextColor))
+            }
+            binding.shuttleArrivalTime.setOnClickListener {
+                openShuttleRouteDialog(timetable[position], startStopList[position])
             }
         }
     }

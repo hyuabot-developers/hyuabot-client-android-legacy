@@ -32,4 +32,5 @@
     <string name="shuttle_timetable_toolbar">%s - %s</string>
     <string name="weekdays">평일</string>
     <string name="weekends">주말</string>
+    <string name="shuttle_route">정류장별 출발 시간</string>
 </resources>

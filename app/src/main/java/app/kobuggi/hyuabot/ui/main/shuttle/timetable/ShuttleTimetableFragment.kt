@@ -17,13 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShuttleTimetableFragment: Fragment() {
     private lateinit var binding : FragmentShuttleTimetableBinding
     private val vm by viewModels<ShuttleTimetableViewModel>()
-    private val timeDelta = hashMapOf(
-        R.string.dormitory to arrayListOf(-5, -5, -5),
-        R.string.shuttlecock_o to arrayListOf(0, 0, 0),
-        R.string.station to arrayListOf(10, 0, 10),
-        R.string.terminal to arrayListOf(0, 10, 15),
-        R.string.shuttlecock_i to arrayListOf(20, 20, 25)
-    )
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,12 +42,7 @@ class ShuttleTimetableFragment: Fragment() {
             "C" -> R.string.shuttle_type_C
             else -> R.string.shuttle_type_C
         }
-        val timeDeltaIndex = when(item.shuttleType){
-            "DH" -> 0
-            "DY" -> 1
-            "C" -> 2
-            else -> 0
-        }
+
         binding.shuttleTimetableToolbar.title = context.getString(
             R.string.shuttle_timetable_toolbar,
             context.getString(item.stopID),
@@ -62,7 +51,7 @@ class ShuttleTimetableFragment: Fragment() {
 
         vm.fetchShuttleTimetable()
         vm.shuttleTimetable.observe(viewLifecycleOwner){
-            binding.shuttleTimetableViewpager.adapter = ShuttleTimetableTabAdapter(this, it, timeDelta[item.stopID]!![timeDeltaIndex])
+            binding.shuttleTimetableViewpager.adapter = ShuttleTimetableTabAdapter( this, it, item.stopID, shuttleTypeID)
             TabLayoutMediator(binding.shuttleTimetableTab, binding.shuttleTimetableViewpager) { tab, position ->
                 tab.text = context.getString(
                     when(position){
