@@ -14,17 +14,13 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
-class ShuttleTimetableAdapter(private val context: Context, private val timetable : List<ShuttleTimetableQuery.Timetable>, private val timeDelta: Int): RecyclerView.Adapter<ShuttleTimetableAdapter.ShuttleTimetableViewHolder>() {
-    private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-    var index = 0
-
+class ShuttleTimetableAdapter(private val context: Context, private val timetable : List<LocalTime>): RecyclerView.Adapter<ShuttleTimetableAdapter.ShuttleTimetableViewHolder>() {
     inner class ShuttleTimetableViewHolder(private val binding: ItemShuttleTimetableBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
-            val arrivalTime = LocalTime.parse(timetable[position].shuttleTime, formatter).plusMinutes(timeDelta.toLong())
             binding.shuttleArrivalTime.text = context.getString(
-                R.string.shuttle_timetable, arrivalTime.hour.toString().padStart(2, '0'), arrivalTime.minute.toString().padStart(2, '0')
+                R.string.shuttle_timetable, timetable[position].hour.toString().padStart(2, '0'), timetable[position].minute.toString().padStart(2, '0')
             )
-            if(arrivalTime < LocalTime.now()) {
+            if(timetable[position] < LocalTime.now()) {
                 binding.shuttleArrivalTime.setTextColor(context.getColor(android.R.color.darker_gray))
             } else {
                 binding.shuttleArrivalTime.setTextColor(context.getColor(R.color.primaryTextColor))

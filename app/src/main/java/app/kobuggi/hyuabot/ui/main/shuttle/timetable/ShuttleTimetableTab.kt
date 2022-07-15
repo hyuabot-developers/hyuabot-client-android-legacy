@@ -14,6 +14,8 @@ import app.kobuggi.hyuabot.ShuttleTimetableQuery
 import app.kobuggi.hyuabot.databinding.FragmentShuttleTimetableBinding
 import app.kobuggi.hyuabot.databinding.FragmentShuttleTimetableTabBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Timetable>, private val timeDelta: Int): Fragment() {
@@ -24,13 +26,21 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentShuttleTimetableTabBinding.inflate(inflater, container, false)
-
-        val adapter = ShuttleTimetableAdapter(requireContext(), timetable, timeDelta)
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val modifiedTimetable = timetable.map {
+            LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta.toLong())
+        }
+        val adapter = ShuttleTimetableAdapter(requireContext(), modifiedTimetable)
         binding.shuttleTimetableList.adapter = adapter
         binding.shuttleTimetableList.layoutManager = LinearLayoutManager(requireContext())
         binding.shuttleTimetableList.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
+        if(modifiedTimetable.isNotEmpty()){
+            binding.shuttleTimetableList.smoothScrollToPosition((
+                    modifiedTimetable.indexOf(modifiedTimetable.first { it.isAfter(LocalTime.now()) }) + 5).coerceAtMost(modifiedTimetable.size - 1)
+            )
+        }
         return binding.root
     }
 }
