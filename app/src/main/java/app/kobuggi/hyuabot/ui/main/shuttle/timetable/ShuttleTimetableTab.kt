@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter
 
 class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Timetable>, private val timeDelta: Int): Fragment() {
     private lateinit var binding : FragmentShuttleTimetableTabBinding
+    constructor() : this(listOf(), 0)
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
