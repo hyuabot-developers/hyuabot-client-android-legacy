@@ -15,6 +15,7 @@ import java.time.LocalTime
 
 @AndroidEntryPoint
 class ShuttleTimetableDialog(private val arrivalTime: LocalTime, private val startStop: String, private val stopID: Int, private val shuttleType: Int) : DialogFragment() {
+    constructor() : this(LocalTime.now(), "", 0, 0)
     inner class ShuttleDepartureItem(val departureTime: LocalTime, val stopID: Int)
 
     private lateinit var binding: DialogTimetableBinding
