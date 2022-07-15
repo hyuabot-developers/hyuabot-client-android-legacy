@@ -72,6 +72,9 @@ class ShuttleTimetableFragment: Fragment() {
                     }
                 )
             }.attach()
+            if (it.isNotEmpty()){
+                binding.shuttleTimetableProgress.visibility = View.GONE
+            }
         }
     }
 }

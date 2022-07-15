@@ -6,5 +6,6 @@
     android:layout_height="50dp"
     android:textAlignment="center"
     android:textColor="@color/primaryTextColor"
+    android:background="@color/cardBackground"
     android:layout_gravity="center"
     android:gravity="center" />
