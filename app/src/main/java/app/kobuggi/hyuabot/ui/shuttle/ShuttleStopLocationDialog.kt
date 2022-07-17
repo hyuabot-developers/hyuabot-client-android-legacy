@@ -17,8 +17,27 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ShuttleStopLocationDialog(private val location: LatLng, private val titleID: Int) : DialogFragment(), OnMapReadyCallback {
+class ShuttleStopLocationDialog : DialogFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentShuttleStopLocationBinding
+    private lateinit var location: LatLng
+    private var titleID: Int = 0
+
+    fun newInstance(location: LatLng, titleID: Int): ShuttleStopLocationDialog {
+        val bundle = Bundle(2)
+        val fragment = ShuttleStopLocationDialog()
+        bundle.putDouble("latitude", location.latitude)
+        bundle.putDouble("longitude", location.longitude)
+        bundle.putInt("titleID", titleID)
+        fragment.arguments = bundle
+        return fragment
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        location = LatLng(arguments?.getDouble("latitude")!!, arguments?.getDouble("longitude")!!)
+        titleID = arguments?.getInt("titleID")!!
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
