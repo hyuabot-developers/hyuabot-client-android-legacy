@@ -19,7 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAP_KEY}" />
         <activity
-            android:name="app.kobuggi.hyuabot.ui.main.MainActivity"
+            android:name="app.kobuggi.hyuabot.ui.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

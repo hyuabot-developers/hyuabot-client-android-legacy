@@ -13,6 +13,7 @@
     <string name="shuttle_type_DH">한대앞 직행</string>
     <string name="shuttle_type_DY">예술인 직행</string>
     <string name="shuttle_type_C">순환 버스</string>
+    <string name="shuttle_type_D">직행 버스</string>
     <string name="shuttle_timetable">%s시 %s분</string>
     <string name="shuttle_time">%s시 %s분 (%d분 후) 출발</string>
     <string name="bus_realtime_item">%d분 후 도착 (%d 전 / %d 석)</string>
@@ -33,4 +34,7 @@
     <string name="weekdays">평일</string>
     <string name="weekends">주말</string>
     <string name="shuttle_route">정류장별 출발 시간</string>
+    <string name="no_arrival_data">도착 정보가 없습니다.</string>
+    <string name="notification">알림</string>
+    <string name="no_cafeteria_menu">제공되는 메뉴가 없습니다.</string>
 </resources>

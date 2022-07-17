@@ -3,15 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
-            type="app.kobuggi.hyuabot.ui.main.bus.BusViewModel" />
+            type="app.kobuggi.hyuabot.ui.bus.BusViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
         >
+        <ProgressBar
+            android:id="@+id/bus_arrival_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="175dp"
+            android:visibility="@{vm.isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bus_arrival_list"
             android:layout_width="match_parent"

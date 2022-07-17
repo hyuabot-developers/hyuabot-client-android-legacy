@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_shuttle" >
     <fragment
         android:id="@+id/fragment_shuttle"
-        android:name="app.kobuggi.hyuabot.ui.main.shuttle.ShuttleFragment"
+        android:name="app.kobuggi.hyuabot.ui.shuttle.ShuttleFragment"
         app:layout="@layout/fragment_shuttle" >
         <action
             android:id="@+id/open_shuttle_timetable"
@@ -14,23 +14,23 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_bus"
-        android:name="app.kobuggi.hyuabot.ui.main.bus.BusFragment"
+        android:name="app.kobuggi.hyuabot.ui.bus.BusFragment"
         app:layout="@layout/fragment_bus" />
     <fragment
         android:id="@+id/fragment_subway"
-        android:name="app.kobuggi.hyuabot.ui.main.subway.SubwayFragment"
+        android:name="app.kobuggi.hyuabot.ui.subway.SubwayFragment"
         app:layout="@layout/fragment_subway" />
     <fragment
         android:id="@+id/fragment_cafeteria"
-        android:name="app.kobuggi.hyuabot.ui.main.cafeteria.CafeteriaFragment"
+        android:name="app.kobuggi.hyuabot.ui.cafeteria.CafeteriaFragment"
         app:layout="@layout/fragment_cafeteria" />
     <fragment
         android:id="@+id/fragment_shuttle_timetable"
-        android:name="app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetableFragment"
+        android:name="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableFragment"
         app:layout="@layout/fragment_shuttle_timetable">
         <argument
             android:name="shuttle_timetable_item"
             android:id="@+id/shuttle_timetable_item"
-            app:argType="app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetable" />
+            app:argType="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable" />
     </fragment>
 </navigation>

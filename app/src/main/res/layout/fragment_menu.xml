@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="app.kobuggi.hyuabot.ui.main.menu.MenuViewModel" />
+            type="app.kobuggi.hyuabot.ui.menu.MenuViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
