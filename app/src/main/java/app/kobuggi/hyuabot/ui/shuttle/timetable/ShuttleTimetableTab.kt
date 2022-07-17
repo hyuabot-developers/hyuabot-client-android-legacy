@@ -28,6 +28,13 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         else -> 0
     }
 
+    private val shuttleTypeName = when(shuttleType){
+        R.string.shuttle_type_DH -> "DH"
+        R.string.shuttle_type_DY -> "DY"
+        R.string.shuttle_type_C -> "C"
+        else -> "DH"
+    }
+
     private val timeDelta = hashMapOf(
         R.string.dormitory to arrayListOf(-5, -5, -5),
         R.string.shuttlecock_o to arrayListOf(0, 0, 0),
@@ -44,7 +51,7 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         binding = FragmentShuttleTimetableTabBinding.inflate(inflater, container, false)
         binding.vm = vm
         val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-        val modifiedTimetable = timetable.map {
+        val modifiedTimetable = timetable.filter { it.shuttleType == shuttleTypeName }.map {
             LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopID]!![timeDeltaIndex].toLong())
         }
         val adapter = ShuttleTimetableAdapter(requireContext(), modifiedTimetable, timetable.map { it.startStop }) {

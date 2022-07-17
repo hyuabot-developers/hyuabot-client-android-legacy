@@ -1,6 +1,7 @@
 package app.kobuggi.hyuabot.ui.shuttle.timetable
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,7 @@ class ShuttleTimetableFragment: Fragment() {
 
         vm.fetchShuttleTimetable()
         vm.shuttleTimetable.observe(viewLifecycleOwner){
+            Log.d("ShuttleTimetableFragment", it.toString())
             binding.shuttleTimetableViewpager.adapter = ShuttleTimetableTabAdapter( this, it, item.stopID, shuttleTypeID)
             TabLayoutMediator(binding.shuttleTimetableTab, binding.shuttleTimetableViewpager) { tab, position ->
                 tab.text = context.getString(
@@ -63,6 +65,9 @@ class ShuttleTimetableFragment: Fragment() {
             }.attach()
             if (it.isNotEmpty()){
                 binding.shuttleTimetableProgress.visibility = View.GONE
+            }
+            if (it.any { shuttleItem -> shuttleItem.shuttleType == item.shuttleType }){
+                binding.shuttleTimetableNoData.visibility = View.GONE
             }
         }
     }
