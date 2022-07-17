@@ -25,7 +25,11 @@ class CafeteriaListAdapter(private val context: Context, private var cafeteriaLi
             binding.cafeteriaName.text = cafeteriaList[position].cafeteriaName
 
             val menuGroupByTime = cafeteriaList[position].menu.groupBy { it.timeType }
-            val timeList = arrayListOf<CafeteriaTimeItem>()
+            val timeList = arrayListOf(
+                CafeteriaTimeItem(context.getString(R.string.notification), listOf(CafeteriaMenuQuery.Menu(
+                    menu = context.getString(R.string.no_cafeteria_menu), timeType = "", price = ""
+                )), isExpand = true)
+            )
 
             val now = LocalTime.now()
             val targetTime = if (now.hour < 10 && menuGroupByTime.containsKey("조식")){
@@ -47,12 +51,16 @@ class CafeteriaListAdapter(private val context: Context, private var cafeteriaLi
                 }
             }
 
+            if(timeList.size > 1){
+                timeList.removeAt(0)
+            }
+
             cafeteriaTimeListAdapter = CafeteriaTimeListAdapter(context, timeList)
             binding.menuList.adapter = cafeteriaTimeListAdapter
             binding.menuList.layoutManager = LinearLayoutManager(context)
             binding.expandButton.setOnClickListener {
                 binding.expandButton.isSelected = !binding.expandButton.isSelected
-                notifyDataSetChanged()
+                notifyItemRangeChanged(0, cafeteriaList.size)
             }
             binding.cafeteriaLocation.setOnClickListener {
                 onClickLocationButton(cafeteriaLocationList[position], cafeteriaList[position].cafeteriaName)
@@ -75,6 +83,6 @@ class CafeteriaListAdapter(private val context: Context, private var cafeteriaLi
 
     fun setCafeteriaList(cafeteriaList: List<CafeteriaMenuQuery.Cafeterium>) {
         this.cafeteriaList = cafeteriaList
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, cafeteriaList.size)
     }
 }

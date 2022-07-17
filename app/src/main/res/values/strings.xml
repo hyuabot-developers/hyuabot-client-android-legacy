@@ -35,4 +35,6 @@
     <string name="weekends">주말</string>
     <string name="shuttle_route">정류장별 출발 시간</string>
     <string name="no_arrival_data">도착 정보가 없습니다.</string>
+    <string name="notification">알림</string>
+    <string name="no_cafeteria_menu">제공되는 메뉴가 없습니다.</string>
 </resources>
