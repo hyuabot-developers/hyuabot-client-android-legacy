@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="app.kobuggi.hyuabot.ui.main.bus.BusViewModel" />
+            type="app.kobuggi.hyuabot.ui.bus.BusViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
