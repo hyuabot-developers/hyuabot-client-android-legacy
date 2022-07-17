@@ -38,6 +38,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
         ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041)),
         ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817))
     ))
+    val isLoading = MutableLiveData(false)
     private val disposable = CompositeDisposable()
     private var shuttlePeriod : String? = null
     private suspend fun fetchShuttlePeriod() {
@@ -45,6 +46,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
     }
 
     fun fetchShuttleTimetable() {
+        isLoading.value = true
         val startTime = LocalTime.now().minusMinutes(30).toString()
         viewModelScope.launch {
             if (shuttlePeriod == null){

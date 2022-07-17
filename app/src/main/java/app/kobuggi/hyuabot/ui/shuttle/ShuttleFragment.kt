@@ -47,6 +47,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.shuttleArrivalList.layoutManager = LinearLayoutManager(requireContext())
         vm.shuttleTimetable.observe(viewLifecycleOwner) {
             shuttleArrivalListAdapter.setShuttleTimetable(it)
+            vm.isLoading.value = false
         }
 
         val requestResult = tryRequestLocationPermission()
@@ -81,6 +82,14 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 val shuttleTimetableItem = ShuttleTimetable(vm.shuttleStopName.value!!, vm.shuttleTimetableType.value!!)
                 val action = ShuttleFragmentDirections.openShuttleTimetable(shuttleTimetableItem)
                 (requireActivity() as MainActivity).navController.navigate(action)
+            }
+        }
+
+        vm.isLoading.observe(viewLifecycleOwner) {
+            if(it) {
+                binding.shuttleArrivalProgress.visibility = View.VISIBLE
+            } else {
+                binding.shuttleArrivalProgress.visibility = View.GONE
             }
         }
 
