@@ -38,4 +38,5 @@
     <string name="no_arrival_data">도착 정보가 없습니다.</string>
     <string name="notification">알림</string>
     <string name="no_cafeteria_menu">제공되는 메뉴가 없습니다.</string>
+    <string name="bus_timetable_fragment_button">버스 시간표 보기</string>
 </resources>
