@@ -19,8 +19,9 @@ class CafeteriaViewModel @Inject constructor(private val client: ApolloClient) :
     val showCafeteriaLocationDialog = MutableLiveData<Event<Boolean>>()
     val cafeteriaLocation = MutableLiveData<LatLng>()
     val cafeteriaName = MutableLiveData<String>()
-
+    val isLoading = MutableLiveData(false)
     fun fetchData() {
+        isLoading.value = true
         viewModelScope.launch {
             val result = client.query(
                 CafeteriaMenuQuery(

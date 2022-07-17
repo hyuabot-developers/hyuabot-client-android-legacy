@@ -35,13 +35,13 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.fetchData()
         vm.cafeteriaMenu.observe(viewLifecycleOwner){
             cafeteriaListAdapter.setCafeteriaList(it)
+            vm.isLoading.value = false
         }
 
         vm.showCafeteriaLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent() && vm.cafeteriaLocation.value != null && vm.cafeteriaName.value != null) {
                 val dialog = CafeteriaLocationDialog(vm.cafeteriaLocation.value!!, vm.cafeteriaName.value!!)
                 dialog.show(requireActivity().supportFragmentManager, "cafeteria_location_dialog")
-                requireActivity().supportFragmentManager.executePendingTransactions()
             }
         }
         return binding.root
