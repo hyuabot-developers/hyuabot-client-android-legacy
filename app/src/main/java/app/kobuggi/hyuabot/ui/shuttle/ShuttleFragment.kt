@@ -26,13 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<ShuttleViewModel>()
     private lateinit var binding: FragmentShuttleBinding
-    private val shuttleStopList = listOf(
-        ShuttleStopInfo(R.string.dormitory, LatLng(37.29339607529377, 126.83630604103446)),
-        ShuttleStopInfo(R.string.shuttlecock_o, LatLng(37.29875417910844, 126.83784054072336)),
-        ShuttleStopInfo(R.string.station, LatLng(37.308494476826155, 126.85310236423418)),
-        ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041)),
-        ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817))
-    )
 
 
     override fun onCreateView(
@@ -45,7 +38,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.vm = vm
 
         checkLocationPermission()
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), shuttleStopList, arrayListOf(), {
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), vm.sortedStopList.value!!, arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
         }, {
             stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
@@ -63,10 +56,13 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             val fusedLocationClient = requireActivity().let {
                 LocationServices.getFusedLocationProviderClient(it)
             }
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                val sortedList = getSortedStopList(it)
-                Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(sortedList[0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
-                shuttleArrivalListAdapter.setShuttleStopList(sortedList)
+            if(!vm.locationChecked.value!!) {
+                fusedLocationClient.lastLocation.addOnSuccessListener {
+                    vm.sortedStopList.value = getSortedStopList(it)
+                    Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
+                    shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
+                    vm.locationChecked.value = true
+                }
             }
             fusedLocationClient.lastLocation.addOnFailureListener {
                 Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
@@ -135,7 +131,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     }
 
     private fun getSortedStopList(location: Location): List<ShuttleStopInfo> {
-        return shuttleStopList.sortedBy { getDistanceFromStop(it.location, location) }
+        return vm.sortedStopList.value!!.sortedBy { getDistanceFromStop(it.location, location) }
     }
 
     private fun getDistanceFromStop(stopLocation: LatLng, currentLocation: Location): Float {
