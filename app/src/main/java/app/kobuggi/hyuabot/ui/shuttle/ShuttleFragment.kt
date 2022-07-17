@@ -26,14 +26,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<ShuttleViewModel>()
     private lateinit var binding: FragmentShuttleBinding
-    private val shuttleStopNameList = listOf(R.string.dormitory, R.string.shuttlecock_o, R.string.station, R.string.terminal, R.string.shuttlecock_i)
-    private val stopLocationList = listOf(
-        LatLng(37.29339607529377, 126.83630604103446),
-        LatLng(37.29875417910844, 126.83784054072336),
-        LatLng(37.308494476826155, 126.85310236423418),
-        LatLng(37.31945164682341, 126.8455453372041),
-        LatLng(37.29869328231496, 126.8377767466817)
+    private val shuttleStopList = listOf(
+        ShuttleStopInfo(R.string.dormitory, LatLng(37.29339607529377, 126.83630604103446)),
+        ShuttleStopInfo(R.string.shuttlecock_o, LatLng(37.29875417910844, 126.83784054072336)),
+        ShuttleStopInfo(R.string.station, LatLng(37.308494476826155, 126.85310236423418)),
+        ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041)),
+        ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817))
     )
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +45,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.vm = vm
 
         checkLocationPermission()
-
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), {
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), shuttleStopList, arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
         }, {
             stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
@@ -65,14 +64,14 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 LocationServices.getFusedLocationProviderClient(it)
             }
             fusedLocationClient.lastLocation.addOnSuccessListener {
-                val index = getClosestShuttleStop(it)
-                Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(shuttleStopNameList[index])}입니다.", Toast.LENGTH_SHORT).show()
-                binding.shuttleArrivalList.smoothScrollToPosition(index)
-                shuttleArrivalListAdapter.setClosestShuttleStop(index)
+                val sortedList = getSortedStopList(it)
+                Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(sortedList[0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
+                shuttleArrivalListAdapter.setShuttleStopList(sortedList)
+            }
+            fusedLocationClient.lastLocation.addOnFailureListener {
+                Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-
-
         vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent()) {
                 val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
@@ -135,15 +134,14 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         return true
     }
 
-    private fun getClosestShuttleStop(location: Location): Int {
-        val shuttleStops = stopLocationList
-        val shuttleStop = shuttleStops.minBy {
-            val stop = Location("")
-            stop.latitude = it.latitude
-            stop.longitude = it.longitude
-            val distance = stop.distanceTo(location)
-            distance
-        }
-        return stopLocationList.indexOf(shuttleStop)
+    private fun getSortedStopList(location: Location): List<ShuttleStopInfo> {
+        return shuttleStopList.sortedBy { getDistanceFromStop(it.location, location) }
+    }
+
+    private fun getDistanceFromStop(stopLocation: LatLng, currentLocation: Location): Float {
+        val location = Location("")
+        location.latitude = stopLocation.latitude
+        location.longitude = stopLocation.longitude
+        return currentLocation.distanceTo(location)
     }
 }
