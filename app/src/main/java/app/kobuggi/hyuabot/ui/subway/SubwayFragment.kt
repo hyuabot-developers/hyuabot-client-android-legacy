@@ -30,6 +30,7 @@ class SubwayFragment : Fragment() {
         binding.subwayArrivalList.layoutManager = LinearLayoutManager(requireContext())
         vm.subwayData.observe(viewLifecycleOwner) {
             subwayArrivalListAdapter.setSubwayData(it)
+            vm.isLoading.value = false
         }
         return binding.root
     }

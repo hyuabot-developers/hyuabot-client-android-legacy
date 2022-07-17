@@ -19,8 +19,9 @@ import javax.inject.Inject
 class SubwayViewModel @Inject constructor(private val client: ApolloClient) : ViewModel() {
     private val disposable = CompositeDisposable()
     val subwayData = MutableLiveData<List<SubwayQuery.Subway>>()
-
+    val isLoading = MutableLiveData(false)
     private fun fetchData() {
+        isLoading.value = true
         val now = LocalTime.now()
         viewModelScope.launch {
             val result = client.query(
