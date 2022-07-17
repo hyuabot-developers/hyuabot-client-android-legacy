@@ -32,9 +32,11 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
             if (stopList[position].nameID == R.string.station) {
                 binding.shuttleDY.visibility = View.GONE
                 binding.shuttleStopDivider.visibility = View.GONE
+                binding.shuttleTypeDH.text = context.getString(R.string.shuttle_type_D)
             } else if (stopList[position].nameID == R.string.terminal) {
                 binding.shuttleDH.visibility = View.GONE
                 binding.shuttleStopDivider.visibility = View.GONE
+                binding.shuttleTypeDY.text = context.getString(R.string.shuttle_type_D)
             }
 
             val now = LocalTime.now()
