@@ -63,6 +63,7 @@
             android:background="@android:color/transparent"
             android:src="@drawable/expand_button_selector"
             android:padding="10dp"
-            android:gravity="center" />
+            android:gravity="center"
+            app:tint="@color/primaryTextColor" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
