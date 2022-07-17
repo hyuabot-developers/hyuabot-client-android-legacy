@@ -25,8 +25,10 @@ import javax.inject.Inject
 class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : ViewModel() {
     val shuttleTimetable : MutableLiveData<List<ShuttleTimetableQuery.Timetable>> = MutableLiveData(arrayListOf())
     val showShuttleStopLocationDialog = MutableLiveData<Event<Boolean>>()
+    val openShuttleTimetableEvent = MutableLiveData<Event<Boolean>>()
     val showShuttleStopLocation = MutableLiveData<LatLng>()
     val shuttleStopName = MutableLiveData<Int>()
+    val shuttleTimetableType = MutableLiveData<String>()
     private val disposable = CompositeDisposable()
     private var shuttlePeriod : String? = null
     private suspend fun fetchShuttlePeriod() {
@@ -70,6 +72,12 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
         showShuttleStopLocation.value = location
         shuttleStopName.value = titleID
         showShuttleStopLocationDialog.value = Event(true)
+    }
+
+    fun openShuttleTimetableFragment(stopName: Int, type: String) {
+        shuttleStopName.value = stopName
+        shuttleTimetableType.value = type
+        openShuttleTimetableEvent.value = Event(true)
     }
 
     override fun onCleared() {

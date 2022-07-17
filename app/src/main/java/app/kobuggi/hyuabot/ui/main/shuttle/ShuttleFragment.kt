@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentShuttleBinding
+import app.kobuggi.hyuabot.ui.main.MainActivity
+import app.kobuggi.hyuabot.ui.main.shuttle.timetable.ShuttleTimetable
 import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -44,9 +47,11 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
 
         checkLocationPermission()
 
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf()){
-            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
-        }
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), {
+           location, titleID -> vm.clickShuttleStopLocation(location, titleID)
+        }, {
+            stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
+        })
         binding.shuttleArrivalList.adapter = shuttleArrivalListAdapter
         binding.shuttleArrivalList.layoutManager = LinearLayoutManager(requireContext())
         vm.shuttleTimetable.observe(viewLifecycleOwner) {
@@ -77,12 +82,22 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             }
         }
 
+        vm.openShuttleTimetableEvent.observe(viewLifecycleOwner) {
+            if(it.peekContent() && requireActivity() is MainActivity) {
+                vm.openShuttleTimetableEvent.value = Event(false)
+                val shuttleTimetableItem = ShuttleTimetable(vm.shuttleStopName.value!!, vm.shuttleTimetableType.value!!)
+                val action = ShuttleFragmentDirections.openShuttleTimetable(shuttleTimetableItem)
+                (requireActivity() as MainActivity).navController.navigate(action)
+            }
+        }
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         vm.showShuttleStopLocationDialog.value = Event(false)
+        vm.openShuttleTimetableEvent.value = Event(false)
         vm.startFetchData()
     }
 

@@ -6,7 +6,7 @@ plugins {
     id "com.apollographql.apollo3" version("3.3.2")
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
-
+apply plugin: "androidx.navigation.safeargs.kotlin"
 Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
@@ -125,4 +125,7 @@ dependencies {
 
     // Apollo GraphQL
     implementation 'com.apollographql.apollo3:apollo-runtime:3.3.2'
+
+    // ViewPager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }

@@ -14,7 +14,7 @@ import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class ShuttleArrivalListAdapter(private val context: Context, timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit) : RecyclerView.Adapter<ShuttleArrivalListAdapter.ShuttleArrivalViewHolder>() {
+class ShuttleArrivalListAdapter(private val context: Context, timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit, val onClickCard: (stopID: Int, shuttleType: String) -> Unit) : RecyclerView.Adapter<ShuttleArrivalListAdapter.ShuttleArrivalViewHolder>() {
     private val shuttleStopNameList = listOf(R.string.dormitory, R.string.shuttlecock_o, R.string.station, R.string.terminal, R.string.shuttlecock_i)
     private var shuttleTimetable: List<ShuttleTimetableQuery.Timetable> = timetable
     private var closestStopIndex = -1
@@ -149,7 +149,15 @@ class ShuttleArrivalListAdapter(private val context: Context, timetable: List<Sh
                     }
                 }
             }
-
+            binding.shuttleDH.setOnClickListener {
+                onClickCard(shuttleStopNameList[position], "DH")
+            }
+            binding.shuttleDY.setOnClickListener {
+                onClickCard(shuttleStopNameList[position], "DY")
+            }
+            binding.shuttleC.setOnClickListener {
+                onClickCard(shuttleStopNameList[position], "C")
+            }
             binding.shuttleStopLocation.setOnClickListener {
                 onClickLocationButton(stopLocationList[position], shuttleStopNameList[position])
             }
