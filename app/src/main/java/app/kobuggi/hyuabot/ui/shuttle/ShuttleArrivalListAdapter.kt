@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.ShuttleTimetableQuery
-import app.kobuggi.hyuabot.databinding.ItemShuttleArrivalBinding
+import app.kobuggi.hyuabot.databinding.CardShuttleArrivalBinding
 import com.google.android.gms.maps.model.LatLng
 import java.time.Duration
 import java.time.LocalTime
@@ -25,7 +25,7 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
         R.string.shuttlecock_i to arrayListOf(20, 20, 25)
     )
     private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-    inner class ShuttleArrivalViewHolder(private val binding: ItemShuttleArrivalBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ShuttleArrivalViewHolder(private val binding: CardShuttleArrivalBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
             binding.shuttleStopName.text = context.getString(stopList[position].nameID)
 
@@ -171,18 +171,12 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
                 binding.shuttleTimeCFourth.visibility = if(binding.shuttleTimeCFourth.text.isNotEmpty()) visible else View.GONE
                 binding.shuttleTimeCFifth.visibility = if(binding.shuttleTimeCFifth.text.isNotEmpty()) visible else View.GONE
             }
-
-            if (position == 0) {
-                binding.homeShuttleArrivalCard.strokeWidth = 3
-            } else {
-                binding.homeShuttleArrivalCard.strokeWidth = 0
-            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShuttleArrivalViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shuttle_arrival, parent, false)
-        return ShuttleArrivalViewHolder(ItemShuttleArrivalBinding.bind(view))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_shuttle_arrival, parent, false)
+        return ShuttleArrivalViewHolder(CardShuttleArrivalBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: ShuttleArrivalViewHolder, position: Int) {
