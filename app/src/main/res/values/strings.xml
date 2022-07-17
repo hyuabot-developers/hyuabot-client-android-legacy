@@ -16,6 +16,7 @@
     <string name="shuttle_type_D">직행 버스</string>
     <string name="shuttle_timetable">%s시 %s분</string>
     <string name="shuttle_time">%s시 %s분 (%d분 후) 출발</string>
+    <string name="bus_route_name">%s (%s)</string>
     <string name="bus_realtime_item">%d분 후 도착 (%d 전 / %d 석)</string>
     <string name="bus_realtime_item_without_seat">%d분 후 도착 (%d 전)</string>
     <string name="bus_timetable_item">%s시 %s분 출발 (회차점 대기)</string>

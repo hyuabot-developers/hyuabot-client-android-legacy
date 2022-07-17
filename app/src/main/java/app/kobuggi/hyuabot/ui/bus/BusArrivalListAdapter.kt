@@ -9,9 +9,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.BusQuery
 import app.kobuggi.hyuabot.R
-import app.kobuggi.hyuabot.databinding.ItemBusArrivalBinding
+import app.kobuggi.hyuabot.databinding.CardBusArrivalBinding
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class BusArrivalListAdapter(private val context: Context, private var busList: List<BusQuery.Bus>) : RecyclerView.Adapter<BusArrivalListAdapter.BusArrivalViewHolder>() {
     private val routeColor = hashMapOf(
@@ -19,11 +18,10 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
         "707-1" to "#E60012",
         "3102" to "#E60012",
     )
-    private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-    inner class BusArrivalViewHolder(private val binding: ItemBusArrivalBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class BusArrivalViewHolder(private val binding: CardBusArrivalBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
             binding.busRouteName.setBackgroundColor(Color.parseColor(routeColor[busList[position].routeName] ?: "#000000"))
-            binding.busRouteName.text = "${busList[position].routeName} (${busList[position].stopName})"
+            binding.busRouteName.text = context.getString(R.string.bus_route_name, busList[position].routeName, busList[position].stopName)
             binding.busTerminalStop.text = busList[position].terminalStop
             val now = LocalTime.now()
             busList[position].realtime.forEachIndexed { index, realtime ->
@@ -118,8 +116,8 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BusArrivalViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_bus_arrival, parent, false)
-        return BusArrivalViewHolder(ItemBusArrivalBinding.bind(view))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_bus_arrival, parent, false)
+        return BusArrivalViewHolder(CardBusArrivalBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: BusArrivalViewHolder, position: Int) {
@@ -132,6 +130,6 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
 
     fun setBusTimetable(busList: List<BusQuery.Bus>) {
         this.busList = busList
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, busList.size)
     }
 }
