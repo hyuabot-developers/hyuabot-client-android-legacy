@@ -63,7 +63,7 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         }
         vm.showShuttleRouteDialog.observe(viewLifecycleOwner){
             if(it.peekContent()){
-                val dialog = ShuttleTimetableDialog(vm.arrivalTime.value!!, vm.startStop.value!!, stopID, shuttleType)
+                val dialog = ShuttleTimetableDialog().newInstance(vm.arrivalTime.value!!, vm.startStop.value!!, stopID, shuttleType)
                 dialog.show(requireActivity().supportFragmentManager, "ShuttleTimetableMapDialog")
             }
         }

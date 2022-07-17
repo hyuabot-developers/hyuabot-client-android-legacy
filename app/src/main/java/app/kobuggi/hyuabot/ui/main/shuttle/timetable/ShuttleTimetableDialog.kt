@@ -6,29 +6,63 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.DialogTimetableBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class ShuttleTimetableDialog(private val arrivalTime: LocalTime, private val startStop: String, private val stopID: Int, private val shuttleType: Int) : DialogFragment() {
-    constructor() : this(LocalTime.now(), "", 0, 0)
+class ShuttleTimetableDialog : DialogFragment() {
     inner class ShuttleDepartureItem(val departureTime: LocalTime, val stopID: Int)
 
     private lateinit var binding: DialogTimetableBinding
+    private val vm by viewModels<ShuttleTimetableDialogViewModel>()
+    private val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    private lateinit var arrivalTime: LocalTime
+    private lateinit var startStop: String
+    private var stopID: Int = 0
+    private var shuttleType: Int = 0
+
+
+    fun newInstance(arrivalTime: LocalTime, startStop: String, stopID: Int, shuttleType: Int): ShuttleTimetableDialog{
+        val fragment = ShuttleTimetableDialog()
+        val bundle = Bundle(4)
+        bundle.putString("arrivalTime", arrivalTime.format(formatter))
+        bundle.putString("startStop", startStop)
+        bundle.putInt("stopID", stopID)
+        bundle.putInt("shuttleType", shuttleType)
+        fragment.arguments = bundle
+        return fragment
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arrivalTime = LocalTime.parse(arguments?.getString("arrivalTime") ?: "", formatter)
+        startStop = arguments?.getString("startStop") ?: ""
+        stopID = arguments?.getInt("stopID") ?: 0
+        shuttleType = arguments?.getInt("shuttleType") ?: 0
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if (startStop.isNotEmpty()) {
+            vm.setData(arrivalTime, startStop, stopID, shuttleType)
+        }
         binding = DialogTimetableBinding.inflate(inflater, container, false)
+        if (getArrivalInfoList().isEmpty()){
+            dismiss()
+        }
         val adapter = ShuttleArrivalListAdapter(requireContext(), getArrivalInfoList())
         binding.shuttleArrivalTimeList.adapter = adapter
         binding.shuttleArrivalTimeList.layoutManager = LinearLayoutManager(requireContext())
+        binding.vm = vm
         binding.shuttleArrivalTimeList.addItemDecoration(
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
@@ -54,7 +88,7 @@ class ShuttleTimetableDialog(private val arrivalTime: LocalTime, private val sta
 
     private fun getArrivalInfoList(): ArrayList<ShuttleDepartureItem> {
         val result = arrayListOf<ShuttleDepartureItem>()
-        val shuttlecockTime = when(stopID){
+        val shuttlecockTime = when(vm.stopID.value){
             R.string.dormitory -> arrivalTime.plusMinutes(5)
             R.string.shuttlecock_o -> arrivalTime
             R.string.station -> arrivalTime.minusMinutes(10)
