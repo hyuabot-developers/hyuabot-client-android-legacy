@@ -18,10 +18,11 @@ import javax.inject.Inject
 class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewModel() {
     private val disposable = CompositeDisposable()
     val busData = MutableLiveData<List<BusQuery.Bus>>()
+    val isLoading = MutableLiveData(false)
 
     private fun fetchData() {
-        Log.d("BusViewModel", "fetchData")
         viewModelScope.launch {
+            isLoading.value = true
             val result = client.query(
                 BusQuery(
                     routes = listOf("10-1", "3102", "707-1"),
@@ -34,7 +35,7 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
                     (it.routeName == "707-1" && it.stopName == "한양대정문") || (it.routeName != "707-1" && it.stopName == "한양대게스트하우스")
                 }
             } else {
-                Log.d("BusViewModel", result.errors.toString())
+                Log.e("BusViewModel", result.errors.toString())
             }
         }
     }

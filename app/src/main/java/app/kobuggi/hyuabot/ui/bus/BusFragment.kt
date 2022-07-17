@@ -28,6 +28,7 @@ class BusFragment : Fragment() {
         binding.busArrivalList.layoutManager = LinearLayoutManager(requireContext())
         vm.busData.observe(viewLifecycleOwner) {
             busArrivalListAdapter.setBusTimetable(it)
+            vm.isLoading.value = false
         }
 
         return binding.root
