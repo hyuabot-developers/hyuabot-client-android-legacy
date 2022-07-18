@@ -22,6 +22,7 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     val isLoading = MutableLiveData(false)
     val moveToTimetableFragmentEvent = MutableLiveData<Event<Boolean>>()
     val timetableRouteName = MutableLiveData<String>()
+    val timetableRouteColor = MutableLiveData<String>()
 
     private fun fetchData() {
         viewModelScope.launch {
@@ -53,7 +54,8 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
         )
     }
 
-    fun moveToTimetableFragment(routeName: String) {
+    fun moveToTimetableFragment(routeName: String, routeColor: String) {
+        timetableRouteColor.value = routeColor
         timetableRouteName.value = routeName
         moveToTimetableFragmentEvent.value = Event(true)
     }

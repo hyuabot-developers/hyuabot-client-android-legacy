@@ -28,7 +28,7 @@ class BusFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.vm = vm
         val busArrivalListAdapter = BusArrivalListAdapter(requireContext(), listOf()){
-            routeName -> vm.moveToTimetableFragment(routeName)
+            routeName, routeColor -> vm.moveToTimetableFragment(routeName, routeColor)
         }
         binding.busArrivalList.adapter = busArrivalListAdapter
         binding.busArrivalList.layoutManager = LinearLayoutManager(requireContext())
@@ -40,7 +40,8 @@ class BusFragment : Fragment() {
             if(it.peekContent() && requireActivity() is MainActivity) {
                 vm.moveToTimetableFragmentEvent.value = Event(false)
                 val busTimetableItem = vm.timetableRouteName.value!!
-                val action = BusFragmentDirections.openBusTimetable(busTimetableItem)
+                val busRouteColor = vm.timetableRouteColor.value!!
+                val action = BusFragmentDirections.openBusTimetable(busTimetableItem, busRouteColor)
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }

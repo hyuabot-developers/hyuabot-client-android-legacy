@@ -1,11 +1,15 @@
 package app.kobuggi.hyuabot.ui.bus.timetable
 
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentBusTimetableBinding
@@ -17,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BusTimetableFragment: Fragment() {
     private lateinit var binding : FragmentBusTimetableBinding
     private val vm by viewModels<BusTimetableViewModel>()
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +40,13 @@ class BusTimetableFragment: Fragment() {
         val args: BusTimetableFragmentArgs by navArgs()
         val context = requireContext()
         val routeName: String = args.busTimetableRoute
+        val routeColor: String = args.busRouteColor
+
+        val window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.parseColor(routeColor)
+        binding.busTimetableToolbar.setBackgroundColor(Color.parseColor(routeColor))
+        binding.toolbar.setBackgroundColor(Color.parseColor(routeColor))
 
 
         vm.fetchBusTimetable(routeName)
@@ -54,5 +66,23 @@ class BusTimetableFragment: Fragment() {
                 binding.busTimetableProgress.visibility = View.GONE
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val window = requireActivity().window
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                window.statusBarColor = ResourcesCompat.getColor(resources, R.color.hanyang_primary, null)
+                findNavController().navigateUp()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }

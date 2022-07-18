@@ -45,5 +45,9 @@
             android:name="bus_timetable_route"
             android:id="@+id/bus_timetable_route"
             app:argType="string" />
+        <argument
+            android:name="bus_route_color"
+            android:id="@+id/bus_route_color"
+            app:argType="string" />
     </fragment>
 </navigation>
