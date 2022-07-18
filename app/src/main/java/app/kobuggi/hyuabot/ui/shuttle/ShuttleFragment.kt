@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,36 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<ShuttleViewModel>()
     private lateinit var binding: FragmentShuttleBinding
-
+    private val stopList = listOf(
+        ShuttleStopInfo(R.string.dormitory, LatLng(37.29339607529377, 126.83630604103446)),
+        ShuttleStopInfo(R.string.shuttlecock_o, LatLng(37.29875417910844, 126.83784054072336)),
+        ShuttleStopInfo(R.string.station, LatLng(37.308494476826155, 126.85310236423418)),
+        ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041)),
+        ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817))
+    )
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val requestResult = tryRequestLocationPermission()
+        if (!requestResult) {
+            Toast.makeText(requireContext(), "위치 정보를 사용하기 위해서는 위치 정보 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            val fusedLocationClient = requireActivity().let {
+                LocationServices.getFusedLocationProviderClient(it)
+            }
+            if(!vm.locationChecked.value!!) {
+                fusedLocationClient.lastLocation.addOnSuccessListener {
+                    vm.sortedStopList.value = getSortedStopList(it)
+                    Log.d("onCreate", "${vm.sortedStopList.value}")
+                    Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
+                    vm.locationChecked.value = true
+                }
+            }
+            fusedLocationClient.lastLocation.addOnFailureListener {
+                Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        Log.d("onCreate", "${vm.sortedStopList.value}")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,9 +66,8 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
-
         checkLocationPermission()
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), vm.sortedStopList.value!!, arrayListOf(), {
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
         }, {
             stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
@@ -52,33 +81,10 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             shuttleArrivalListAdapter.setShuttleTimetable(it)
             vm.isLoading.value = false
         }
-
-        val requestResult = tryRequestLocationPermission()
-        if (!requestResult) {
-            Toast.makeText(requireContext(), "위치 정보를 사용하기 위해서는 위치 정보 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
-        } else {
-            val fusedLocationClient = requireActivity().let {
-                LocationServices.getFusedLocationProviderClient(it)
-            }
-            if(!vm.locationChecked.value!!) {
-                fusedLocationClient.lastLocation.addOnSuccessListener {
-                    vm.sortedStopList.value = getSortedStopList(it)
-                    Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
-                    shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
-                    vm.locationChecked.value = true
-                }
-            }
-            fusedLocationClient.lastLocation.addOnFailureListener {
-                Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
-            }
+        vm.sortedStopList.observe(viewLifecycleOwner) {
+            shuttleArrivalListAdapter.setShuttleStopList(it)
+            Log.d("onCreateView", "${vm.sortedStopList.value}")
         }
-        vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
-            if(it.peekContent()) {
-                val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
-                dialog.show(requireActivity().supportFragmentManager, "ShuttleStopLocationDialog")
-            }
-        }
-
         vm.openShuttleTimetableEvent.observe(viewLifecycleOwner) {
             if(it.peekContent() && requireActivity() is MainActivity) {
                 vm.openShuttleTimetableEvent.value = Event(false)
@@ -87,7 +93,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }
-
         vm.isLoading.observe(viewLifecycleOwner) {
             if(it) {
                 binding.shuttleArrivalProgress.visibility = View.VISIBLE
@@ -95,13 +100,17 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 binding.shuttleArrivalProgress.visibility = View.GONE
             }
         }
-
         binding.refreshLayout.setOnRefreshListener {
             vm.stopFetchData()
             vm.startFetchData()
             binding.refreshLayout.isRefreshing = false
         }
-
+        vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
+            if(it.peekContent()) {
+                val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
+                dialog.show(requireActivity().supportFragmentManager, "ShuttleStopLocationDialog")
+            }
+        }
         return binding.root
     }
 
@@ -149,7 +158,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     }
 
     private fun getSortedStopList(location: Location): List<ShuttleStopInfo> {
-        return vm.sortedStopList.value!!.sortedBy { getDistanceFromStop(it.location, location) }
+        return stopList.sortedBy { getDistanceFromStop(it.location, location) }
     }
 
     private fun getDistanceFromStop(stopLocation: LatLng, currentLocation: Location): Float {
