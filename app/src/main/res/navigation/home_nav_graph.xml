@@ -15,7 +15,11 @@
     <fragment
         android:id="@+id/fragment_bus"
         android:name="app.kobuggi.hyuabot.ui.bus.BusFragment"
-        app:layout="@layout/fragment_bus" />
+        app:layout="@layout/fragment_bus" >
+        <action
+            android:id="@+id/open_bus_timetable"
+            app:destination="@id/fragment_bus_timetable" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_subway"
         android:name="app.kobuggi.hyuabot.ui.subway.SubwayFragment"
@@ -32,5 +36,18 @@
             android:name="shuttle_timetable_item"
             android:id="@+id/shuttle_timetable_item"
             app:argType="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_bus_timetable"
+        android:name="app.kobuggi.hyuabot.ui.bus.timetable.BusTimetableFragment"
+        app:layout="@layout/fragment_bus_timetable">
+        <argument
+            android:name="bus_timetable_route"
+            android:id="@+id/bus_timetable_route"
+            app:argType="string" />
+        <argument
+            android:name="bus_route_color"
+            android:id="@+id/bus_route_color"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -16,6 +16,7 @@
     <string name="shuttle_type_D">직행 버스</string>
     <string name="shuttle_timetable">%s시 %s분</string>
     <string name="shuttle_time">%s시 %s분 (%d분 후) 출발</string>
+    <string name="bus_route_name">%s (%s)</string>
     <string name="bus_realtime_item">%d분 후 도착 (%d 전 / %d 석)</string>
     <string name="bus_realtime_item_without_seat">%d분 후 도착 (%d 전)</string>
     <string name="bus_timetable_item">%s시 %s분 출발 (회차점 대기)</string>
@@ -33,8 +34,19 @@
     <string name="shuttle_timetable_toolbar">%s - %s</string>
     <string name="weekdays">평일</string>
     <string name="weekends">주말</string>
+    <string name="saturday">토요일</string>
+    <string name="sunday">일요일</string>
     <string name="shuttle_route">정류장별 출발 시간</string>
     <string name="no_arrival_data">도착 정보가 없습니다.</string>
     <string name="notification">알림</string>
     <string name="no_cafeteria_menu">제공되는 메뉴가 없습니다.</string>
+    <string name="saesol_high_school">새솔고</string>
+    <string name="new_ansan_college">신안산대</string>
+    <string name="purgio_6th">푸르지오6차후문</string>
+    <string name="gangnam_station">강남역</string>
+    <string name="suwon_station">수원역</string>
+    <string name="sangnoksu_station">상록수역</string>
+    <string name="bus_route">%s → %s</string>
+    <string name="bus_route_interval">배차 간격: %d ~ %d분</string>
+    <string name="bus_route_first_last_time">%s: %s:%s(첫차)/%s:%s(막차)</string>
 </resources>

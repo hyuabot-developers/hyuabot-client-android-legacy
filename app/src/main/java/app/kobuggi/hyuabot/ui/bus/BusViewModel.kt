@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.BusQuery
+import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,6 +20,9 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     private val disposable = CompositeDisposable()
     val busData = MutableLiveData<List<BusQuery.Bus>>()
     val isLoading = MutableLiveData(false)
+    val moveToTimetableFragmentEvent = MutableLiveData<Event<Boolean>>()
+    val timetableRouteName = MutableLiveData<String>()
+    val timetableRouteColor = MutableLiveData<String>()
 
     private fun fetchData() {
         viewModelScope.launch {
@@ -48,6 +52,12 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
                     fetchData()
                 }
         )
+    }
+
+    fun moveToTimetableFragment(routeName: String, routeColor: String) {
+        timetableRouteColor.value = routeColor
+        timetableRouteName.value = routeName
+        moveToTimetableFragmentEvent.value = Event(true)
     }
 
     fun stopFetchData() {
