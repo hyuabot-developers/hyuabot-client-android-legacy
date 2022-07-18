@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.databinding.FragmentCafeteriaBinding
 import app.kobuggi.hyuabot.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +32,9 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         }
         binding.cafeteriaMenuList.adapter = cafeteriaListAdapter
         binding.cafeteriaMenuList.layoutManager = LinearLayoutManager(context)
-
+        if(binding.cafeteriaMenuList.itemAnimator is SimpleItemAnimator){
+            (binding.cafeteriaMenuList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
         vm.fetchData()
         vm.cafeteriaMenu.observe(viewLifecycleOwner){
             cafeteriaListAdapter.setCafeteriaList(it)

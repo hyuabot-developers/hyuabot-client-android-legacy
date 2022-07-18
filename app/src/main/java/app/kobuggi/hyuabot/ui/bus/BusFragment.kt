@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.databinding.FragmentBusBinding
 import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.ui.shuttle.ShuttleFragmentDirections
@@ -32,6 +33,9 @@ class BusFragment : Fragment() {
         }
         binding.busArrivalList.adapter = busArrivalListAdapter
         binding.busArrivalList.layoutManager = LinearLayoutManager(requireContext())
+        if(binding.busArrivalList.itemAnimator is SimpleItemAnimator){
+            (binding.busArrivalList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
         vm.busData.observe(viewLifecycleOwner) {
             busArrivalListAdapter.setBusTimetable(it)
             vm.isLoading.value = false
@@ -44,6 +48,11 @@ class BusFragment : Fragment() {
                 val action = BusFragmentDirections.openBusTimetable(busTimetableItem, busRouteColor)
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
+        }
+        binding.refreshLayout.setOnRefreshListener {
+            vm.stopFetchData()
+            vm.startFetchData()
+            binding.refreshLayout.isRefreshing = false
         }
 
         return binding.root
