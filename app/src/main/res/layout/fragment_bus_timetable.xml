@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
     <data>
+        <import type="android.view.View" />
         <variable
             name="vm"
             type="app.kobuggi.hyuabot.ui.bus.timetable.BusTimetableViewModel" />
@@ -22,7 +23,7 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/toolbar">
@@ -30,20 +31,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
+                    android:layout_marginStart="120dp"
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:layout_marginBottom="20dp"
                     android:orientation="vertical">
-                    <TextView
-                    android:id="@+id/bus_route_name_bigger"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:textColor="@color/white"
-                    android:textSize="28sp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
                     <TextView
                         android:id="@+id/bus_route"
                         android:layout_width="match_parent"
@@ -51,11 +42,8 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:textAlignment="center"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
                     <TextView
                         android:id="@+id/bus_route_interval"
@@ -65,10 +53,8 @@
                         android:gravity="center"
                         android:textAlignment="center"
                         android:layout_marginTop="4dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:textColor="@color/white"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
                     <TextView
                         android:id="@+id/bus_route_first_last_time"
@@ -78,9 +64,7 @@
                         android:gravity="center"
                         android:textAlignment="center"
                         android:layout_marginTop="4dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:lineSpacingMultiplier="1.15"
                         android:textColor="@color/white"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
@@ -91,8 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
-                    android:visibility="gone"
-                    app:title="Coordinator" />
+                    app:title="3102" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.bus.timetable
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -60,16 +60,6 @@ class BusTimetableFragment: Fragment() {
             findNavController().navigateUp()
         }
         binding.toolbar.title = routeName
-        binding.busTimetableToolbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (kotlin.math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
-                binding.toolbar.title = routeName
-                binding.toolbar.visibility = View.VISIBLE
-            } else {
-                binding.toolbar.title = ""
-                binding.toolbar.visibility = View.GONE
-            }
-        })
-        binding.busRouteNameBigger.text = routeName
         binding.busRouteInterval.text = when(routeName){
             "10-1" -> context.getString(R.string.bus_route_interval, 25, 50)
             "707-1" -> context.getString(R.string.bus_route_interval, 120, 240)
