@@ -36,6 +36,11 @@ class SubwayFragment : Fragment() {
             subwayArrivalListAdapter.setSubwayData(it)
             vm.isLoading.value = false
         }
+        binding.refreshLayout.setOnRefreshListener {
+            vm.stopFetchData()
+            vm.startFetchData()
+            binding.refreshLayout.isRefreshing = false
+        }
         return binding.root
     }
 

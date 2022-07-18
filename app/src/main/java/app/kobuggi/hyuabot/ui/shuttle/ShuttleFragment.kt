@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<ShuttleViewModel>()
     private lateinit var binding: FragmentShuttleBinding
-
+    private lateinit var shuttleArrivalListAdapter: ShuttleArrivalListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,6 +97,12 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             }
         }
 
+        binding.refreshLayout.setOnRefreshListener {
+            vm.stopFetchData()
+            vm.startFetchData()
+            binding.refreshLayout.isRefreshing = false
+        }
+
         return binding.root
     }
 
@@ -104,6 +110,9 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         super.onResume()
         vm.showShuttleStopLocationDialog.value = Event(false)
         vm.openShuttleTimetableEvent.value = Event(false)
+        if(!vm.locationChecked.value!!){
+            shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
+        }
         vm.startFetchData()
     }
 

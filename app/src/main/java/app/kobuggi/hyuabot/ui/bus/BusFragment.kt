@@ -49,6 +49,11 @@ class BusFragment : Fragment() {
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }
+        binding.refreshLayout.setOnRefreshListener {
+            vm.stopFetchData()
+            vm.startFetchData()
+            binding.refreshLayout.isRefreshing = false
+        }
 
         return binding.root
     }
