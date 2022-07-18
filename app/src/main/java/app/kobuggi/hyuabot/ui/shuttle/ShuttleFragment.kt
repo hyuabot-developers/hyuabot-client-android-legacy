@@ -39,7 +39,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.vm = vm
 
         checkLocationPermission()
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), vm.sortedStopList.value!!, arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
         }, {
             stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
@@ -56,7 +56,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
 
         val requestResult = tryRequestLocationPermission()
         if (!requestResult) {
-            shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
             Toast.makeText(requireContext(), "위치 정보를 사용하기 위해서는 위치 정보 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
         } else {
             val fusedLocationClient = requireActivity().let {
@@ -64,18 +63,13 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             }
             if(!vm.locationChecked.value!!) {
                 fusedLocationClient.lastLocation.addOnSuccessListener {
-                    if(it != null) {
-                        vm.sortedStopList.value = getSortedStopList(it)
-                        Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
-                        shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
-                        vm.locationChecked.value = true
-                    } else {
-                        shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
-                    }
+                    vm.sortedStopList.value = getSortedStopList(it)
+                    Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
+                    shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
+                    vm.locationChecked.value = true
                 }
             }
             fusedLocationClient.lastLocation.addOnFailureListener {
-                shuttleArrivalListAdapter.setShuttleStopList(vm.sortedStopList.value!!)
                 Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }

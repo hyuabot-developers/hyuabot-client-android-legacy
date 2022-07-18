@@ -186,7 +186,7 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
     }
 
     override fun getItemCount(): Int {
-        return stopList.size
+        return 5
     }
 
     fun setShuttleTimetable(shuttleTimetable: List<ShuttleTimetableQuery.Timetable>) {
