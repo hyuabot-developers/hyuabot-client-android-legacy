@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentShuttleBinding
 import app.kobuggi.hyuabot.ui.MainActivity
@@ -45,6 +46,9 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         })
         binding.shuttleArrivalList.adapter = shuttleArrivalListAdapter
         binding.shuttleArrivalList.layoutManager = LinearLayoutManager(requireContext())
+        if(binding.shuttleArrivalList.itemAnimator is SimpleItemAnimator){
+            (binding.shuttleArrivalList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
         vm.shuttleTimetable.observe(viewLifecycleOwner) {
             shuttleArrivalListAdapter.setShuttleTimetable(it)
             vm.isLoading.value = false
