@@ -47,7 +47,13 @@ class BusTimetableFragment: Fragment() {
         window.statusBarColor = Color.parseColor(routeColor)
         binding.busTimetableToolbar.setBackgroundColor(Color.parseColor(routeColor))
         binding.toolbar.setBackgroundColor(Color.parseColor(routeColor))
-
+        binding.toolbar.title = routeName
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setNavigationOnClickListener {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = ResourcesCompat.getColor(resources, R.color.hanyang_primary, null)
+            findNavController().navigateUp()
+        }
 
         vm.fetchBusTimetable(routeName)
         vm.busTimetable.observe(viewLifecycleOwner){
