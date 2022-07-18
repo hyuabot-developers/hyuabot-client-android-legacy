@@ -41,4 +41,13 @@
     <string name="notification">알림</string>
     <string name="no_cafeteria_menu">제공되는 메뉴가 없습니다.</string>
     <string name="bus_timetable_fragment_button">버스 시간표 보기</string>
+    <string name="saesol_high_school">새솔고</string>
+    <string name="new_ansan_college">신안산대</string>
+    <string name="purgio_6th">푸르지오6차후문</string>
+    <string name="gangnam_station">강남역</string>
+    <string name="suwon_station">수원역</string>
+    <string name="sangnoksu_station">상록수역</string>
+    <string name="bus_route">%s → %s</string>
+    <string name="bus_route_interval">배차 간격: %d ~ %d분</string>
+    <string name="bus_route_first_last_time">%s: %s:%s(첫차)/%s:%s(막차)</string>
 </resources>
