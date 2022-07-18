@@ -23,7 +23,7 @@ class BusTimetableTab(private val timetable : List<BusQuery.Timetable>): Fragmen
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBusTimetableTabBinding.inflate(inflater, container, false)
-        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         val adapter = BusTimetableAdapter(requireContext(), timetable.map { LocalTime.parse(it.departureTime.toString(), formatter) })
         binding.busTimetableList.adapter = adapter
         binding.busTimetableList.layoutManager = LinearLayoutManager(requireContext())
