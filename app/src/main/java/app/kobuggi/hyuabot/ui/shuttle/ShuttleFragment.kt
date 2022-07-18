@@ -47,7 +47,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             if(!vm.locationChecked.value!!) {
                 fusedLocationClient.lastLocation.addOnSuccessListener {
                     vm.sortedStopList.value = getSortedStopList(it)
-                    Log.d("onCreate", "${vm.sortedStopList.value}")
                     Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
                     vm.locationChecked.value = true
                 }
@@ -83,7 +82,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         }
         vm.sortedStopList.observe(viewLifecycleOwner) {
             shuttleArrivalListAdapter.setShuttleStopList(it)
-            Log.d("onCreateView", "${vm.sortedStopList.value}")
         }
         vm.openShuttleTimetableEvent.observe(viewLifecycleOwner) {
             if(it.peekContent() && requireActivity() is MainActivity) {
