@@ -7,48 +7,64 @@
             name="vm"
             type="app.kobuggi.hyuabot.ui.bus.timetable.BusTimetableViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cardBackground"
         >
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/bus_timetable_toolbar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/white"
-            android:background="@color/hanyang_primary" />
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/bus_timetable_tab"
-            app:layout_constraintTop_toBottomOf="@id/bus_timetable_toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/cardBackground"
+            android:layout_height="100dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@+id/toolbar">
+
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:title="Coordinator" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/bus_timetable_viewpager"
-            android:background="@color/cardBackground"
-            app:layout_constraintTop_toBottomOf="@id/bus_timetable_tab"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/bus_timetable_tab"
+                android:background="@color/cardBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/bus_timetable_viewpager"
+                android:background="@color/cardBackground"
+                app:layout_constraintTop_toBottomOf="@id/bus_timetable_tab"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
         <ProgressBar
             android:id="@+id/bus_timetable_progress"
             android:background="@color/cardBackground"
-            app:layout_constraintTop_toBottomOf="@id/bus_timetable_toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:padding="175dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
