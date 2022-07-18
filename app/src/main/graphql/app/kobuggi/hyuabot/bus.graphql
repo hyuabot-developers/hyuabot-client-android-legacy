@@ -9,6 +9,7 @@ query Bus($stopList : [String!]!, $routes : [String!]!, $weekday : String!) {
         timeFromStartStop,
         timetable(weekday: $weekday) {
             departureTime,
+            weekday,
         }
         realtime {
             lowFloor,

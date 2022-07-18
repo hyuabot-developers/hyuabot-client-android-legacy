@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.BusQuery
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.CardBusArrivalBinding
+import com.google.android.gms.maps.model.LatLng
 import java.time.LocalTime
 
-class BusArrivalListAdapter(private val context: Context, private var busList: List<BusQuery.Bus>) : RecyclerView.Adapter<BusArrivalListAdapter.BusArrivalViewHolder>() {
+class BusArrivalListAdapter(private val context: Context, private var busList: List<BusQuery.Bus>, private val onClickTimetableButton: (routeName: String) -> Unit) : RecyclerView.Adapter<BusArrivalListAdapter.BusArrivalViewHolder>() {
     private val routeColor = hashMapOf(
         "10-1" to "#33cc99",
         "707-1" to "#E60012",
@@ -111,6 +112,9 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
                 4 -> {
                     binding.busArrivalFifth.visibility = View.GONE
                 }
+            }
+            binding.homeBusArrivalCard.setOnClickListener {
+                onClickTimetableButton(busList[position].routeName)
             }
         }
     }

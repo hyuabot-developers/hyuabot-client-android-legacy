@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.databinding.FragmentBusBinding
+import app.kobuggi.hyuabot.ui.MainActivity
+import app.kobuggi.hyuabot.ui.shuttle.ShuttleFragmentDirections
+import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
+import app.kobuggi.hyuabot.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,12 +27,22 @@ class BusFragment : Fragment() {
         binding = FragmentBusBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
-        val busArrivalListAdapter = BusArrivalListAdapter(requireContext(), listOf())
+        val busArrivalListAdapter = BusArrivalListAdapter(requireContext(), listOf()){
+            routeName -> vm.moveToTimetableFragment(routeName)
+        }
         binding.busArrivalList.adapter = busArrivalListAdapter
         binding.busArrivalList.layoutManager = LinearLayoutManager(requireContext())
         vm.busData.observe(viewLifecycleOwner) {
             busArrivalListAdapter.setBusTimetable(it)
             vm.isLoading.value = false
+        }
+        vm.moveToTimetableFragmentEvent.observe(viewLifecycleOwner) {
+            if(it.peekContent() && requireActivity() is MainActivity) {
+                vm.moveToTimetableFragmentEvent.value = Event(false)
+                val busTimetableItem = vm.timetableRouteName.value!!
+                val action = BusFragmentDirections.openBusTimetable(busTimetableItem)
+                (requireActivity() as MainActivity).navController.navigate(action)
+            }
         }
 
         return binding.root

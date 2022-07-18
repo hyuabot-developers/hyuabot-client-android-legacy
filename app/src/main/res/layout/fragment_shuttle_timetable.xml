@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableViewModel" />
+            type="app.kobuggi.hyuabot.ui.bus.timetable.BusTimetableViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
