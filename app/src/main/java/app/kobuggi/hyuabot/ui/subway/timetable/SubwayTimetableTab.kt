@@ -1,6 +1,7 @@
 package app.kobuggi.hyuabot.ui.subway.timetable
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.SubwayQuery
 import app.kobuggi.hyuabot.databinding.FragmentSubwayTimetableTabBinding
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -24,7 +26,18 @@ class SubwayTimetableTab(private val timetable : List<SubwayQuery.Timetable>): F
     ): View {
         binding = FragmentSubwayTimetableTabBinding.inflate(inflater, container, false)
         val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-        val adapter = SubwayTimetableAdapter(requireContext(), timetable)
+        val modifiedTimetable = arrayListOf<SubwayTimetableItem>()
+        timetable.forEach {
+            val departureTimeLocalTime = LocalTime.parse(it.departureTime, formatter)
+            val departureTime = LocalDateTime.of(LocalDateTime.now().toLocalDate(), departureTimeLocalTime)
+            val timetableItem = if (departureTime.hour < 4){
+                SubwayTimetableItem(it.terminalStation, departureTime.plusDays(1))
+            } else {
+                SubwayTimetableItem(it.terminalStation, departureTime)
+            }
+            modifiedTimetable.add(timetableItem)
+        }
+        val adapter = SubwayTimetableAdapter(requireContext(), modifiedTimetable.sortedBy { it.departureTime })
         binding.subwayTimetableList.adapter = adapter
         binding.subwayTimetableList.layoutManager = LinearLayoutManager(requireContext())
         binding.subwayTimetableList.addItemDecoration(

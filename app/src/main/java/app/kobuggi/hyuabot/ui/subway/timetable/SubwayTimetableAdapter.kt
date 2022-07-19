@@ -5,25 +5,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
-import app.kobuggi.hyuabot.SubwayQuery
 import app.kobuggi.hyuabot.databinding.ItemSubwayTimetableBinding
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
 
 
 class SubwayTimetableAdapter(
     private val context: Context,
-    private val timetable: List<SubwayQuery.Timetable>,
+    private val timetable: List<SubwayTimetableItem>,
 ): RecyclerView.Adapter<SubwayTimetableAdapter.SubwayTimetableViewHolder>() {
-    private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
     inner class SubwayTimetableViewHolder(private val binding: ItemSubwayTimetableBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
-            val departureTime = LocalTime.parse(timetable[position].departureTime, formatter)
             binding.subwayTimetableTerminalStation.text = timetable[position].terminalStation
             binding.subwayTimetableDepartureTime.text = context.getString(
-                R.string.shuttle_timetable, departureTime.hour.toString().padStart(2, '0'), departureTime.minute.toString().padStart(2, '0')
+                R.string.shuttle_timetable, timetable[position].departureTime.hour.toString().padStart(2, '0'), timetable[position].departureTime.minute.toString().padStart(2, '0')
             )
-            if(departureTime < LocalTime.now()) {
+            if(timetable[position].departureTime < LocalDateTime.now()) {
                 binding.subwayTimetableTerminalStation.setTextColor(context.getColor(android.R.color.darker_gray))
                 binding.subwayTimetableDepartureTime.setTextColor(context.getColor(android.R.color.darker_gray))
             } else {
