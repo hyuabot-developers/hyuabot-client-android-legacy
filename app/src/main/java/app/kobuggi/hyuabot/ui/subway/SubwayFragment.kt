@@ -9,7 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.databinding.FragmentSubwayBinding
+import app.kobuggi.hyuabot.ui.MainActivity
+import app.kobuggi.hyuabot.ui.bus.BusFragmentDirections
 import app.kobuggi.hyuabot.ui.subway.SubwayArrivalListAdapter
+import app.kobuggi.hyuabot.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +43,16 @@ class SubwayFragment : Fragment() {
             vm.stopFetchData()
             vm.startFetchData()
             binding.refreshLayout.isRefreshing = false
+        }
+        vm.moveToTimetableFragmentEvent.observe(viewLifecycleOwner) {
+            if(it.peekContent() && requireActivity() is MainActivity) {
+                vm.moveToTimetableFragmentEvent.value = Event(false)
+                val subwayRouteName = vm.timetableRouteName
+                val subwayRouteColor = vm.timetableRouteColor
+                val subwayRouteHeading = vm.timetableHeading
+                val action = SubwayFragmentDirections.openSubwayTimetable(subwayRouteName.value!!, subwayRouteHeading.value!!, subwayRouteColor.value!!)
+                (requireActivity() as MainActivity).navController.navigate(action)
+            }
         }
         return binding.root
     }

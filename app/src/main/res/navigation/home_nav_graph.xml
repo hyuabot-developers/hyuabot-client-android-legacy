@@ -23,7 +23,11 @@
     <fragment
         android:id="@+id/fragment_subway"
         android:name="app.kobuggi.hyuabot.ui.subway.SubwayFragment"
-        app:layout="@layout/fragment_subway" />
+        app:layout="@layout/fragment_subway" >
+        <action
+            android:id="@+id/open_subway_timetable"
+            app:destination="@id/fragment_subway_timetable" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_cafeteria"
         android:name="app.kobuggi.hyuabot.ui.cafeteria.CafeteriaFragment"
@@ -48,6 +52,23 @@
         <argument
             android:name="bus_route_color"
             android:id="@+id/bus_route_color"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_subway_timetable"
+        android:name="app.kobuggi.hyuabot.ui.subway.timetable.SubwayTimetableFragment"
+        app:layout="@layout/fragment_bus_timetable">
+        <argument
+            android:name="subway_route_name"
+            android:id="@+id/subway_route_name"
+            app:argType="string" />
+        <argument
+            android:name="subway_route_heading"
+            android:id="@+id/subway_route_heading"
+            app:argType="string" />
+        <argument
+            android:name="subway_route_color"
+            android:id="@+id/subway_route_color"
             app:argType="string" />
     </fragment>
 </navigation>
