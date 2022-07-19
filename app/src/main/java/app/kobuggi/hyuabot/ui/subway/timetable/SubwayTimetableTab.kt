@@ -44,7 +44,7 @@ class SubwayTimetableTab(private val timetable : List<SubwayQuery.Timetable>): F
         )
         if(timetable.isNotEmpty()){
             binding.subwayTimetableList.smoothScrollToPosition((
-                timetable.indexOf(timetable.first { LocalTime.parse(it.departureTime, formatter).isAfter(LocalTime.now()) }) + 5).coerceAtMost(timetable.size - 1)
+                timetable.indexOf(timetable.first { LocalTime.parse(it.departureTime, formatter).isAfter(LocalTime.now()) }) + 10).coerceAtMost(timetable.size - 1)
             )
         }
         return binding.root
