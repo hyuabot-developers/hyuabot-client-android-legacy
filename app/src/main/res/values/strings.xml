@@ -50,4 +50,16 @@
     <string name="bus_route_interval">배차 간격: %d ~ %d분</string>
     <string name="bus_route_first_last_time">%s: %s:%s(첫차)/%s:%s(막차)</string>
     <string name="click_card_to_show_timetable">전체 시간표를 보기 위해서는 도착 정보를 클릭하세요.</string>
+    <string name="more_function">추가 기능</string>
+    <string name="button_image">Button Image</string>
+    <string name="language">언어 설정</string>
+    <string name="app_theme">앱 테마</string>
+    <string name="app_theme_light">밝은 테마</string>
+    <string name="app_theme_dark">어두운 테마</string>
+    <string name="app_theme_system">시스템 테마(자동)</string>
+    <string name="donation">기부하기</string>
+    <string name="scoring">평점 주기</string>
+    <string name="developer_email">문의하기(이메일)</string>
+    <string name="developer_chat">문의하기(카카오톡)</string>
+    <string name="about">앱 정보</string>
 </resources>

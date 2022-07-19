@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuAdapter
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentMenuBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +27,40 @@ class MenuFragment : Fragment(){
         binding = FragmentMenuBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.vm = vm
+
+        val menuList = listOf(
+            MenuButton(R.string.reading_room, R.drawable.ic_reading_room),
+            MenuButton(R.string.map, R.drawable.ic_map),
+            MenuButton(R.string.contact, R.drawable.ic_phone),
+            MenuButton(R.string.calendar, R.drawable.ic_calendar)
+        )
+        val menuListAdapter = MenuListAdapter(requireContext(), menuList)
+        binding.menuList.adapter = menuListAdapter
+        binding.menuList.layoutManager = object : LinearLayoutManager(requireContext()){
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        val divider = MenuListDivider(requireContext(), R.drawable.recyclerview_divider, 20)
+        binding.menuList.addItemDecoration(divider)
+
+        val settingList = listOf(
+            MenuButton(R.string.language, R.drawable.ic_language),
+            MenuButton(R.string.app_theme, R.drawable.ic_dark_mode),
+            MenuButton(R.string.donation, R.drawable.ic_donation),
+            MenuButton(R.string.scoring, R.drawable.ic_scoring),
+            MenuButton(R.string.developer_email, R.drawable.ic_email),
+            MenuButton(R.string.developer_chat, R.drawable.ic_chat),
+            MenuButton(R.string.about, R.drawable.ic_info),
+        )
+        val settingListAdapter = MenuListAdapter(requireContext(), settingList)
+        binding.settingList.adapter = settingListAdapter
+        binding.settingList.layoutManager = object : LinearLayoutManager(requireContext()){
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        binding.settingList.addItemDecoration(divider)
         return binding.root
     }
 }

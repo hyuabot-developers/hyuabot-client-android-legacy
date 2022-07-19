@@ -33,6 +33,10 @@
         android:name="app.kobuggi.hyuabot.ui.cafeteria.CafeteriaFragment"
         app:layout="@layout/fragment_cafeteria" />
     <fragment
+        android:id="@+id/fragment_menu"
+        android:name="app.kobuggi.hyuabot.ui.menu.MenuFragment"
+        app:layout="@layout/fragment_menu" />
+    <fragment
         android:id="@+id/fragment_shuttle_timetable"
         android:name="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableFragment"
         app:layout="@layout/fragment_shuttle_timetable">
