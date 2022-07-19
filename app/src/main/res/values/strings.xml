@@ -49,4 +49,5 @@
     <string name="bus_route">%s → %s</string>
     <string name="bus_route_interval">배차 간격: %d ~ %d분</string>
     <string name="bus_route_first_last_time">%s: %s:%s(첫차)/%s:%s(막차)</string>
+    <string name="click_card_to_show_timetable">전체 시간표를 보기 위해서는 도착 정보를 클릭하세요.</string>
 </resources>

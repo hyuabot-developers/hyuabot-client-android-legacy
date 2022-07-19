@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentSubwayBinding
+import app.kobuggi.hyuabot.ui.MainActivity
+import app.kobuggi.hyuabot.ui.bus.BusFragmentDirections
 import app.kobuggi.hyuabot.ui.subway.SubwayArrivalListAdapter
+import app.kobuggi.hyuabot.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,7 +31,9 @@ class SubwayFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.vm = vm
 
-        val subwayArrivalListAdapter = SubwayArrivalListAdapter(requireContext(), listOf())
+        val subwayArrivalListAdapter = SubwayArrivalListAdapter(requireContext(), listOf()){
+            subwayRouteName, subwayRouteColor, subwayHeading -> vm.moveToTimetableFragment(subwayRouteName, subwayHeading, subwayRouteColor)
+        }
         binding.subwayArrivalList.adapter = subwayArrivalListAdapter
         binding.subwayArrivalList.layoutManager = LinearLayoutManager(requireContext())
         if(binding.subwayArrivalList.itemAnimator is SimpleItemAnimator){
@@ -41,6 +48,17 @@ class SubwayFragment : Fragment() {
             vm.startFetchData()
             binding.refreshLayout.isRefreshing = false
         }
+        vm.moveToTimetableFragmentEvent.observe(viewLifecycleOwner) {
+            if(it.peekContent() && requireActivity() is MainActivity) {
+                vm.moveToTimetableFragmentEvent.value = Event(false)
+                val subwayRouteName = vm.timetableRouteName
+                val subwayRouteColor = vm.timetableRouteColor
+                val subwayRouteHeading = vm.timetableHeading
+                val action = SubwayFragmentDirections.openSubwayTimetable(subwayRouteName.value!!, subwayRouteHeading.value!!, subwayRouteColor.value!!)
+                (requireActivity() as MainActivity).navController.navigate(action)
+            }
+        }
+        Toast.makeText(requireContext(), R.string.click_card_to_show_timetable, Toast.LENGTH_SHORT).show()
         return binding.root
     }
 

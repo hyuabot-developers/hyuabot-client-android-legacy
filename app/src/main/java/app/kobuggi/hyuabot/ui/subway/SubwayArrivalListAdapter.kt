@@ -2,6 +2,7 @@ package app.kobuggi.hyuabot.ui.subway
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.absoluteValue
 
-class SubwayArrivalListAdapter(private val context: Context, private var subwayList: List<SubwayQuery.Subway>) : RecyclerView.Adapter<SubwayArrivalListAdapter.SubwayArrivalViewHolder>() {
+class SubwayArrivalListAdapter(private val context: Context, private var subwayList: List<SubwayQuery.Subway>, private val onClickArrivalItem: (String, String, String) -> Unit) : RecyclerView.Adapter<SubwayArrivalListAdapter.SubwayArrivalViewHolder>() {
     private val routeColor = hashMapOf(
         "4호선" to "#00A5DE",
         "수인분당선" to "#F5A200",
@@ -52,8 +53,12 @@ class SubwayArrivalListAdapter(private val context: Context, private var subwayL
                 arrivalListDown.add(SubwayArrivalItem(remainedTime, timetable.terminalStation, null))
             }
 
-            binding.subwayUpArrivalList.adapter = SubwayArrivalItemAdapter(context, arrivalListUp.subList(0, arrivalListUp.size.coerceAtMost(5)))
-            binding.subwayDownArrivalList.adapter = SubwayArrivalItemAdapter(context, arrivalListDown.subList(0, arrivalListDown.size.coerceAtMost(5)))
+            binding.subwayUpArrivalList.adapter = SubwayArrivalItemAdapter(context, arrivalListUp.subList(0, arrivalListUp.size.coerceAtMost(5))){
+                onClickArrivalItem(subwayList[position].routeName, routeColor[subwayList[position].routeName]!!, "up")
+            }
+            binding.subwayDownArrivalList.adapter = SubwayArrivalItemAdapter(context, arrivalListDown.subList(0, arrivalListDown.size.coerceAtMost(5))){
+                onClickArrivalItem(subwayList[position].routeName, routeColor[subwayList[position].routeName]!!, "down")
+            }
             binding.subwayUpArrivalList.layoutManager = LinearLayoutManager(context)
             binding.subwayDownArrivalList.layoutManager = LinearLayoutManager(context)
         }

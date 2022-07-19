@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.SubwayQuery
+import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -20,6 +21,11 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
     private val disposable = CompositeDisposable()
     val subwayData = MutableLiveData<List<SubwayQuery.Subway>>()
     val isLoading = MutableLiveData(false)
+    val moveToTimetableFragmentEvent = MutableLiveData<Event<Boolean>>()
+    val timetableRouteName = MutableLiveData<String>()
+    val timetableRouteColor = MutableLiveData<String>()
+    val timetableHeading = MutableLiveData<String>()
+
     private fun fetchData() {
         isLoading.value = true
         val now = LocalTime.now()
@@ -54,6 +60,13 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
 
     fun stopFetchData() {
         disposable.clear()
+    }
+
+    fun moveToTimetableFragment(routeName: String, heading: String, routeColor: String) {
+        timetableRouteColor.value = routeColor
+        timetableRouteName.value = routeName
+        timetableHeading.value = heading
+        moveToTimetableFragmentEvent.value = Event(true)
     }
 
     override fun onCleared() {
