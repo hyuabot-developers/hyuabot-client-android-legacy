@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentSubwayBinding
 import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.ui.bus.BusFragmentDirections
@@ -56,6 +58,7 @@ class SubwayFragment : Fragment() {
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }
+        Toast.makeText(requireContext(), R.string.click_card_to_show_timetable, Toast.LENGTH_SHORT).show()
         return binding.root
     }
 
