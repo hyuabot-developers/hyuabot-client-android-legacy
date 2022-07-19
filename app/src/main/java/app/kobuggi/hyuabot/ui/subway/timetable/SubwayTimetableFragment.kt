@@ -93,6 +93,9 @@ class SubwayTimetableFragment: Fragment() {
 
     override fun onDetach() {
         super.onDetach()
+        val window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ResourcesCompat.getColor(resources, R.color.hanyang_primary, null)
         callback.remove()
     }
 }
