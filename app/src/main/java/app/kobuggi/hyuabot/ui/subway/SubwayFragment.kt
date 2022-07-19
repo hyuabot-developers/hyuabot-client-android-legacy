@@ -29,7 +29,9 @@ class SubwayFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.vm = vm
 
-        val subwayArrivalListAdapter = SubwayArrivalListAdapter(requireContext(), listOf())
+        val subwayArrivalListAdapter = SubwayArrivalListAdapter(requireContext(), listOf()){
+            subwayRouteName, subwayRouteColor, subwayHeading -> vm.moveToTimetableFragment(subwayRouteName, subwayHeading, subwayRouteColor)
+        }
         binding.subwayArrivalList.adapter = subwayArrivalListAdapter
         binding.subwayArrivalList.layoutManager = LinearLayoutManager(requireContext())
         if(binding.subwayArrivalList.itemAnimator is SimpleItemAnimator){

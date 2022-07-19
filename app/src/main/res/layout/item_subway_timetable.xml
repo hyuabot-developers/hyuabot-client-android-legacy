@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/subway_arrival_time"
+    android:id="@+id/subway_timetable_item"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:textAlignment="center"
-    android:textColor="@color/primaryTextColor"
     android:background="@color/cardBackground"
     android:layout_gravity="center"
-    android:gravity="center" />
+    android:gravity="center" >
+    <TextView
+        android:id="@+id/subway_timetable_terminal_station"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/primaryTextColor" />
+    <TextView
+        android:id="@+id/subway_timetable_departure_time"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/primaryTextColor" />
+</LinearLayout>

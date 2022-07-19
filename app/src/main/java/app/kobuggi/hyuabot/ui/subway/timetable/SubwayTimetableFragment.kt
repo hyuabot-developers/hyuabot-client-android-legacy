@@ -66,16 +66,12 @@ class SubwayTimetableFragment: Fragment() {
             if (it.isNotEmpty()){
                 val weekdayFirst = LocalTime.parse(it.first { item -> item.weekday == "weekdays" }.departureTime, formatter)
                 val weekdayLast = LocalTime.parse(it.last { item -> item.weekday == "weekdays" }.departureTime, formatter)
-                val saturdayFirst = LocalTime.parse(it.first { item -> item.weekday == "saturday" }.departureTime, formatter)
-                val saturdayLast = LocalTime.parse(it.last { item -> item.weekday == "saturday" }.departureTime, formatter)
-                val sundayFirst = LocalTime.parse(it.first { item -> item.weekday == "sunday" }.departureTime, formatter)
-                val sundayLast = LocalTime.parse(it.last { item -> item.weekday == "sunday" }.departureTime, formatter)
+                val weekendsFirst = LocalTime.parse(it.first { item -> item.weekday == "weekends" }.departureTime, formatter)
+                val weekendsLast = LocalTime.parse(it.last { item -> item.weekday == "weekends" }.departureTime, formatter)
 
                 var firstLastsubwayString = context.getString(R.string.bus_route_first_last_time, context.getString(R.string.weekdays), weekdayFirst.hour.toString().padStart(2, '0'), weekdayFirst.minute.toString().padStart(2, '0'), weekdayLast.hour.toString().padStart(2, '0'), weekdayLast.minute.toString().padStart(2, '0'))
                 firstLastsubwayString += "\n"
-                firstLastsubwayString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.saturday), saturdayFirst.hour.toString().padStart(2, '0'), saturdayFirst.minute.toString().padStart(2, '0'), saturdayLast.hour.toString().padStart(2, '0'), saturdayLast.minute.toString().padStart(2, '0'))
-                firstLastsubwayString += "\n"
-                firstLastsubwayString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.sunday), sundayFirst.hour.toString().padStart(2, '0'), sundayFirst.minute.toString().padStart(2, '0'), sundayLast.hour.toString().padStart(2, '0'), sundayLast.minute.toString().padStart(2, '0'))
+                firstLastsubwayString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.weekdays), weekendsFirst.hour.toString().padStart(2, '0'), weekendsFirst.minute.toString().padStart(2, '0'), weekendsLast.hour.toString().padStart(2, '0'), weekendsLast.minute.toString().padStart(2, '0'))
                 binding.subwayRouteFirstLastTime.text = firstLastsubwayString
             }
             binding.subwayTimetableViewpager.adapter = SubwayTimetableTabAdapter( this, it)
@@ -83,8 +79,7 @@ class SubwayTimetableFragment: Fragment() {
                 tab.text = context.getString(
                     when(position){
                         0 -> R.string.weekdays
-                        1 -> R.string.saturday
-                        2 -> R.string.sunday
+                        1 -> R.string.weekends
                         else -> R.string.weekdays
                     }
                 )

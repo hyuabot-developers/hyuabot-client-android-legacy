@@ -19,19 +19,22 @@ class SubwayTimetableAdapter(
     inner class SubwayTimetableViewHolder(private val binding: ItemSubwayTimetableBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val departureTime = LocalTime.parse(timetable[position].departureTime, formatter)
-            binding.subwayArrivalTime.text = context.getString(
-                R.string.shuttle_timetable, departureTime.hour.toString().padStart(2, '0'), departureTime.toString().padStart(2, '0')
+            binding.subwayTimetableTerminalStation.text = timetable[position].terminalStation
+            binding.subwayTimetableDepartureTime.text = context.getString(
+                R.string.shuttle_timetable, departureTime.hour.toString().padStart(2, '0'), departureTime.minute.toString().padStart(2, '0')
             )
             if(departureTime < LocalTime.now()) {
-                binding.subwayArrivalTime.setTextColor(context.getColor(android.R.color.darker_gray))
+                binding.subwayTimetableTerminalStation.setTextColor(context.getColor(android.R.color.darker_gray))
+                binding.subwayTimetableDepartureTime.setTextColor(context.getColor(android.R.color.darker_gray))
             } else {
-                binding.subwayArrivalTime.setTextColor(context.getColor(R.color.primaryTextColor))
+                binding.subwayTimetableTerminalStation.setTextColor(context.getColor(R.color.primaryTextColor))
+                binding.subwayTimetableDepartureTime.setTextColor(context.getColor(R.color.primaryTextColor))
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubwayTimetableViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shuttle_timetable, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_subway_timetable, parent, false)
         return SubwayTimetableViewHolder(ItemSubwayTimetableBinding.bind(view))
     }
 
