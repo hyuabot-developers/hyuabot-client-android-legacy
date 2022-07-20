@@ -69,6 +69,10 @@ class MenuFragment : Fragment(){
         binding.settingList.addItemDecoration(divider)
         vm.moveEvent.observe(viewLifecycleOwner){
             when(it.peekContent()){
+                R.string.developer_email -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:jil8885@hanyang.ac.kr"))
+                    startActivity(intent)
+                }
                 R.string.developer_chat -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
                     startActivity(intent)
