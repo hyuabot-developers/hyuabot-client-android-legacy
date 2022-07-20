@@ -1,6 +1,7 @@
 package app.kobuggi.hyuabot.ui.menu
 
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +18,7 @@ import app.kobuggi.hyuabot.ui.menu.theme.AppThemeDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MenuFragment : Fragment(){
+class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
     private val vm by viewModels<MenuViewModel>()
     private lateinit var binding: FragmentMenuBinding
 
@@ -106,6 +107,10 @@ class MenuFragment : Fragment(){
 
     override fun onDetach() {
         super.onDetach()
+        vm.moveToSomewhere(0)
+    }
+
+    override fun onDismiss(dialogInterface: DialogInterface?) {
         vm.moveToSomewhere(0)
     }
 }

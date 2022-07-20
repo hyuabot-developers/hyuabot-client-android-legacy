@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.menu.theme
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import app.kobuggi.hyuabot.databinding.DialogAppThemeBinding
+import app.kobuggi.hyuabot.ui.menu.MenuFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,5 +44,12 @@ class AppThemeDialog : DialogFragment(){
             dismiss()
         }
         return binding.root
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (parentFragment is MenuFragment){
+            (parentFragment as MenuFragment).onDismiss(dialog)
+        }
     }
 }
