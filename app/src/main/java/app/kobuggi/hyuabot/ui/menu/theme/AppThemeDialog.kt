@@ -39,6 +39,7 @@ class AppThemeDialog : DialogFragment(){
                     preferences -> preferences[themePrefKey] = it
                 }
             }
+            dismiss()
         }
         return binding.root
     }
