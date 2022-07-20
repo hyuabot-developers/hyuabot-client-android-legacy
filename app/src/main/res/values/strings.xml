@@ -61,5 +61,7 @@
     <string name="scoring">평점 주기</string>
     <string name="developer_email">문의하기(이메일)</string>
     <string name="developer_chat">문의하기(카카오톡)</string>
-    <string name="about">앱 정보</string>
+    <string name="about">개발자 정보</string>
+    <string name="developer_name">이름 - 이정인</string>
+    <string name="developer_belong">학과/학번 - 소프트웨어/17</string>
 </resources>

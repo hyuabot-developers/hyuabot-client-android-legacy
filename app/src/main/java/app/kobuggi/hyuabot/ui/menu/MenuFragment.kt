@@ -1,23 +1,19 @@
 package app.kobuggi.hyuabot.ui.menu
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuAdapter
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentMenuBinding
+import app.kobuggi.hyuabot.ui.menu.info.AppInfoDialog
 import app.kobuggi.hyuabot.ui.menu.theme.AppThemeDialog
-import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -98,6 +94,10 @@ class MenuFragment : Fragment(){
                 R.string.developer_chat -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
                     startActivity(intent)
+                }
+                R.string.about -> {
+                    val dialog = AppInfoDialog()
+                    dialog.show(requireActivity().supportFragmentManager, "AppInfoDialog")
                 }
             }
         }
