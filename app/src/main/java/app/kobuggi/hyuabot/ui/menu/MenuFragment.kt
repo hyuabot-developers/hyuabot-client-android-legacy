@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentMenuBinding
+import app.kobuggi.hyuabot.ui.menu.theme.AppThemeDialog
+import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -71,6 +73,10 @@ class MenuFragment : Fragment(){
         binding.settingList.addItemDecoration(divider)
         vm.moveEvent.observe(viewLifecycleOwner){
             when(it.peekContent()){
+                R.string.app_theme -> {
+                    val dialog = AppThemeDialog()
+                    dialog.show(requireActivity().supportFragmentManager, "AppThemeDialog")
+                }
                 R.string.donation -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qr.kakaopay.com/FWxVPo8iO"))
                     startActivity(intent)
