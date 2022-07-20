@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.menu
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -69,6 +70,16 @@ class MenuFragment : Fragment(){
         binding.settingList.addItemDecoration(divider)
         vm.moveEvent.observe(viewLifecycleOwner){
             when(it.peekContent()){
+                R.string.scoring -> {
+                    val uri = Uri.parse("market://details?id=app.kobuggi.hyuabot")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+                    try {
+                        startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=app.kobuggi.hyuabot")))
+                    }
+                }
                 R.string.developer_email -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:jil8885@hanyang.ac.kr"))
                     startActivity(intent)
