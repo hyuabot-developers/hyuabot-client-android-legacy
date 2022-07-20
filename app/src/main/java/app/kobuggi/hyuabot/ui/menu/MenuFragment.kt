@@ -70,6 +70,10 @@ class MenuFragment : Fragment(){
         binding.settingList.addItemDecoration(divider)
         vm.moveEvent.observe(viewLifecycleOwner){
             when(it.peekContent()){
+                R.string.donation -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qr.kakaopay.com/FWxVPo8iO"))
+                    startActivity(intent)
+                }
                 R.string.scoring -> {
                     val uri = Uri.parse("market://details?id=app.kobuggi.hyuabot")
                     val intent = Intent(Intent.ACTION_VIEW, uri)
