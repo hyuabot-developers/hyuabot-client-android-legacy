@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ButtonMenuBinding
 
-class MenuListAdapter(private val context: Context, private val menuList: List<MenuButton>) : RecyclerView.Adapter<MenuListAdapter.ViewHolder>() {
+class MenuListAdapter(private val context: Context, private val menuList: List<MenuButton>, private val onClickButton: (Int) -> Unit) : RecyclerView.Adapter<MenuListAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: ButtonMenuBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             binding.menuButtonText.text = context.getString(menuList[position].stringResourceID)
             binding.menuButtonImage.setImageResource(menuList[position].imageResourceID)
+            binding.menuButton.setOnClickListener {
+                onClickButton(menuList[position].stringResourceID)
+            }
         }
     }
 

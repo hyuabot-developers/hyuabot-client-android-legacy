@@ -1,5 +1,7 @@
 package app.kobuggi.hyuabot.ui.menu
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +36,9 @@ class MenuFragment : Fragment(){
             MenuButton(R.string.contact, R.drawable.ic_phone),
             MenuButton(R.string.calendar, R.drawable.ic_calendar)
         )
-        val menuListAdapter = MenuListAdapter(requireContext(), menuList)
+        val menuListAdapter = MenuListAdapter(requireContext(), menuList){
+            stringID -> vm.moveToSomewhere(stringID)
+        }
         binding.menuList.adapter = menuListAdapter
         binding.menuList.layoutManager = object : LinearLayoutManager(requireContext()){
             override fun canScrollVertically(): Boolean {
@@ -53,7 +57,9 @@ class MenuFragment : Fragment(){
             MenuButton(R.string.developer_chat, R.drawable.ic_chat),
             MenuButton(R.string.about, R.drawable.ic_info),
         )
-        val settingListAdapter = MenuListAdapter(requireContext(), settingList)
+        val settingListAdapter = MenuListAdapter(requireContext(), settingList){
+            stringID -> vm.moveToSomewhere(stringID)
+        }
         binding.settingList.adapter = settingListAdapter
         binding.settingList.layoutManager = object : LinearLayoutManager(requireContext()){
             override fun canScrollVertically(): Boolean {
@@ -61,6 +67,14 @@ class MenuFragment : Fragment(){
             }
         }
         binding.settingList.addItemDecoration(divider)
+        vm.moveEvent.observe(viewLifecycleOwner){
+            when(it.peekContent()){
+                R.string.developer_chat -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
+                    startActivity(intent)
+                }
+            }
+        }
         return binding.root
     }
 }
