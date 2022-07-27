@@ -24,6 +24,7 @@
         <TextView
             android:text="@string/app_theme_system"
             android:textSize="20sp"
+            android:textColor="@color/primaryTextColor"
             android:textAlignment="center"
             android:onClick="@{() -> vm.setDarkModeSystem()}"
             android:gravity="center"
@@ -36,6 +37,7 @@
         <TextView
             android:text="@string/app_theme_light"
             android:textSize="20sp"
+            android:textColor="@color/primaryTextColor"
             android:textAlignment="center"
             android:onClick="@{() -> vm.setDarkMode(false)}"
             android:gravity="center"
@@ -48,6 +50,7 @@
         <TextView
             android:text="@string/app_theme_dark"
             android:textSize="20sp"
+            android:textColor="@color/primaryTextColor"
             android:textAlignment="center"
             android:onClick="@{() -> vm.setDarkMode(true)}"
             android:gravity="center"
