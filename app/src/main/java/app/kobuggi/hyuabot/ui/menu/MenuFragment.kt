@@ -104,7 +104,7 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                 }
                 R.string.about -> {
                     val dialog = AppInfoDialog()
-                    dialog.show(requireActivity().supportFragmentManager, "AppInfoDialog")
+                    dialog.show(childFragmentManager, "AppInfoDialog")
                 }
             }
         }

@@ -106,7 +106,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent()) {
                 val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
-                dialog.show(requireActivity().supportFragmentManager, "ShuttleStopLocationDialog")
+                dialog.show(childFragmentManager, "ShuttleStopLocationDialog")
             }
         }
         return binding.root
