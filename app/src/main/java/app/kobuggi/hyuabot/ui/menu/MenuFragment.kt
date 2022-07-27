@@ -13,7 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentMenuBinding
+import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.ui.menu.info.AppInfoDialog
+import app.kobuggi.hyuabot.ui.menu.language.AppLanguageDialog
 import app.kobuggi.hyuabot.ui.menu.theme.AppThemeDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -70,9 +72,13 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
         binding.settingList.addItemDecoration(divider)
         vm.moveEvent.observe(viewLifecycleOwner){
             when(it.peekContent()){
+                R.string.language -> {
+                    val dialog = AppLanguageDialog()
+                    dialog.show(childFragmentManager, "AppLanguageDialog")
+                }
                 R.string.app_theme -> {
                     val dialog = AppThemeDialog()
-                    dialog.show(requireActivity().supportFragmentManager, "AppThemeDialog")
+                    dialog.show(childFragmentManager, "AppThemeDialog")
                 }
                 R.string.donation -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qr.kakaopay.com/FWxVPo8iO"))
@@ -112,5 +118,8 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
 
     override fun onDismiss(dialogInterface: DialogInterface?) {
         vm.moveToSomewhere(0)
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).onDismiss(dialogInterface)
+        }
     }
 }

@@ -53,6 +53,9 @@
     <string name="more_function">추가 기능</string>
     <string name="button_image">Button Image</string>
     <string name="language">언어 설정</string>
+    <string name="language_korean">한국어</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">汉语</string>
     <string name="app_theme">앱 테마</string>
     <string name="app_theme_light">밝은 테마</string>
     <string name="app_theme_dark">어두운 테마</string>
