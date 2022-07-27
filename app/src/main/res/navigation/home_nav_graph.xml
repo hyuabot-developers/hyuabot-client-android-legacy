@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph.xml"
-    app:startDestination="@id/fragment_shuttle" >
+    app:startDestination="@id/fragment_shuttle">
     <fragment
         android:id="@+id/fragment_shuttle"
         android:name="app.kobuggi.hyuabot.ui.shuttle.ShuttleFragment"
@@ -32,6 +32,39 @@
         android:id="@+id/fragment_cafeteria"
         android:name="app.kobuggi.hyuabot.ui.cafeteria.CafeteriaFragment"
         app:layout="@layout/fragment_cafeteria" />
+    <fragment
+        android:id="@+id/fragment_menu"
+        android:name="app.kobuggi.hyuabot.ui.menu.MenuFragment"
+        app:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/open_reading_room"
+            app:destination="@id/fragment_reading_room" />
+        <action
+            android:id="@+id/open_calendar"
+            app:destination="@id/fragment_calendar" />
+        <action
+            android:id="@+id/open_map"
+            app:destination="@id/fragment_map" />
+        <action
+            android:id="@+id/open_contact"
+            app:destination="@id/fragment_contact" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_reading_room"
+        android:name="app.kobuggi.hyuabot.ui.reading_room.ReadingRoomFragment"
+        app:layout="@layout/fragment_reading_room" />
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="app.kobuggi.hyuabot.ui.map.MapFragment"
+        app:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/fragment_contact"
+        android:name="app.kobuggi.hyuabot.ui.contact.ContactFragment"
+        app:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/fragment_calendar"
+        android:name="app.kobuggi.hyuabot.ui.calendar.CalendarFragment"
+        app:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/fragment_shuttle_timetable"
         android:name="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableFragment"

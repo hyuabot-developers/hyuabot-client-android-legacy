@@ -28,7 +28,7 @@ class SubwayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSubwayBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
         val subwayArrivalListAdapter = SubwayArrivalListAdapter(requireContext(), listOf()){

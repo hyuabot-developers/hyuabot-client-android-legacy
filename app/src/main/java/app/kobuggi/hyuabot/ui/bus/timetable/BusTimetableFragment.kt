@@ -35,7 +35,7 @@ class BusTimetableFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBusTimetableBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
         return binding.root

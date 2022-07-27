@@ -24,7 +24,7 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCafeteriaBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
         val cafeteriaListAdapter = CafeteriaListAdapter(requireContext(), arrayListOf()){
@@ -44,7 +44,7 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showCafeteriaLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent() && vm.cafeteriaLocation.value != null && vm.cafeteriaName.value != null) {
                 val dialog = CafeteriaLocationDialog(vm.cafeteriaLocation.value!!, vm.cafeteriaName.value!!)
-                dialog.show(requireActivity().supportFragmentManager, "cafeteria_location_dialog")
+                dialog.show(childFragmentManager, "cafeteria_location_dialog")
             }
         }
         return binding.root

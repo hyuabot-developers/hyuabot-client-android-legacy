@@ -26,7 +26,7 @@ class BusFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentBusBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
         val busArrivalListAdapter = BusArrivalListAdapter(requireContext(), listOf()){
             routeName, routeColor -> vm.moveToTimetableFragment(routeName, routeColor)

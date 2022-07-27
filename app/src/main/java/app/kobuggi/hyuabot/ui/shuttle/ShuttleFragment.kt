@@ -63,7 +63,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
         checkLocationPermission()
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
@@ -106,7 +106,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent()) {
                 val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
-                dialog.show(requireActivity().supportFragmentManager, "ShuttleStopLocationDialog")
+                dialog.show(childFragmentManager, "ShuttleStopLocationDialog")
             }
         }
         return binding.root
