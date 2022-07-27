@@ -25,7 +25,7 @@ class AppLanguageDialog : DialogFragment(){
     ): View {
         binding = DialogLanguageBinding.inflate(inflater, container, false)
         binding.vm = vm
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val sharedPreferences = requireActivity().getSharedPreferences("hyuabot", 0)
         vm.localeCode.observe(viewLifecycleOwner) {

@@ -19,7 +19,7 @@ class AppInfoDialog : DialogFragment(){
         savedInstanceState: Bundle?
     ): View {
         binding = DialogAppInfoBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

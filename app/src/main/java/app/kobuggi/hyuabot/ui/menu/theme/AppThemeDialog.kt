@@ -32,7 +32,7 @@ class AppThemeDialog : DialogFragment(){
     ): View {
         binding = DialogAppThemeBinding.inflate(inflater, container, false)
         binding.vm = vm
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val scope = CoroutineScope(Dispatchers.IO)
         vm.darkmode.observe(viewLifecycleOwner){

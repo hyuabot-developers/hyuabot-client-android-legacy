@@ -63,7 +63,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
         checkLocationPermission()
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {

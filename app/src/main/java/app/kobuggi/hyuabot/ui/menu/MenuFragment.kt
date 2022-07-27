@@ -30,7 +30,7 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMenuBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
         val menuList = listOf(

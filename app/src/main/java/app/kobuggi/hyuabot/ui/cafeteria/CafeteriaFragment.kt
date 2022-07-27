@@ -24,7 +24,7 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCafeteriaBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
         val cafeteriaListAdapter = CafeteriaListAdapter(requireContext(), arrayListOf()){

@@ -19,7 +19,7 @@ class ReadingRoomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentReadingRoomBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
         return binding.root
