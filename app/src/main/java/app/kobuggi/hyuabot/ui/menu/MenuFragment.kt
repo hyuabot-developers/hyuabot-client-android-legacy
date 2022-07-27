@@ -72,6 +72,22 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
         binding.settingList.addItemDecoration(divider)
         vm.moveEvent.observe(viewLifecycleOwner){
             when(it.peekContent()){
+                R.string.reading_room -> {
+                    val action = MenuFragmentDirections.openReadingRoom()
+                    (requireActivity() as MainActivity).navController.navigate(action)
+                }
+                R.string.map -> {
+                    val action = MenuFragmentDirections.openMap()
+                    (requireActivity() as MainActivity).navController.navigate(action)
+                }
+                R.string.contact -> {
+                    val action = MenuFragmentDirections.openContact()
+                    (requireActivity() as MainActivity).navController.navigate(action)
+                }
+                R.string.calendar -> {
+                    val action = MenuFragmentDirections.openCalendar()
+                    (requireActivity() as MainActivity).navController.navigate(action)
+                }
                 R.string.language -> {
                     val dialog = AppLanguageDialog()
                     dialog.show(childFragmentManager, "AppLanguageDialog")
@@ -109,6 +125,11 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
             }
         }
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        vm.moveToSomewhere(0)
     }
 
     override fun onDetach() {
