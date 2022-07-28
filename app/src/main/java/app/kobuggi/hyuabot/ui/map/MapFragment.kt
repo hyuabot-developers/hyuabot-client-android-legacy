@@ -1,6 +1,8 @@
 package app.kobuggi.hyuabot.ui.map
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +38,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(map: GoogleMap) {
+        try {
+            val isSuccessful = map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(),
+                    R.raw.map_option
+                )
+            )
+            if (!isSuccessful) {
+                Log.e("MapFragment", "Style parsing failed.")
+            }
+        } catch (e: Resources.NotFoundException) {
+            Log.e("MapFragment", "Can't find style. Error: ", e)
+        }
         map.moveCamera(CameraUpdateFactory.zoomTo(16f))
         map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(37.2972, 126.8372)))
     }
