@@ -12,6 +12,8 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 
 
 android {
+    assetPacks = [":fastFollowPack"]
+
     compileSdk 32
 
     signingConfigs {
@@ -133,4 +135,8 @@ dependencies {
     // Datastore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
+
+    // Play Asset Delivery
+    implementation 'com.google.android.play:asset-delivery:2.0.0'
+    implementation 'com.google.android.play:asset-delivery-ktx:2.0.0'
 }
