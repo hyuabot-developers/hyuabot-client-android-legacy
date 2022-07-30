@@ -67,4 +67,5 @@
     <string name="about">개발자 정보</string>
     <string name="developer_name">이름 - 이정인</string>
     <string name="developer_belong">학과/학번 - 소프트웨어/17</string>
+    <string name="no_search_result">검색 결과가 없습니다.</string>
 </resources>

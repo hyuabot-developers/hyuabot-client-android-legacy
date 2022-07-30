@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
     private val vm by viewModels<MapViewModel>()
     private lateinit var binding: FragmentMapBinding
+    private lateinit var map: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +35,23 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val supportMapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
+        binding.searchInput.setOnQueryTextFocusChangeListener { _, focus ->
+            vm.setSearchInputFocus(focus)
+        }
+        val searchResultAdapter = MapSearchResultAdapter(requireContext(), arrayListOf(
+            requireContext().getString(R.string.no_search_result)
+        )){
+            location: LatLng, title: String -> {}
+        }
+        binding.searchResult.adapter = searchResultAdapter
+        binding.searchResult.layoutManager = LinearLayoutManager(requireContext())
 
         return binding.root
     }
 
     override fun onMapReady(map: GoogleMap) {
         try {
+            this.map = map
             val isSuccessful = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                     requireContext(),
@@ -53,5 +66,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         map.moveCamera(CameraUpdateFactory.zoomTo(16f))
         map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(37.2972, 126.8372)))
+        map.setOnMapClickListener {
+            if(vm.searchInputFocus.value == true) {
+                binding.searchInput.clearFocus()
+                binding.searchInput.onActionViewCollapsed()
+                vm.setSearchInputFocus(false)
+            }
+        }
     }
 }
