@@ -12,7 +12,7 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 
 
 android {
-    assetPacks = [":fastFollowPack"]
+    assetPacks = [":fast_follow_pack"]
 
     compileSdk 32
 
