@@ -19,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,7 +62,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val searchResultAdapter = MapSearchResultAdapter(requireContext(), arrayListOf(AppDatabaseItem(
             requireContext().getString(R.string.no_search_result), "", null, null, null, null
         ))){
-            location: LatLng, title: String -> {}
+            item: AppDatabaseItem -> run {
+                if (vm.searchInputFocus.value == true) {
+                    binding.searchInput.clearFocus()
+                    binding.searchInput.onActionViewCollapsed()
+                    vm.setSearchInputFocus(false)
+                }
+                val marker = MarkerOptions().position(LatLng(item.latitude!!, item.longitude!!)).title(item.name)
+                vm.setMarkerOptions(listOf(marker))
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
+            }
         }
         binding.searchResult.adapter = searchResultAdapter
         binding.searchResult.layoutManager = LinearLayoutManager(requireContext())
@@ -72,6 +82,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 searchResultAdapter.setSearchResult(arrayListOf(AppDatabaseItem(
                     requireContext().getString(R.string.no_search_result), "", null, null, null, null
                 )))
+            }
+        }
+        vm.markerOptions.observe(viewLifecycleOwner) {
+            map.clear()
+            it.forEach {
+                markerOptions -> map.addMarker(markerOptions)
             }
         }
 

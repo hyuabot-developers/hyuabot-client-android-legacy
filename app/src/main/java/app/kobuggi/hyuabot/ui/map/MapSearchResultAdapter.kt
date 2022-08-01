@@ -8,14 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.AppDatabaseItem
 import app.kobuggi.hyuabot.databinding.ItemMapSearchBinding
-import com.google.android.gms.maps.model.LatLng
 
-class MapSearchResultAdapter(private val context: Context, private var result: List<AppDatabaseItem>, val onClickItem: (location: LatLng, title: String) -> Unit) : RecyclerView.Adapter<MapSearchResultAdapter.MapSearchResultViewHolder>() {
+class MapSearchResultAdapter(private val context: Context, private var result: List<AppDatabaseItem>, val onClickItem: (item: AppDatabaseItem) -> Unit) : RecyclerView.Adapter<MapSearchResultAdapter.MapSearchResultViewHolder>() {
 
     inner class MapSearchResultViewHolder(private val binding: ItemMapSearchBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
-            binding.searchResultCategory.visibility = ViewGroup.GONE
             binding.searchResultName.text = result[position].name
+            if (result[position].category.isEmpty()) {
+                binding.searchResultCategory.visibility = ViewGroup.GONE
+            } else {
+                binding.searchResultCategory.visibility = ViewGroup.VISIBLE
+                binding.searchResultCategory.text = result[position].category
+            }
+            binding.searchResultItem.setOnClickListener {
+                onClickItem(result[position])
+            }
         }
 
     }
