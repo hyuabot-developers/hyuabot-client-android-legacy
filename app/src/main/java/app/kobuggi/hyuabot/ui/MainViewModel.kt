@@ -1,12 +1,13 @@
 package app.kobuggi.hyuabot.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import app.kobuggi.hyuabot.GlobalApplication
 import app.kobuggi.hyuabot.data.database.AppDatabase
 import app.kobuggi.hyuabot.data.database.AppDatabaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,7 +18,7 @@ class MainViewModel @Inject constructor(private val appDatabaseRepository: AppDa
             .fallbackToDestructiveMigration()
             .build()
         val dao = database.databaseDao()
-        runBlocking {
+        viewModelScope.launch {
             appDatabaseRepository.deleteAll()
             dao.getAll().collect{
                 appDatabaseRepository.insertAll(it)
