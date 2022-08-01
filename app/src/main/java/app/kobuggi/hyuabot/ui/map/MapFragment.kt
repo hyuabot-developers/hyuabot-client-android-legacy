@@ -71,8 +71,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     binding.searchInput.onActionViewCollapsed()
                     vm.setSearchInputFocus(false)
                 }
-                val marker = MarkerOptions().position(LatLng(item.latitude!!, item.longitude!!)).title(item.name)
-                vm.setMarkerOptions(listOf(marker))
+                vm.setMarkerOptions(listOf(MarkerOptions().position(LatLng(item.latitude!!, item.longitude!!)).title(item.name)))
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
             }
         }
@@ -90,7 +89,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         vm.markerOptions.observe(viewLifecycleOwner) {
             map.clear()
             it.forEach {
-                markerOptions -> map.addMarker(markerOptions)
+                markerOptions -> run {
+                    val marker = map.addMarker(markerOptions)
+                    marker!!.showInfoWindow()
+                }
             }
         }
 
