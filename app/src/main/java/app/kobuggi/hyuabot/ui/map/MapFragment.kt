@@ -71,8 +71,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     binding.searchInput.onActionViewCollapsed()
                     vm.setSearchInputFocus(false)
                 }
-                vm.setMarkerOptions(listOf(MarkerOptions().position(LatLng(item.latitude!!, item.longitude!!)).title(item.name)))
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
+                var title = ""
+                title = if(item.description == null){
+                    item.name
+                } else if (item.description.startsWith("건물 번호")){
+                    "${item.name}/${item.description}"
+                } else {
+                    "${item.name}/메뉴: ${item.description}"
+                }
+                vm.setMarkerOptions(listOf(MarkerOptions().position(LatLng(item.latitude!!, item.longitude!!)).title(title)))
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
             }
         }
         binding.searchResult.adapter = searchResultAdapter
