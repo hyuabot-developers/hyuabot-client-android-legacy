@@ -40,6 +40,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         supportMapFragment.getMapAsync(this)
         binding.searchInput.setOnQueryTextFocusChangeListener { _, focus ->
             vm.setSearchInputFocus(focus)
+            if (focus) {
+                binding.searchInput.onActionViewExpanded()
+            }
         }
         binding.searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
