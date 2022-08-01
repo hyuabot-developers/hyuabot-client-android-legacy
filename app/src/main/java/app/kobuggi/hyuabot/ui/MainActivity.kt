@@ -85,8 +85,8 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
         }
 
     private fun initFastFollow() {
-        val assetsPath = getAbsolutePath(fastFollowAssetPack, "")
-        // 데이터베이스 업데이트
+        val assetsPath = getAbsolutePath(fastFollowAssetPack, "app.db")
+        vm.initializeDatabase(assetsPath!!)
     }
 
     override fun onDestroy() {

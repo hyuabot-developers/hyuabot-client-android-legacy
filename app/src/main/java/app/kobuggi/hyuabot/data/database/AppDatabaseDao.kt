@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppDatabaseDao {
+    @Query("SELECT * FROM app")
+    fun getAll(): Flow<List<AppDatabaseItem>>
+
     @Query("DELETE FROM app")
     suspend fun deleteAll()
 
