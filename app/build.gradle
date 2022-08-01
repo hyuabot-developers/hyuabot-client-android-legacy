@@ -6,6 +6,7 @@ plugins {
     id "com.apollographql.apollo3" version("3.3.2")
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id "com.google.gms.google-services"
+    id 'kotlin-parcelize'
 }
 apply plugin: "androidx.navigation.safeargs.kotlin"
 Properties properties = new Properties()
