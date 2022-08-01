@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
+import app.kobuggi.hyuabot.data.database.AppDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -38,13 +40,40 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.searchInput.setOnQueryTextFocusChangeListener { _, focus ->
             vm.setSearchInputFocus(focus)
         }
-        val searchResultAdapter = MapSearchResultAdapter(requireContext(), arrayListOf(
-            requireContext().getString(R.string.no_search_result)
-        )){
+        binding.searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d("MapFragment", "onQueryTextSubmit: $query")
+                if (query != null && query.isNotEmpty()) {
+                    vm.getSearchResult(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                Log.d("MapFragment", "onQueryTextChange: $query")
+                if (query != null && query.isNotEmpty()) {
+                    vm.getSearchResult(query)
+                }
+                return true
+            }
+        })
+
+        val searchResultAdapter = MapSearchResultAdapter(requireContext(), arrayListOf(AppDatabaseItem(
+            requireContext().getString(R.string.no_search_result), "", null, null, null, null
+        ))){
             location: LatLng, title: String -> {}
         }
         binding.searchResult.adapter = searchResultAdapter
         binding.searchResult.layoutManager = LinearLayoutManager(requireContext())
+        vm.items.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                searchResultAdapter.setSearchResult(it)
+            } else {
+                searchResultAdapter.setSearchResult(arrayListOf(AppDatabaseItem(
+                    requireContext().getString(R.string.no_search_result), "", null, null, null, null
+                )))
+            }
+        }
 
         return binding.root
     }
