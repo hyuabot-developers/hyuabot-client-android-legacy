@@ -68,4 +68,19 @@
     <string name="developer_name">이름 - 이정인</string>
     <string name="developer_belong">학과/학번 - 소프트웨어/17</string>
     <string name="no_search_result">검색 결과가 없습니다.</string>
+    <string name="on_campus">교내 기관</string>
+    <string name="fast_food">패스트푸드</string>
+    <string name="food_korean">한식</string>
+    <string name="cafe">카페</string>
+    <string name="food_vietnamese">베트남 음식</string>
+    <string name="food_chinese">중식</string>
+    <string name="chicken">치킨</string>
+    <string name="bakery">빵집</string>
+    <string name="food_western">양식</string>
+    <string name="other_food">기타 식당</string>
+    <string name="food_japanese">일식</string>
+    <string name="pizza">피자</string>
+    <string name="pub">술집</string>
+    <string name="meat">고깃집</string>
+    <string name="building">교내 건물</string>
 </resources>
