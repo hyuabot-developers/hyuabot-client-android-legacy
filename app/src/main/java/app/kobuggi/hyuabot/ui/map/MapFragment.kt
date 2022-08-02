@@ -1,12 +1,15 @@
 package app.kobuggi.hyuabot.ui.map
 
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
@@ -27,6 +31,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val vm by viewModels<MapViewModel>()
     private lateinit var binding: FragmentMapBinding
     private lateinit var map: GoogleMap
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +84,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 } else {
                     "${item.name}/메뉴: ${item.description}"
                 }
-                vm.setMarkerOptions(listOf(MarkerOptions().position(LatLng(item.latitude!!, item.longitude!!)).title(title)))
+
+                val categoryMarkerImageID = when(item.category) {
+                    "on campus" -> R.drawable.marker_school
+                    "cafe" -> R.drawable.marker_cafe
+                    "bakery" -> R.drawable.marker_bakery
+                    "other food" -> R.string.other_food
+                    "pub" -> R.drawable.marker_pub
+                    "building" -> R.drawable.marker_school
+                    else -> R.drawable.marker_restaurant
+                }
+                val bitmapDrawable = ResourcesCompat.getDrawable(requireContext().resources, categoryMarkerImageID, null) as BitmapDrawable
+                val markerImage = Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 66, 66, false)
+
+                val markerOptions = MarkerOptions()
+                markerOptions.position(LatLng(item.latitude!!, item.longitude!!)).title(title).icon(BitmapDescriptorFactory.fromBitmap(markerImage))
+                vm.setMarkerOptions(listOf(markerOptions))
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
             }
         }
