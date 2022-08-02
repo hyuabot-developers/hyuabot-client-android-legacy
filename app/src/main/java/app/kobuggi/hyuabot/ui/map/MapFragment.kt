@@ -78,14 +78,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     binding.searchInput.onActionViewCollapsed()
                     vm.setSearchInputFocus(false)
                 }
-                var title = ""
-                title = if(item.description == null){
-                    item.name
-                } else if (item.description.startsWith("건물 번호")){
-                    "${item.name}/${item.description}"
-                } else {
-                    "${item.name}/메뉴: ${item.description}"
-                }
 
                 val categoryMarkerImageID = when(item.category) {
                     "on campus" -> R.drawable.marker_school
@@ -100,7 +92,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 val markerImage = Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 66, 66, false)
 
                 val markerOptions = MarkerOptions()
-                markerOptions.position(LatLng(item.latitude!!, item.longitude!!)).title(title).icon(BitmapDescriptorFactory.fromBitmap(markerImage)).snippet(if (item.description.toString().startsWith("건물 번호")) item.description else "메뉴: ${item.description}")
+                markerOptions.position(LatLng(item.latitude!!, item.longitude!!)).title(item.name).icon(BitmapDescriptorFactory.fromBitmap(markerImage)).snippet(if (item.description.toString().startsWith("건물 번호")) item.description else "메뉴: ${item.description}")
                 vm.setMarkerOptions(listOf(markerOptions))
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
             }
@@ -138,16 +130,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.mapCategoryList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         vm.markerOptions.observe(viewLifecycleOwner) {
-            clusterManager.clearItems()
-            clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.snippet, item.icon!!) })
-            clusterManager.cluster()
+            map.clear()
             if (it.size > 1){
+                clusterManager.clearItems()
+                clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.snippet, item.icon!!) })
+                clusterManager.cluster()
                 val builder = LatLngBounds.Builder()
                 for (item in it) {
                     builder.include(item.position)
                 }
                 val bounds = builder.build()
                 map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+            } else if (it.size == 1) {
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(it[0].position, 16f))
+                val marker = map.addMarker(it[0])
+                marker!!.showInfoWindow()
             }
         }
 
