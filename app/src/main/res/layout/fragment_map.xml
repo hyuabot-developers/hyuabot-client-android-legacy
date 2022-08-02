@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/search_input"
                 android:iconifiedByDefault="false"
-                app:queryBackground="@android:color/transparent"
+                android:queryBackground="@null"
              />
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
