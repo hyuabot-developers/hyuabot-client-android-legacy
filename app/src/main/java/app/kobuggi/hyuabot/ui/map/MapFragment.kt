@@ -97,7 +97,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 val markerImage = Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 66, 66, false)
 
                 val markerOptions = MarkerOptions()
-                markerOptions.position(LatLng(item.latitude!!, item.longitude!!)).title(title).icon(BitmapDescriptorFactory.fromBitmap(markerImage))
+                markerOptions.position(LatLng(item.latitude!!, item.longitude!!)).title(title).icon(BitmapDescriptorFactory.fromBitmap(markerImage)).snippet(if (item.description.toString().startsWith("건물 번호")) item.description else "메뉴: ${item.description}")
                 vm.setMarkerOptions(listOf(markerOptions))
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(item.latitude, item.longitude), 16f))
             }
@@ -136,7 +136,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         vm.markerOptions.observe(viewLifecycleOwner) {
             clusterManager.clearItems()
-            clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.icon!!) })
+            clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.snippet, item.icon!!) })
             clusterManager.cluster()
         }
 

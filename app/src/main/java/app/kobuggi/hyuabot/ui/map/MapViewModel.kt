@@ -53,6 +53,7 @@ class MapViewModel @Inject constructor(private val repository: AppDatabaseReposi
                     MarkerOptions().apply {
                         position(LatLng(item.latitude!!, item.longitude!!))
                         title(item.name)
+                        snippet(if (item.description.toString().startsWith("건물 번호")) item.description else "메뉴: ${item.description}")
                         icon(BitmapDescriptorFactory.fromBitmap(bitmap))
                 }}}.let {
                     _markerOptions.value = it
