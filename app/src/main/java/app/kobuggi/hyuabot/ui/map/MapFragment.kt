@@ -136,7 +136,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         vm.markerOptions.observe(viewLifecycleOwner) {
             clusterManager.clearItems()
-            Log.d("MapFragment", "markerOptions: ${it.size}")
             clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.icon!!) })
             clusterManager.cluster()
         }
@@ -162,8 +161,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 true
             }
             map.setOnCameraIdleListener(clusterManager)
-            map.setOnMarkerClickListener(clusterManager)
-
             val isSuccessful = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                     requireContext(),
