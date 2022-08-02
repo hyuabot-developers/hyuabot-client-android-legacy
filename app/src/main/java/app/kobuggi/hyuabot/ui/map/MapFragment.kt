@@ -169,6 +169,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 true
             }
             map.setOnCameraIdleListener(clusterManager)
+            map.uiSettings.isMapToolbarEnabled = false
             val isSuccessful = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                     requireContext(),
