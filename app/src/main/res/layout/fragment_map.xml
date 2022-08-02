@@ -65,7 +65,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:text="@{vm.selectedCategory}"
             android:textColor="@color/white"
-            android:onClick="@{vm.onSelectedCategoryButtonClick}"
+            android:onClick="@{vm::onSelectedCategoryButtonClick}"
         />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/map_category_list"
