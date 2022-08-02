@@ -20,10 +20,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.maps.android.clustering.ClusterManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +29,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val vm by viewModels<MapViewModel>()
     private lateinit var binding: FragmentMapBinding
     private lateinit var map: GoogleMap
+    private lateinit var clusterManager: ClusterManager<MapMarkerItem>
 
 
     override fun onCreateView(
@@ -136,13 +135,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.mapCategoryList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         vm.markerOptions.observe(viewLifecycleOwner) {
-            map.clear()
-            it.forEach {
-                markerOptions -> run {
-                    val marker = map.addMarker(markerOptions)
-                    marker!!.showInfoWindow()
-                }
-            }
+            clusterManager.clearItems()
+            Log.d("MapFragment", "markerOptions: ${it.size}")
+            clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.icon!!) })
+            clusterManager.cluster()
         }
 
         return binding.root
@@ -150,10 +146,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         try {
-            val bitmapDrawable = ResourcesCompat.getDrawable(requireContext().resources, R.drawable.marker_school, null) as BitmapDrawable
+            val bitmapDrawable = ResourcesCompat.getDrawable(requireActivity().resources, R.drawable.marker_school, null) as BitmapDrawable
             val markerImage = Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 66, 66, false)
             vm.onCategoryButtonClick(getString(R.string.building), "building", markerImage)
             this.map = map
+            clusterManager = ClusterManager<MapMarkerItem>(requireContext(), map)
+            clusterManager.renderer = MapMarkerRenderer(requireContext(), map, clusterManager)
+            clusterManager.setOnClusterClickListener {
+                val builder = LatLngBounds.Builder()
+                for (item in it.items) {
+                    builder.include(item.position)
+                }
+                val bounds = builder.build()
+                map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+                true
+            }
+            map.setOnCameraIdleListener(clusterManager)
+            map.setOnMarkerClickListener(clusterManager)
+
             val isSuccessful = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                     requireContext(),
