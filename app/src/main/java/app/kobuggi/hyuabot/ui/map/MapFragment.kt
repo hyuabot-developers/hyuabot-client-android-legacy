@@ -138,6 +138,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             clusterManager.clearItems()
             clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.snippet, item.icon!!) })
             clusterManager.cluster()
+            if (it.size > 1){
+                val builder = LatLngBounds.Builder()
+                for (item in it) {
+                    builder.include(item.position)
+                }
+                val bounds = builder.build()
+                map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+            }
         }
 
         return binding.root
