@@ -8,8 +8,23 @@ import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ButtonMapCategoryBinding
 
 class MapCategoryButtonAdapter(private val context: Context, val onClickItem: (category: Int, categoryKey: String) -> Unit) : RecyclerView.Adapter<MapCategoryButtonAdapter.MapCategoryButtonViewHolder>() {
+    private val categoryList = listOf(
+        "building",
+        "korean",
+        "chinese",
+        "japanese",
+        "western",
+        "vietnamese",
+        "pizza",
+        "chicken",
+        "meat",
+        "fast food",
+        "other food",
+        "cafe",
+        "bakery",
+        "pub",
+    )
     private val categoryStringID = hashMapOf(
-        "on campus" to R.string.on_campus,
         "fast food" to R.string.fast_food,
         "korean" to R.string.food_korean,
         "cafe" to R.string.cafe,
@@ -29,9 +44,9 @@ class MapCategoryButtonAdapter(private val context: Context, val onClickItem: (c
 
     inner class MapCategoryButtonViewHolder(private val binding: ButtonMapCategoryBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
-            binding.mapCategoryButton.text = context.getString(categoryStringID.values.elementAt(position))
+            binding.mapCategoryButton.text = context.getString(categoryStringID[categoryList[position]]!!)
             binding.mapCategoryButton.setOnClickListener {
-                onClickItem(categoryStringID.values.elementAt(position), categoryStringID.keys.elementAt(position))
+                onClickItem(categoryStringID[categoryList[position]]!!, categoryList[position])
             }
         }
     }
