@@ -1,8 +1,10 @@
 package app.kobuggi.hyuabot.ui.map
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.AppDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentMapBinding
+import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -145,6 +148,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
                 val bounds = builder.build()
                 map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+            }
+        }
+
+        vm.openKakaoTalkLink.observe(viewLifecycleOwner) {
+            if (it.peekContent()) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
+                startActivity(intent)
+                vm.openKakaoTalkLink.value = Event(false)
             }
         }
 

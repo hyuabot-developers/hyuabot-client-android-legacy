@@ -76,5 +76,19 @@
             app:layout_constraintTop_toBottomOf="@id/search_view"
             app:layout_constraintLeft_toRightOf="@id/selected_category_button"
             app:layout_constraintRight_toRightOf="parent" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/open_fab_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Hyuabot"
+            app:backgroundTint="@color/hanyang_primary"
+            app:icon="@drawable/ic_message"
+            app:iconTint="@color/white"
+            android:text="@string/error_report"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="@{() -> vm.openKakaoTalkChat()}"
+            android:layout_margin="16dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

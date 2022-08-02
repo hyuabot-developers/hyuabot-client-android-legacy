@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.data.database.AppDatabaseItem
 import app.kobuggi.hyuabot.data.database.AppDatabaseRepository
+import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -27,6 +28,7 @@ class MapViewModel @Inject constructor(private val repository: AppDatabaseReposi
     val markerOptions get() = _markerOptions
     val selectedCategory = MutableLiveData<String>()
     val showCategoryButton = MutableLiveData(false)
+    val openKakaoTalkLink = MutableLiveData<Event<Boolean>>()
 
     fun setSearchInputFocus(focus: Boolean) {
         _searchInputFocus.value = focus
@@ -64,5 +66,9 @@ class MapViewModel @Inject constructor(private val repository: AppDatabaseReposi
 
     fun onSelectedCategoryButtonClick(view: View) {
         showCategoryButton.value = !showCategoryButton.value!!
+    }
+
+    fun openKakaoTalkChat(){
+        openKakaoTalkLink.value = Event(true)
     }
 }

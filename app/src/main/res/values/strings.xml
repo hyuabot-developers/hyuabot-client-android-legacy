@@ -83,4 +83,5 @@
     <string name="pub">술집</string>
     <string name="meat">고깃집</string>
     <string name="building">교내 건물</string>
+    <string name="error_report">오류 제보</string>
 </resources>
