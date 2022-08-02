@@ -114,6 +114,27 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 )))
             }
         }
+        val mapCategoryButtonAdapter = MapCategoryButtonAdapter(requireContext()){
+            categoryID: Int, categoryKey: String -> run {
+                val categoryMarkerImageID = when(categoryKey) {
+                    "on campus" -> R.drawable.marker_school
+                    "cafe" -> R.drawable.marker_cafe
+                    "bakery" -> R.drawable.marker_bakery
+                    "other food" -> R.string.other_food
+                    "pub" -> R.drawable.marker_pub
+                    "building" -> R.drawable.marker_school
+                    else -> R.drawable.marker_restaurant
+                }
+                val bitmapDrawable = ResourcesCompat.getDrawable(requireContext().resources, categoryMarkerImageID, null) as BitmapDrawable
+                val markerImage = Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 66, 66, false)
+
+                vm.onCategoryButtonClick(getString(categoryID), categoryKey, markerImage)
+                vm.showCategoryButton.value = false
+            }
+        }
+        binding.mapCategoryList.adapter = mapCategoryButtonAdapter
+        binding.mapCategoryList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         vm.markerOptions.observe(viewLifecycleOwner) {
             map.clear()
             it.forEach {
@@ -129,6 +150,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         try {
+            val bitmapDrawable = ResourcesCompat.getDrawable(requireContext().resources, R.drawable.marker_school, null) as BitmapDrawable
+            val markerImage = Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 66, 66, false)
+            vm.onCategoryButtonClick(getString(R.string.building), "building", markerImage)
             this.map = map
             val isSuccessful = map.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
