@@ -26,6 +26,12 @@ interface AppDatabaseDao {
     @Query("SELECT * FROM app WHERE name LIKE :name and latitude is not null and longitude is not null")
     fun getMapItemsFilterByName(name: String): Flow<List<AppDatabaseItem>>
 
-    @Query("SELECT * FROM app WHERE phone is not null and category = :category and name LIKE :name")
+    @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category = :category and name LIKE :name")
     fun getPhoneItemsFilterByName(name: String, category: String): Flow<List<AppDatabaseItem>>
+
+    @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category = :category")
+    fun getPhoneItemsFilterByCategory(category: String): Flow<List<AppDatabaseItem>>
+
+    @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category != :category")
+    fun getPhoneItemsExceptByCategory(category: String): Flow<List<AppDatabaseItem>>
 }

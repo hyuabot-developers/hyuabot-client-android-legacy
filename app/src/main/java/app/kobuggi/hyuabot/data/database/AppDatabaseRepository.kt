@@ -10,4 +10,6 @@ class AppDatabaseRepository(private val dao: AppDatabaseDao) {
     fun getMapItemsFilterByCategory(category: String) : Flow<List<AppDatabaseItem>> = dao.getMapItemsFilterByCategory(category)
     fun getMapItemsFilterByName(name: String) : Flow<List<AppDatabaseItem>> = dao.getMapItemsFilterByName(name)
     fun getPhoneItemsFilterByName(category: String, name: String) : Flow<List<AppDatabaseItem>> = dao.getPhoneItemsFilterByName(category, name)
+    fun getPhoneItemsFilterByCategory(category: String) : Flow<List<AppDatabaseItem>> = dao.getPhoneItemsFilterByCategory(category)
+    fun getPhoneItemsExceptByCategory(category: String) : Flow<List<AppDatabaseItem>> = dao.getPhoneItemsExceptByCategory(category)
 }
