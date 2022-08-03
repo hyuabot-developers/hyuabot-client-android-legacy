@@ -86,4 +86,8 @@
     <string name="error_report">오류 제보</string>
     <string name="in_school">교내</string>
     <string name="out_school">교외</string>
+    <string name="call_dialog_title">전화걸기</string>
+    <string name="call_dialog_message">%s(%s)로 전화를 걸고 있습니다.</string>
+    <string name="call_dialog_positive">전화걸기</string>
+    <string name="call_dialog_negative">취소</string>
 </resources>

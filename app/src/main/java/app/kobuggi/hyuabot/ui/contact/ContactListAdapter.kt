@@ -8,7 +8,7 @@ import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.AppDatabaseItem
 import app.kobuggi.hyuabot.databinding.ItemContactSearchBinding
 
-class ContactListAdapter(private var result: List<AppDatabaseItem>, private val onLongClickItem : (Int, Int) -> Unit) : RecyclerView.Adapter<ContactListAdapter.ContactItemViewHolder>() {
+class ContactListAdapter(private var result: List<AppDatabaseItem>, private val onClickItem: (ContactItem) -> Unit, private val onLongClickItem : (Int, Int) -> Unit) : RecyclerView.Adapter<ContactListAdapter.ContactItemViewHolder>() {
     private var selectedPosition = -1
     inner class ContactItemViewHolder(private val binding: ItemContactSearchBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: AppDatabaseItem) {
@@ -17,6 +17,9 @@ class ContactListAdapter(private var result: List<AppDatabaseItem>, private val 
             binding.searchResultItem.setOnLongClickListener {
                 setSelectedPosition(adapterPosition)
                 true
+            }
+            binding.searchResultItem.setOnClickListener {
+                onClickItem(ContactItem(item.name, item.phone!!))
             }
         }
     }

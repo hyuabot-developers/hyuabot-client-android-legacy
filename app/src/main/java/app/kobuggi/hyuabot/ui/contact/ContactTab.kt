@@ -1,12 +1,15 @@
 package app.kobuggi.hyuabot.ui.contact
 
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,6 +29,7 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
     }
 
     private val vm by viewModels<ContactTabViewModel>()
+    private val parentViewModel : ContactViewModel by viewModels({requireParentFragment()})
     private lateinit var binding : FragmentContactTabBinding
     private var position: Int = 0
 
@@ -44,9 +48,9 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
         binding.lifecycleOwner = viewLifecycleOwner
         vm.setPosition(position)
 
-        val adapter = ContactListAdapter(arrayListOf()){
-            previous: Int, current: Int -> setSelectedItem(previous, current)
-        }
+        val adapter = ContactListAdapter(arrayListOf(),
+            { contactItem: ContactItem -> callToNumber(contactItem.name, contactItem.phone) },
+            { previousPosition: Int, currentPosition: Int -> setSelectedItem(previousPosition, currentPosition) })
         binding.contactList.adapter = adapter
         binding.contactList.layoutManager = LinearLayoutManager(requireContext())
         binding.contactList.addItemDecoration(
@@ -64,6 +68,9 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
             }
         }
 
+        parentViewModel.queryString.observe(viewLifecycleOwner) {
+            vm.queryContact(position, it)
+        }
 
         return binding.root
     }
@@ -79,7 +86,9 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
         binding.contactList.findViewHolderForAdapterPosition(currentPosition)?.itemView!!.findViewById<TextView>(R.id.search_result_name).isSelected = true
     }
 
-    fun queryContact(position: Int, query: String) {
-        vm.queryContact(position, query)
+    private fun callToNumber(name: String, phone: String) {
+        Toast.makeText(requireContext(), requireContext().getString(R.string.call_dialog_message, name, phone), Toast.LENGTH_SHORT).show()
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+        startActivity(intent)
     }
 }

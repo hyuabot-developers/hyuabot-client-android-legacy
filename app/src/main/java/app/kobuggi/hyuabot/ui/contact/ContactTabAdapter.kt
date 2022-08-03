@@ -12,12 +12,4 @@ class ContactTabAdapter(fragment: ContactFragment) : FragmentStateAdapter(fragme
         1 -> outSchoolFragment
         else -> throw IllegalArgumentException("Invalid position")
     }
-
-    fun queryContact(position: Int, query: String) {
-        when (position) {
-            0 -> inSchoolFragment.queryContact(position, query)
-            1 -> outSchoolFragment.queryContact(position, query)
-            else -> throw IllegalArgumentException("Invalid position")
-        }
-    }
 }
