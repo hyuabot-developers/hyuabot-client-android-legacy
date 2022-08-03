@@ -114,7 +114,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     "on campus" -> R.drawable.marker_school
                     "cafe" -> R.drawable.marker_cafe
                     "bakery" -> R.drawable.marker_bakery
-                    "other food" -> R.string.other_food
                     "pub" -> R.drawable.marker_pub
                     "building" -> R.drawable.marker_school
                     else -> R.drawable.marker_restaurant
