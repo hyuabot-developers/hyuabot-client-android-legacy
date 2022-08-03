@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentContactTabBinding
@@ -48,6 +49,9 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
         }
         binding.contactList.adapter = adapter
         binding.contactList.layoutManager = LinearLayoutManager(requireContext())
+        binding.contactList.addItemDecoration(
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        )
         vm.contactList.observe(viewLifecycleOwner) {
             adapter.setResult(it)
             Log.d("ContactTab", "contactList: ${it.size}")
