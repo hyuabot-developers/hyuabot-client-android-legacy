@@ -90,4 +90,5 @@
     <string name="call_dialog_message">%s(%s)로 전화를 걸고 있습니다.</string>
     <string name="call_dialog_positive">전화걸기</string>
     <string name="call_dialog_negative">취소</string>
+    <string name="contact_message">각 항목을 누르면 전화걸기로,\n길게 누르면 전체 이름을 볼 수 있어요.</string>
 </resources>

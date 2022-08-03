@@ -2,10 +2,12 @@ package app.kobuggi.hyuabot.ui.contact
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import app.kobuggi.hyuabot.R
@@ -52,6 +54,10 @@ class ContactFragment : Fragment() {
                 return true
             }
         })
+
+        val toast = Toast.makeText(context,  requireContext().getString(R.string.contact_message), Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
         return binding.root
     }
 }
