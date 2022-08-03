@@ -29,6 +29,9 @@ interface AppDatabaseDao {
     @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category = :category and name LIKE :name")
     fun getPhoneItemsFilterByName(name: String, category: String): Flow<List<AppDatabaseItem>>
 
+    @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category != :category and name LIKE :name")
+    fun getPhoneItemsExceptByName(name: String, category: String): Flow<List<AppDatabaseItem>>
+
     @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category = :category")
     fun getPhoneItemsFilterByCategory(category: String): Flow<List<AppDatabaseItem>>
 

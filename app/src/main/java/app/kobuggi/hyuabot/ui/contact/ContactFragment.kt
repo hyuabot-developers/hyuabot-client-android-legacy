@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import app.kobuggi.hyuabot.R
@@ -23,7 +24,8 @@ class ContactFragment : Fragment() {
         binding = FragmentContactBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
-        binding.contactViewpager.adapter = ContactTabAdapter(this)
+        val tabAdapter = ContactTabAdapter(this)
+        binding.contactViewpager.adapter = tabAdapter
         TabLayoutMediator(binding.contactTab, binding.contactViewpager) { tab, position ->
             tab.text = context?.getString(
                 when (position) {
@@ -33,6 +35,22 @@ class ContactFragment : Fragment() {
                 }
             )
         }.attach()
+
+        binding.searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null && query.isNotEmpty()) {
+                    tabAdapter.queryContact(binding.contactViewpager.currentItem, query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (query != null && query.isNotEmpty()) {
+                    tabAdapter.queryContact(binding.contactViewpager.currentItem, query)
+                }
+                return true
+            }
+        })
         return binding.root
     }
 }

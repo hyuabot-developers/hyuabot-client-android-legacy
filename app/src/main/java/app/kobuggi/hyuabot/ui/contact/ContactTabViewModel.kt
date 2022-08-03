@@ -12,11 +12,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactTabViewModel @Inject constructor(private val repository: AppDatabaseRepository) : ViewModel() {
     val contactList = MutableLiveData<List<AppDatabaseItem>>()
-
+    private val category = "on campus"
     private fun getContactFilterByCategory(category: String) = repository.getPhoneItemsFilterByCategory(category)
     private fun getContactExceptByCategory(category: String) = repository.getPhoneItemsExceptByCategory(category)
     fun setPosition(position: Int) {
-        val category = "on campus"
         viewModelScope.launch {
             if (position == 0) {
                 getContactFilterByCategory(category).collect{
@@ -24,6 +23,20 @@ class ContactTabViewModel @Inject constructor(private val repository: AppDatabas
                 }
             } else {
                 getContactExceptByCategory(category).collect{
+                    contactList.value = it
+                }
+            }
+        }
+    }
+
+    fun queryContact(position: Int, query: String) {
+        viewModelScope.launch {
+            if (position == 0) {
+                repository.getPhoneItemsFilterByName(category, "%$query%").collect{
+                    contactList.value = it
+                }
+            } else {
+                repository.getPhoneItemsExceptByName(category, "%$query%").collect{
                     contactList.value = it
                 }
             }

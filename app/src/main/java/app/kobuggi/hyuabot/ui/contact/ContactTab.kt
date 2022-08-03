@@ -78,4 +78,8 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
         }
         binding.contactList.findViewHolderForAdapterPosition(currentPosition)?.itemView!!.findViewById<TextView>(R.id.search_result_name).isSelected = true
     }
+
+    fun queryContact(position: Int, query: String) {
+        vm.queryContact(position, query)
+    }
 }
