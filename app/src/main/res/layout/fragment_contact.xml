@@ -60,16 +60,5 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-        <ProgressBar
-            android:id="@+id/contact_search_progress"
-            android:background="@color/cardBackground"
-            app:layout_constraintTop_toBottomOf="@id/contact_tab"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:padding="175dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
