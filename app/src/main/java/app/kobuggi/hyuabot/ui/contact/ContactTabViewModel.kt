@@ -32,12 +32,24 @@ class ContactTabViewModel @Inject constructor(private val repository: AppDatabas
     fun queryContact(position: Int, query: String) {
         viewModelScope.launch {
             if (position == 0) {
-                repository.getPhoneItemsFilterByName(category, "%$query%").collect{
-                    contactList.value = it
+                if (query.isNotEmpty()){
+                    repository.getPhoneItemsFilterByName(category, "%$query%").collect{
+                        contactList.value = it
+                    }
+                } else {
+                    getContactFilterByCategory(category).collect{
+                        contactList.value = it
+                    }
                 }
             } else {
-                repository.getPhoneItemsExceptByName(category, "%$query%").collect{
-                    contactList.value = it
+                if (query.isNotEmpty()){
+                    repository.getPhoneItemsExceptByName(category, "%$query%").collect{
+                        contactList.value = it
+                    }
+                } else {
+                    getContactExceptByCategory(category).collect{
+                        contactList.value = it
+                    }
                 }
             }
         }

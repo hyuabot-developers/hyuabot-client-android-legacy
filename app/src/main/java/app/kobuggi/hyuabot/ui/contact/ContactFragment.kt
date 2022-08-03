@@ -38,14 +38,14 @@ class ContactFragment : Fragment() {
 
         binding.searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null && query.isNotEmpty()) {
+                if (query != null) {
                     tabAdapter.queryContact(binding.contactViewpager.currentItem, query)
                 }
                 return true
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                if (query != null && query.isNotEmpty()) {
+                if (query != null) {
                     tabAdapter.queryContact(binding.contactViewpager.currentItem, query)
                 }
                 return true
