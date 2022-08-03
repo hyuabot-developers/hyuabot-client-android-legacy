@@ -84,4 +84,6 @@
     <string name="meat">고깃집</string>
     <string name="building">교내 건물</string>
     <string name="error_report">오류 제보</string>
+    <string name="in_school">교내</string>
+    <string name="out_school">교외</string>
 </resources>
