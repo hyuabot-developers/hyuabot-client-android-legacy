@@ -22,3 +22,4 @@
 -keepnames class app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
 -keepnames class * extends android.os.Parcelable
 -keepnames class * extends java.io.Serializable
+-keepnames class com.kizitonwose.calendarview.CalendarView
