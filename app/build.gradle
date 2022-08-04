@@ -148,4 +148,8 @@ dependencies {
 
     // Map
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+
+    // Calendar
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.0'
+    implementation 'com.github.kizitonwose:CalendarView:1.0.4'
 }
