@@ -1,6 +1,8 @@
 package app.kobuggi.hyuabot.data.database
 
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
+import java.time.YearMonth
 
 class AppDatabaseRepository(private val dao: AppDatabaseDao) {
     suspend fun deleteAll() = dao.deleteAll()
@@ -13,4 +15,10 @@ class AppDatabaseRepository(private val dao: AppDatabaseDao) {
     fun getPhoneItemsExceptByName(category: String, name: String) : Flow<List<AppDatabaseItem>> = dao.getPhoneItemsExceptByName(name, category)
     fun getPhoneItemsFilterByCategory(category: String) : Flow<List<AppDatabaseItem>> = dao.getPhoneItemsFilterByCategory(category)
     fun getPhoneItemsExceptByCategory(category: String) : Flow<List<AppDatabaseItem>> = dao.getPhoneItemsExceptByCategory(category)
+
+    suspend fun deleteAllEvents() = dao.deleteEvents()
+    suspend fun insertAllEvents(items: List<CalendarDatabaseItem>) = dao.insertCalendarItems(*items.toTypedArray())
+
+    fun getCalendarItemsFilterByMonth(currentMonth: YearMonth) : Flow<List<CalendarDatabaseItem>> = dao.getCalendarItemsFilterByMonth("${currentMonth.year}-${currentMonth.monthValue}-01T00:00+09:00", "${currentMonth.year}-${currentMonth.monthValue + 1}-01T00:00+09:00")
+    fun getCalendarNotificationItemsFilterByDay(targetGrade: Int, targetDate: LocalDate) : Flow<List<CalendarDatabaseItem>> = dao.getCalendarItemsFilterByMonthAndGrade("${targetDate.year}-${targetDate.monthValue}-${targetDate.dayOfMonth}T00:00+09:00", "${targetDate.year}-${targetDate.monthValue}-${targetDate.dayOfMonth}T23:59+09:00", targetGrade)
 }

@@ -23,6 +23,10 @@ class MainViewModel @Inject constructor(private val appDatabaseRepository: AppDa
             dao.getAll().collect{
                 appDatabaseRepository.insertAll(it)
             }
+            appDatabaseRepository.deleteAllEvents()
+            dao.getAllEvents().collect{
+                appDatabaseRepository.insertAllEvents(it)
+            }
         }
     }
 }
