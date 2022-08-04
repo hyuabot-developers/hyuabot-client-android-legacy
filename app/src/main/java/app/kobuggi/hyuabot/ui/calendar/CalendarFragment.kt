@@ -14,6 +14,7 @@ import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
+import com.kizitonwose.calendarview.ui.MonthScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.YearMonth
 import java.time.temporal.WeekFields
@@ -31,6 +32,7 @@ class CalendarFragment : Fragment() {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
+        vm.getAllEvents()
         binding.calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer>{
             override fun create(view: View) = MonthViewContainer(view)
             override fun bind(container: MonthViewContainer, month: CalendarMonth) {
@@ -46,6 +48,11 @@ class CalendarFragment : Fragment() {
                 } else {
                     container.dayTextView.setTextColor(Color.GRAY)
                 }
+            }
+        }
+        binding.calendarView.monthScrollListener = object : MonthScrollListener {
+            override fun invoke(currentMonth: CalendarMonth) {
+                vm.onCalendarMonthChanged(currentMonth.yearMonth)
             }
         }
         val currentMonth = YearMonth.now()

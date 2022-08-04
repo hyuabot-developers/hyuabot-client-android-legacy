@@ -43,6 +43,10 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
 
     private fun initAssetPackManager() {
         assetPackManager = AssetPackManagerFactory.getInstance(applicationContext)
+        val assetPath = getAbsolutePath(fastFollowAssetPack, "app.db")
+        if (assetPath != null) {
+            vm.upgradeDatabase(assetPath)
+        }
         registerListener()
     }
 

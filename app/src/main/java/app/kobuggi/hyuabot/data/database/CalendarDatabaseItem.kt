@@ -9,8 +9,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class CalendarDatabaseItem(
     val name: String,
-    @ColumnInfo(name = "start_date") val startDate: String,
-    @ColumnInfo(name = "end_date") val endDate: String,
-    @ColumnInfo(name = "target_grade") val targetGrade: Int,
-    @ColumnInfo(name = "notification_boolean") val notificationBoolean: Boolean
+    @ColumnInfo(name = "start_date") val startDate: String?,
+    @ColumnInfo(name = "end_date") val endDate: String?,
+    @ColumnInfo(name = "target_grade", defaultValue = "-1") val targetGrade: Int?,
+    @ColumnInfo(name = "notification_boolean", defaultValue = "0") val notificationBoolean: Int?
 ): Parcelable
