@@ -1,14 +1,19 @@
 package app.kobuggi.hyuabot.ui.calendar
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentCalendarBinding
 import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.model.CalendarMonth
+import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.YearMonth
 import java.time.temporal.WeekFields
@@ -26,10 +31,21 @@ class CalendarFragment : Fragment() {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
+        binding.calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer>{
+            override fun create(view: View) = MonthViewContainer(view)
+            override fun bind(container: MonthViewContainer, month: CalendarMonth) {
+                container.headerTextView.text = requireContext().getString(R.string.month_header, month.year, month.month)
+            }
+        }
         binding.calendarView.dayBinder = object : DayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view)
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.dayTextView.text = day.date.dayOfMonth.toString()
+                if (day.owner == DayOwner.THIS_MONTH){
+                    container.dayTextView.setTextColor(Color.WHITE)
+                } else {
+                    container.dayTextView.setTextColor(Color.GRAY)
+                }
             }
         }
         val currentMonth = YearMonth.now()
