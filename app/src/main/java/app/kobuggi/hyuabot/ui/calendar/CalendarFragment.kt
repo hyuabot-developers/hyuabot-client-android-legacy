@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentCalendarBinding
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -55,6 +56,14 @@ class CalendarFragment : Fragment() {
                 vm.onCalendarMonthChanged(currentMonth.yearMonth)
             }
         }
+
+        val eventAdapter = CalendarEventAdapter(requireContext(), arrayListOf())
+        binding.eventListOfMonth.adapter = eventAdapter
+        binding.eventListOfMonth.layoutManager = LinearLayoutManager(requireContext())
+        vm.eventsOfMonth.observe(viewLifecycleOwner) {
+            eventAdapter.setEvents(it)
+        }
+
         val currentMonth = YearMonth.now()
         val firstMonth = YearMonth.of(if (currentMonth.monthValue > 2) currentMonth.year else currentMonth.year - 1, 3)
         val lastMonth = YearMonth.of(if (currentMonth.monthValue > 2) currentMonth.year + 1 else currentMonth.year, 2)

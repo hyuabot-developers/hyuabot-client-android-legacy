@@ -44,7 +44,7 @@ interface AppDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCalendarItems(vararg calendarDatabaseItem: CalendarDatabaseItem)
 
-    @Query("SELECT * FROM calendar WHERE (start_date >= :startDate and start_date < :endDate) or (end_date >= :startDate and end_date < :endDate)")
+    @Query("SELECT * FROM calendar WHERE start_date < :endDate and end_date > :startDate")
     fun getCalendarItemsFilterByMonth(startDate: String, endDate: String): Flow<List<CalendarDatabaseItem>>
 
     @Query("SELECT * FROM calendar WHERE start_date >= :startDate and start_date <= :endDate and target_grade = :grade and notification_boolean = 0")
