@@ -96,4 +96,9 @@
     <string name="start_date_without_minute">%d월 %d일 %d시 ~</string>
     <string name="end_date">%d월 %d일 %d시 %d분</string>
     <string name="end_date_without_minute">%d월 %d일 %d시</string>
+    <string name="target_grade_all">전체 학년</string>
+    <string name="target_grade_1">1학년</string>
+    <string name="target_grade_2">2학년</string>
+    <string name="target_grade_3">3학년</string>
+    <string name="target_grade_4">4학년 이상</string>
 </resources>

@@ -2,9 +2,11 @@ package app.kobuggi.hyuabot.ui.calendar
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -75,6 +77,16 @@ class CalendarFragment : Fragment() {
         val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
         binding.calendarView.setup(firstMonth, lastMonth, firstDayOfWeek)
         binding.calendarView.scrollToMonth(currentMonth)
+
+        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner, resources.getStringArray(R.array.target_grade))
+        binding.targetGradeSpinner.adapter = spinnerAdapter
+        binding.targetGradeSpinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {
+            }
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("spinner", "selected: $position")
+            }
+        }
         return binding.root
     }
 

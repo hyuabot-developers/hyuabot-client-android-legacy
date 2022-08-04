@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="target_grade">
+        <item>@string/target_grade_all</item>
+        <item>@string/target_grade_1</item>
+        <item>@string/target_grade_2</item>
+        <item>@string/target_grade_3</item>
+        <item>@string/target_grade_4</item>
+    </string-array>
+</resources>
