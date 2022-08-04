@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +46,7 @@ class CalendarFragment : Fragment() {
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.dayTextView.text = day.date.dayOfMonth.toString()
                 if (day.owner == DayOwner.THIS_MONTH){
-                    container.dayTextView.setTextColor(Color.WHITE)
+                    container.dayTextView.setTextColor(ResourcesCompat.getColor(resources, R.color.primaryTextColor, null))
                 } else {
                     container.dayTextView.setTextColor(Color.GRAY)
                 }
