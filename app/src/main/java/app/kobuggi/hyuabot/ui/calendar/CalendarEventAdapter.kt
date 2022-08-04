@@ -10,9 +10,9 @@ import app.kobuggi.hyuabot.data.database.CalendarDatabaseItem
 import app.kobuggi.hyuabot.databinding.ItemEventBinding
 import java.time.LocalDateTime
 
-class CalendarEventAdapter(private val context: Context, private var events: List<CalendarDatabaseItem>) :
+class CalendarEventAdapter(private val context: Context, private var events: List<CalendarDatabaseItem>, private val onClickItem: (CalendarDatabaseItem) -> Unit, private val onLongClickItem : (Int, Int) -> Unit) :
     RecyclerView.Adapter<CalendarEventAdapter.CalendarEventViewHolder>() {
-
+    private var selectedPosition = -1
     inner class CalendarEventViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item: CalendarDatabaseItem){
             binding.eventTitle.text = item.name
@@ -22,6 +22,10 @@ class CalendarEventAdapter(private val context: Context, private var events: Lis
 
             binding.startDate.text = if(startDate.minute > 0) context.getString(R.string.start_date, startDate.monthValue, startDate.dayOfMonth, startDate.hour, startDate.minute) else context.getString(R.string.start_date_without_minute, startDate.monthValue, startDate.dayOfMonth, startDate.hour)
             binding.endDate.text = if(endDate.minute > 0) context.getString(R.string.end_date, endDate.monthValue, endDate.dayOfMonth, endDate.hour, endDate.minute) else context.getString(R.string.end_date_without_minute, endDate.monthValue, endDate.dayOfMonth, endDate.hour)
+            binding.eventItem.setOnLongClickListener {
+                setSelectedPosition(bindingAdapterPosition)
+                true
+            }
         }
     }
 
@@ -42,5 +46,10 @@ class CalendarEventAdapter(private val context: Context, private var events: Lis
     fun setEvents(events: List<CalendarDatabaseItem>) {
         this.events = events
         notifyDataSetChanged()
+    }
+
+    fun setSelectedPosition(adapterPosition: Int) {
+        onLongClickItem(selectedPosition, adapterPosition)
+        selectedPosition = adapterPosition
     }
 }

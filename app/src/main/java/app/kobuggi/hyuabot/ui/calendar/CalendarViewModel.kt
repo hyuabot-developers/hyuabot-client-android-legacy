@@ -1,6 +1,5 @@
 package app.kobuggi.hyuabot.ui.calendar
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,18 +15,9 @@ class CalendarViewModel @Inject constructor(private val repository: AppDatabaseR
     val eventsOfMonth = MutableLiveData<List<CalendarDatabaseItem>>()
 
     fun onCalendarMonthChanged(currentMonth: YearMonth){
-        Log.d("CalendarViewModel", "onCalendarMonthChanged: ${currentMonth.year} ${currentMonth.monthValue}")
         viewModelScope.launch {
             repository.getCalendarItemsFilterByMonth(currentMonth).collect{
                 eventsOfMonth.value = it
-            }
-        }
-    }
-
-    fun getAllEvents() {
-        viewModelScope.launch {
-            repository.getAllEvents().collect {
-                Log.d("CalendarViewModel", "getAllEvents: ${it.size}")
             }
         }
     }

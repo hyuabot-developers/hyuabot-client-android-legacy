@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
+import app.kobuggi.hyuabot.data.database.CalendarDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentCalendarBinding
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -34,7 +36,6 @@ class CalendarFragment : Fragment() {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
-        vm.getAllEvents()
         binding.calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer>{
             override fun create(view: View) = MonthViewContainer(view)
             override fun bind(container: MonthViewContainer, month: CalendarMonth) {
@@ -58,7 +59,10 @@ class CalendarFragment : Fragment() {
             }
         }
 
-        val eventAdapter = CalendarEventAdapter(requireContext(), arrayListOf())
+        val eventAdapter = CalendarEventAdapter(requireContext(), arrayListOf(),
+            { item : CalendarDatabaseItem -> run {  } },
+            { previousPosition: Int, currentPosition: Int -> setSelectedItem(previousPosition, currentPosition) }
+        )
         binding.eventListOfMonth.adapter = eventAdapter
         binding.eventListOfMonth.layoutManager = LinearLayoutManager(requireContext())
         vm.eventsOfMonth.observe(viewLifecycleOwner) {
@@ -72,5 +76,12 @@ class CalendarFragment : Fragment() {
         binding.calendarView.setup(firstMonth, lastMonth, firstDayOfWeek)
         binding.calendarView.scrollToMonth(currentMonth)
         return binding.root
+    }
+
+    private fun setSelectedItem(previousPosition: Int, currentPosition: Int) {
+        if(previousPosition != -1) {
+            binding.eventListOfMonth.findViewHolderForAdapterPosition(previousPosition)?.itemView!!.findViewById<TextView>(R.id.event_title).isSelected = false
+        }
+        binding.eventListOfMonth.findViewHolderForAdapterPosition(currentPosition)?.itemView!!.findViewById<TextView>(R.id.event_title).isSelected = true
     }
 }
