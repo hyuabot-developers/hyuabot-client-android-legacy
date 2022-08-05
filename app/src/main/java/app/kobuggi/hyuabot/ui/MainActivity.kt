@@ -43,6 +43,10 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
 
     private fun initAssetPackManager() {
         assetPackManager = AssetPackManagerFactory.getInstance(applicationContext)
+        val assetPath = getAbsolutePath(fastFollowAssetPack, "app.db")
+        if (assetPath != null) {
+            vm.upgradeDatabase(assetPath)
+        }
         registerListener()
     }
 
@@ -77,6 +81,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
                 AssetPackStatus.COMPLETED -> {
                     Log.i("AssetPackManager", "INSTALLED")
                     initFastFollow()
+                    recreate()
                 }
                 else -> {
                     Log.i("AssetPackManager", "UNKNOWN")

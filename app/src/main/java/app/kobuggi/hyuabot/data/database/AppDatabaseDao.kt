@@ -37,4 +37,22 @@ interface AppDatabaseDao {
 
     @Query("SELECT * FROM app WHERE phone is not null and phone != '' and category != :category")
     fun getPhoneItemsExceptByCategory(category: String): Flow<List<AppDatabaseItem>>
+
+    @Query("DELETE FROM calendar")
+    suspend fun deleteEvents()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCalendarItems(vararg calendarDatabaseItem: CalendarDatabaseItem)
+
+    @Query("SELECT * FROM calendar WHERE start_date < :endDate and end_date > :startDate")
+    fun getCalendarItemsFilterByMonth(startDate: String, endDate: String): Flow<List<CalendarDatabaseItem>>
+
+    @Query("SELECT * FROM calendar WHERE start_date >= :startDate and start_date <= :endDate and target_grade = :grade and notification_boolean = 0")
+    fun getCalendarItemsFilterByMonthAndGrade(startDate: String, endDate: String, grade: Int): Flow<List<CalendarDatabaseItem>>
+
+    @Query("SELECT * FROM calendar")
+    fun getAllEvents() : Flow<List<CalendarDatabaseItem>>
+
+    @Query("SELECT * FROM calendar WHERE start_date >= :startDate and start_date <= :endDate and target_grade = :grade")
+    fun getCalendarItemsFilterByGrade(startDate: String, endDate: String, grade: Int): Flow<List<CalendarDatabaseItem>>
 }

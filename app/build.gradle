@@ -37,8 +37,8 @@ android {
         applicationId "app.kobuggi.hyuabot"
         minSdk 28
         targetSdk 33
-        versionCode 203
-        versionName "2.0-internal-220803"
+        versionCode 206
+        versionName "2.0-internal-220805"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "admob_id", properties["ADMOB_ID"]
         buildConfigField "String", "admob_unit_id", properties["ADMOB_UNIT_ID"]
@@ -148,4 +148,8 @@ dependencies {
 
     // Map
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+
+    // Calendar
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.0'
+    implementation 'com.github.kizitonwose:CalendarView:1.0.4'
 }

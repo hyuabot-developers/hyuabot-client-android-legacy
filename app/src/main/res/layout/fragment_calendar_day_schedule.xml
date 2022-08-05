@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto" >
+    <TextView
+        android:id="@+id/calendar_day_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="@color/hanyang_primary"
+        android:padding="20dp"
+        android:gravity="center" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendar_day_schedule_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/calendar_day_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/no_search_schedule"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
+        android:background="@color/cardBackground"
+        android:padding="20dp"
+        android:gravity="center" />
+</LinearLayout>
