@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.contact
 
+import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -88,7 +89,11 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
 
     private fun callToNumber(name: String, phone: String) {
         Toast.makeText(requireContext(), requireContext().getString(R.string.call_dialog_message, name, phone), Toast.LENGTH_SHORT).show()
-        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-        startActivity(intent)
+        try {
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), requireContext().getString(R.string.no_dial_app), Toast.LENGTH_SHORT).show()
+        }
     }
 }
