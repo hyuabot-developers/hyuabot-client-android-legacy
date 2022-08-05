@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.CalendarDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentCalendarBinding
@@ -22,6 +23,7 @@ import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.MonthScrollListener
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
 import java.time.YearMonth
 import java.time.temporal.WeekFields
 import java.util.*
@@ -38,6 +40,7 @@ class CalendarFragment : Fragment() {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
+        (binding.calendarView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.calendarView.monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer>{
             override fun create(view: View) = MonthViewContainer(view)
             override fun bind(container: MonthViewContainer, month: CalendarMonth) {
@@ -52,6 +55,20 @@ class CalendarFragment : Fragment() {
                     container.dayTextView.setTextColor(ResourcesCompat.getColor(resources, R.color.primaryTextColor, null))
                 } else {
                     container.dayTextView.setTextColor(Color.GRAY)
+                }
+                when(countScheduleOfDay(day)){
+                    0 -> {
+                        container.firstSchedule.background = null
+                        container.secondSchedule.background = null
+                    }
+                    1 -> {
+                        container.firstSchedule.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.hanyang_primary, null))
+                        container.secondSchedule.background = null
+                    }
+                    else -> {
+                        container.firstSchedule.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.hanyang_primary, null))
+                        container.secondSchedule.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.hanyang_secondary, null))
+                    }
                 }
             }
         }
@@ -69,6 +86,7 @@ class CalendarFragment : Fragment() {
         binding.eventListOfMonth.layoutManager = LinearLayoutManager(requireContext())
         vm.eventsOfMonth.observe(viewLifecycleOwner) {
             eventAdapter.setEvents(it)
+            binding.calendarView.notifyMonthChanged(vm.currentMonthData.value!!)
         }
 
         val currentMonth = YearMonth.now()
@@ -95,5 +113,14 @@ class CalendarFragment : Fragment() {
             binding.eventListOfMonth.findViewHolderForAdapterPosition(previousPosition)?.itemView!!.findViewById<TextView>(R.id.event_title).isSelected = false
         }
         binding.eventListOfMonth.findViewHolderForAdapterPosition(currentPosition)?.itemView!!.findViewById<TextView>(R.id.event_title).isSelected = true
+    }
+
+    private fun countScheduleOfDay(day: CalendarDay): Int {
+        val startOfDay = LocalDateTime.of(day.date, LocalDateTime.MIN.toLocalTime())
+        val endOfDay = LocalDateTime.of(day.date, LocalDateTime.MAX.toLocalTime())
+        return vm.eventsOfMonth.value?.count {
+            (LocalDateTime.parse(it.startDate!!.split("+")[0]) <= startOfDay && LocalDateTime.parse(it.endDate!!.split("+")[0]) > startOfDay) ||
+            (LocalDateTime.parse(it.startDate.split("+")[0]) in startOfDay..endOfDay)
+        } ?: 0
     }
 }

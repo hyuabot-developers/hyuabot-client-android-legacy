@@ -1,10 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/calendarDayText"
+    android:id="@+id/exFiveDayLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:textSize="16sp"
-    tools:text="22" />
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="1dp"
+        android:background="@color/cardBackground">
+
+        <TextView
+            android:id="@+id/calendar_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            tools:text="24" />
+
+        <View
+            android:id="@+id/calendar_day_schedule_first"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="18dp"
+            android:background="@color/hanyang_primary" />
+
+        <View
+            android:id="@+id/calendar_day_schedule_second"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@color/hanyang_secondary" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

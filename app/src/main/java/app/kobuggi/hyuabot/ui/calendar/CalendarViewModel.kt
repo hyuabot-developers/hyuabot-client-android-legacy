@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarViewModel @Inject constructor(private val repository: AppDatabaseRepository) : ViewModel() {
     val eventsOfMonth = MutableLiveData<List<CalendarDatabaseItem>>()
-    private val currentMonthData = MutableLiveData<YearMonth>()
+    val currentMonthData = MutableLiveData<YearMonth>()
     private val gradeData = MutableLiveData(0)
 
     fun onCalendarMonthChanged(currentMonth: YearMonth){

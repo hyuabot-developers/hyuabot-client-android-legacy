@@ -6,4 +6,6 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 
 class DayViewContainer(view: View) : ViewContainer(view) {
     val dayTextView = ItemDayLayoutBinding.bind(view).calendarDayText
+    val firstSchedule = ItemDayLayoutBinding.bind(view).calendarDayScheduleFirst
+    val secondSchedule = ItemDayLayoutBinding.bind(view).calendarDayScheduleSecond
 }
