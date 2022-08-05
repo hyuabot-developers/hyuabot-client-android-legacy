@@ -33,6 +33,7 @@ class ScheduleGroupAdapter(private val context: Context, private val groupedSche
                 else -> {
                     binding.scheduleGroupName.text = context.getString(R.string.target_grade_all)
                     binding.scheduleGroupName.setBackgroundColor(ResourcesCompat.getColor(context.resources, R.color.cardBackground, null))
+                    binding.scheduleGroupName.setTextColor(ResourcesCompat.getColor(context.resources, R.color.primaryTextColor, null))
                 }
             }
             val itemAdapter = ScheduleItemAdapter(context, value)
