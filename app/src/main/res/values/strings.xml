@@ -104,4 +104,5 @@
     <string name="schedule_date">%d월 %d일의 일정</string>
     <string name="schedule_item_end_time">~ %d년 %d월 %d일 %d시 %d분</string>
     <string name="schedule_item_end_time_without_minute">~ %d년 %d월 %d일 %d시</string>
+    <string name="no_search_schedule">일정이 없습니다.</string>
 </resources>

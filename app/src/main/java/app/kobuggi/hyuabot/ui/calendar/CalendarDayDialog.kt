@@ -33,6 +33,10 @@ class CalendarDayDialog : DialogFragment() {
             }
         }
         val groupAdapter = ScheduleGroupAdapter(requireContext(), groupedSchedule.filter { it.value.isNotEmpty() })
+        if (groupedSchedule.filter { it.value.isNotEmpty() }.keys.isEmpty()) {
+            binding.calendarDayNoData.visibility = View.VISIBLE
+            binding.calendarDayScheduleList.visibility = View.GONE
+        }
         binding.calendarDayScheduleList.adapter = groupAdapter
         binding.calendarDayScheduleList.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
