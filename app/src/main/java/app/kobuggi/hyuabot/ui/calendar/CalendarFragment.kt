@@ -53,22 +53,14 @@ class CalendarFragment : Fragment() {
                 container.dayTextView.text = day.date.dayOfMonth.toString()
                 if (day.owner == DayOwner.THIS_MONTH){
                     container.dayTextView.setTextColor(ResourcesCompat.getColor(resources, R.color.primaryTextColor, null))
+                    val eventsOfDay = countScheduleOfDay(day)
+                    container.firstSchedule.visibility = if (eventsOfDay.containsKey(1)) View.VISIBLE else View.INVISIBLE
+                    container.secondSchedule.visibility = if (eventsOfDay.containsKey(2)) View.VISIBLE else View.INVISIBLE
+                    container.thirdSchedule.visibility = if (eventsOfDay.containsKey(3)) View.VISIBLE else View.INVISIBLE
+                    container.fourthSchedule.visibility = if (eventsOfDay.containsKey(4)) View.VISIBLE else View.INVISIBLE
+                    container.otherSchedule.visibility = if (eventsOfDay.keys.any { it < 1 }) View.VISIBLE else View.INVISIBLE
                 } else {
                     container.dayTextView.setTextColor(Color.GRAY)
-                }
-                when(countScheduleOfDay(day)){
-                    0 -> {
-                        container.firstSchedule.background = null
-                        container.secondSchedule.background = null
-                    }
-                    1 -> {
-                        container.firstSchedule.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.hanyang_primary, null))
-                        container.secondSchedule.background = null
-                    }
-                    else -> {
-                        container.firstSchedule.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.hanyang_primary, null))
-                        container.secondSchedule.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.hanyang_secondary, null))
-                    }
                 }
             }
         }
@@ -115,12 +107,12 @@ class CalendarFragment : Fragment() {
         binding.eventListOfMonth.findViewHolderForAdapterPosition(currentPosition)?.itemView!!.findViewById<TextView>(R.id.event_title).isSelected = true
     }
 
-    private fun countScheduleOfDay(day: CalendarDay): Int {
+    private fun countScheduleOfDay(day: CalendarDay): Map<Int, List<CalendarDatabaseItem>> {
         val startOfDay = LocalDateTime.of(day.date, LocalDateTime.MIN.toLocalTime())
         val endOfDay = LocalDateTime.of(day.date, LocalDateTime.MAX.toLocalTime())
-        return vm.eventsOfMonth.value?.count {
+        return vm.eventsOfMonth.value?.filter {
             (LocalDateTime.parse(it.startDate!!.split("+")[0]) <= startOfDay && LocalDateTime.parse(it.endDate!!.split("+")[0]) > startOfDay) ||
             (LocalDateTime.parse(it.startDate.split("+")[0]) in startOfDay..endOfDay)
-        } ?: 0
+        }?.groupBy { it.targetGrade!! } ?: mapOf()
     }
 }
