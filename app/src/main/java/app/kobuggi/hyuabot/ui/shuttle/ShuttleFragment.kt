@@ -65,6 +65,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
+        vm.fetchShuttleTimetable()
         checkLocationPermission()
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
