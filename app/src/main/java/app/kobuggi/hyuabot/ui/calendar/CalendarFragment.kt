@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.CalendarDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentCalendarBinding
+import app.kobuggi.hyuabot.utils.Event
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -59,6 +60,13 @@ class CalendarFragment : Fragment() {
                     container.thirdSchedule.visibility = if (eventsOfDay.containsKey(3)) View.VISIBLE else View.INVISIBLE
                     container.fourthSchedule.visibility = if (eventsOfDay.containsKey(4)) View.VISIBLE else View.INVISIBLE
                     container.otherSchedule.visibility = if (eventsOfDay.keys.any { it < 1 }) View.VISIBLE else View.INVISIBLE
+
+                    container.dayItem.setOnClickListener {
+                        vm.clickedDate.value = day
+                        vm.showSchedule.value = eventsOfDay
+                        vm.showDaySchedule.value = Event(true)
+                    }
+
                 } else {
                     container.dayTextView.setTextColor(Color.GRAY)
                 }
@@ -95,6 +103,12 @@ class CalendarFragment : Fragment() {
             }
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
                 vm.filterByGrade(position)
+            }
+        }
+        vm.showDaySchedule.observe(viewLifecycleOwner) {
+            if (it.peekContent()){
+                val dialog = CalendarDayDialog()
+                dialog.show(childFragmentManager, "dialog")
             }
         }
         return binding.root
