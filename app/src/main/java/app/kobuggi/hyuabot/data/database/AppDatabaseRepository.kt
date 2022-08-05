@@ -21,5 +21,6 @@ class AppDatabaseRepository(private val dao: AppDatabaseDao) {
 
     fun getCalendarItemsFilterByMonth(currentMonth: YearMonth) : Flow<List<CalendarDatabaseItem>> = dao.getCalendarItemsFilterByMonth("${currentMonth.year}-${currentMonth.monthValue.toString().padStart(2, '0')}-01T00:00+09:00", "${currentMonth.year}-${(currentMonth.monthValue + 1).toString().padStart(2, '0')}-01T00:00+09:00")
     fun getCalendarNotificationItemsFilterByDay(targetGrade: Int, targetDate: LocalDate) : Flow<List<CalendarDatabaseItem>> = dao.getCalendarItemsFilterByMonthAndGrade("${targetDate.year}-${targetDate.monthValue.toString().padStart(2, '0')}-${targetDate.dayOfMonth}T00:00+09:00", "${targetDate.year}-${targetDate.monthValue.toString().padStart(2, '0')}-${targetDate.dayOfMonth}T23:59+09:00", targetGrade)
+    fun getCalendarItemsFilterByGrade(targetGrade: Int, currentMonth: YearMonth) : Flow<List<CalendarDatabaseItem>> = dao.getCalendarItemsFilterByGrade("${currentMonth.year}-${currentMonth.monthValue.toString().padStart(2, '0')}-01T00:00+09:00", "${currentMonth.year}-${(currentMonth.monthValue + 1).toString().padStart(2, '0')}-01T00:00+09:00", targetGrade)
     fun getAllEvents(): Flow<List<CalendarDatabaseItem>> = dao.getAllEvents()
 }

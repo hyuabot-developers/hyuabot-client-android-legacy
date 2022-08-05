@@ -84,7 +84,7 @@ class CalendarFragment : Fragment() {
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {
             }
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.d("spinner", "selected: $position")
+                vm.filterByGrade(position)
             }
         }
         return binding.root

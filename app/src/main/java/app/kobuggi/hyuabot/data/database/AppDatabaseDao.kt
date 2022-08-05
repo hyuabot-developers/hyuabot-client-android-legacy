@@ -52,4 +52,7 @@ interface AppDatabaseDao {
 
     @Query("SELECT * FROM calendar")
     fun getAllEvents() : Flow<List<CalendarDatabaseItem>>
+
+    @Query("SELECT * FROM calendar WHERE start_date >= :startDate and start_date <= :endDate and target_grade = :grade")
+    fun getCalendarItemsFilterByGrade(startDate: String, endDate: String, grade: Int): Flow<List<CalendarDatabaseItem>>
 }
