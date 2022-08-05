@@ -81,6 +81,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
                 AssetPackStatus.COMPLETED -> {
                     Log.i("AssetPackManager", "INSTALLED")
                     initFastFollow()
+                    recreate()
                 }
                 else -> {
                     Log.i("AssetPackManager", "UNKNOWN")
