@@ -105,4 +105,6 @@
     <string name="schedule_item_end_time">~ %d년 %d월 %d일 %d시 %d분</string>
     <string name="schedule_item_end_time_without_minute">~ %d년 %d월 %d일 %d시</string>
     <string name="no_search_schedule">일정이 없습니다.</string>
+    <string name="current_seat_header">잔여 좌석</string>
+    <string name="total_seat_header">전체 좌석</string>
 </resources>
