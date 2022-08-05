@@ -102,4 +102,6 @@
     <string name="target_grade_3">3학년</string>
     <string name="target_grade_4">4학년 이상</string>
     <string name="schedule_date">%d월 %d일의 일정</string>
+    <string name="schedule_item_end_time">~ %d년 %d월 %d일 %d시 %d분</string>
+    <string name="schedule_item_end_time_without_minute">~ %d년 %d월 %d일 %d시</string>
 </resources>
