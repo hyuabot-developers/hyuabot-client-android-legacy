@@ -132,5 +132,8 @@ class BusTimetableFragment: Fragment() {
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+        val window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ResourcesCompat.getColor(resources, R.color.hanyang_primary, null)
     }
 }
