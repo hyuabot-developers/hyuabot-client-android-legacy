@@ -14,6 +14,9 @@ import com.google.android.play.core.assetpacks.AssetPackManager
 import com.google.android.play.core.assetpacks.AssetPackManagerFactory
 import com.google.android.play.core.assetpacks.AssetPackStateUpdateListener
 import com.google.android.play.core.assetpacks.model.AssetPackStatus
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,6 +27,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     lateinit var navController: NavController
     private lateinit var assetPackManager: AssetPackManager
     private val fastFollowAssetPack = "fast_follow_pack"
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
         navController = navigationFragmentHost?.navController ?: return
         binding.bottomNavigationMenu.setupWithNavController(navController)
         initAssetPackManager()
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onDismiss(dialogInterface: DialogInterface?) {

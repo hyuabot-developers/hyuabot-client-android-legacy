@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentSubwayBinding
 import app.kobuggi.hyuabot.ui.MainActivity
-import app.kobuggi.hyuabot.ui.bus.BusFragmentDirections
-import app.kobuggi.hyuabot.ui.subway.SubwayArrivalListAdapter
 import app.kobuggi.hyuabot.utils.Event
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +55,9 @@ class SubwayFragment : Fragment() {
                 val subwayRouteColor = vm.timetableRouteColor
                 val subwayRouteHeading = vm.timetableHeading
                 val action = SubwayFragmentDirections.openSubwayTimetable(subwayRouteName.value!!, subwayRouteHeading.value!!, subwayRouteColor.value!!)
-                (requireActivity() as MainActivity).navController.navigate(action)
+                if (requireActivity() is MainActivity){
+                    (requireActivity() as MainActivity).navController.navigate(action)
+                }
             }
         }
         Toast.makeText(requireContext(), R.string.click_card_to_show_timetable, Toast.LENGTH_SHORT).show()
@@ -65,6 +67,12 @@ class SubwayFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         vm.startFetchData()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Subway")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "SubwayFragment")
+            }
+        }
     }
 
     override fun onPause() {

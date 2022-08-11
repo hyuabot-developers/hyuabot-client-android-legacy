@@ -18,12 +18,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.AppDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentMapBinding
+import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.maps.android.clustering.ClusterManager
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -196,6 +199,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 binding.searchInput.clearFocus()
                 binding.searchInput.onActionViewCollapsed()
                 vm.setSearchInputFocus(false)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Map")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "MapFragment")
             }
         }
     }

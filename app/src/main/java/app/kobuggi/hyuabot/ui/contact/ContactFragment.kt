@@ -12,7 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentContactBinding
+import app.kobuggi.hyuabot.ui.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,5 +62,15 @@ class ContactFragment : Fragment() {
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Contact")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ContactFragment")
+            }
+        }
     }
 }

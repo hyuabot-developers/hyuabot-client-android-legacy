@@ -3,7 +3,6 @@ package app.kobuggi.hyuabot.ui.calendar
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,10 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.CalendarDatabaseItem
 import app.kobuggi.hyuabot.databinding.FragmentCalendarBinding
+import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.utils.Event
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -137,6 +139,12 @@ class CalendarFragment : Fragment(), DialogInterface.OnDismissListener {
 
     override fun onResume() {
         super.onResume()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Calendar")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "CalendarFragment")
+            }
+        }
         vm.showDaySchedule.value = Event(false)
     }
 }

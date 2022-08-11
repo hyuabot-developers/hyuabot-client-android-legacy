@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.databinding.FragmentBusBinding
 import app.kobuggi.hyuabot.ui.MainActivity
-import app.kobuggi.hyuabot.ui.shuttle.ShuttleFragmentDirections
-import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
 import app.kobuggi.hyuabot.utils.Event
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,6 +61,12 @@ class BusFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         vm.startFetchData()
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Bus")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "app.kobuggi.hyuabot.ui.bus.BusFragment")
+            }
+        }
     }
 
     override fun onPause() {

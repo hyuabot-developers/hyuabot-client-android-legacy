@@ -10,7 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.databinding.FragmentCafeteriaBinding
+import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.utils.Event
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,6 +47,12 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showCafeteriaLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent() && vm.cafeteriaLocation.value != null && vm.cafeteriaName.value != null) {
                 val dialog = CafeteriaLocationDialog(vm.cafeteriaLocation.value!!, vm.cafeteriaName.value!!)
+                if (requireActivity() is MainActivity){
+                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT){
+                        param(FirebaseAnalytics.Param.ITEM_ID, "Cafeteria Location Dialog")
+                        param(FirebaseAnalytics.Param.ITEM_NAME, vm.cafeteriaName.value!!)
+                    }
+                }
                 dialog.show(childFragmentManager, "cafeteria_location_dialog")
             }
         }
@@ -53,6 +62,12 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
     override fun onResume() {
         super.onResume()
         vm.showCafeteriaLocationDialog.value = Event(false)
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Cafeteria")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "CafeteriaFragment")
+            }
+        }
     }
 
     override fun onDismiss(p0: DialogInterface?) {

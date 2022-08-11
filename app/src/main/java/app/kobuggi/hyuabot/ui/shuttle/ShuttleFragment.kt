@@ -22,6 +22,8 @@ import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
 import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -107,6 +109,12 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent()) {
                 val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
+                if (requireActivity() is MainActivity){
+                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, "Shuttle Stop Location Dialog")
+                        param(FirebaseAnalytics.Param.ITEM_NAME, getString(vm.shuttleStopName.value!!))
+                    }
+                }
                 dialog.show(childFragmentManager, "ShuttleStopLocationDialog")
             }
         }
@@ -118,6 +126,12 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showShuttleStopLocationDialog.value = Event(false)
         vm.openShuttleTimetableEvent.value = Event(false)
         vm.startFetchData()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Shuttle")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ShuttleFragment")
+            }
+        }
     }
 
     override fun onPause() {
