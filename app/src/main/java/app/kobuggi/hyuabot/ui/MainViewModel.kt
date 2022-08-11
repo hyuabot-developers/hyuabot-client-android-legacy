@@ -1,6 +1,5 @@
 package app.kobuggi.hyuabot.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
@@ -15,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val appDatabaseRepository: AppDatabaseRepository) : ViewModel() {
     fun upgradeDatabase (assetsPath: String){
-        Log.d("MainViewModel", "upgradeDatabase")
         // 데이터베이스 업데이트
         val database = Room.databaseBuilder(GlobalApplication.applicationContext(), AppDatabase::class.java, assetsPath)
             .fallbackToDestructiveMigration()

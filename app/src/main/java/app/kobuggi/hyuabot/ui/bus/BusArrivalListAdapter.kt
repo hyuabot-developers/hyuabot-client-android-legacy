@@ -2,7 +2,6 @@ package app.kobuggi.hyuabot.ui.bus
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.BusQuery
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.CardBusArrivalBinding
-import com.google.android.gms.maps.model.LatLng
 import java.time.LocalTime
 
 class BusArrivalListAdapter(private val context: Context, private var busList: List<BusQuery.Bus>, private val onClickTimetableButton: (routeName: String, routeColor: String) -> Unit) : RecyclerView.Adapter<BusArrivalListAdapter.BusArrivalViewHolder>() {
@@ -85,7 +83,6 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
                     }
                 }
             }
-            Log.d("BusArrivalListAdapter", "${busList[position].realtime.size}  ${busList[position].timetable.size}")
             when(busList[position].realtime.size + busList[position].timetable.filter { LocalTime.parse(it.departureTime.toString()).isAfter(now) }.size){
                 0 -> {
                     binding.busArrivalFirst.text = context.getString(R.string.out_of_service)

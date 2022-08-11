@@ -61,7 +61,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-        Log.d("onCreate", "${vm.sortedStopList.value}")
     }
     override fun onCreateView(
         inflater: LayoutInflater,

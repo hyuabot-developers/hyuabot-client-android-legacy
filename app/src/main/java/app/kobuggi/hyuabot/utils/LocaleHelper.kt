@@ -20,7 +20,6 @@ class LocaleHelper {
         }
 
         fun setLocale(localeCode: String){
-            Log.d("LocaleHelper", "setLocale: $localeCode")
             locale = Locale(localeCode)
         }
     }

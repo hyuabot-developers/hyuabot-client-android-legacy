@@ -56,7 +56,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         binding.searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("MapFragment", "onQueryTextSubmit: $query")
                 if (query != null && query.isNotEmpty()) {
                     vm.getSearchResult(query)
                 }
@@ -64,7 +63,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                Log.d("MapFragment", "onQueryTextChange: $query")
                 if (query != null && query.isNotEmpty()) {
                     vm.getSearchResult(query)
                 }

@@ -1,7 +1,6 @@
 package app.kobuggi.hyuabot.ui.contact
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -50,7 +49,6 @@ class ContactFragment : Fragment() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                Log.d("query", binding.contactViewpager.currentItem.toString())
                 if (query != null) {
                     vm.queryString.value = query
                 }

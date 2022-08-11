@@ -76,7 +76,6 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
             binding.shuttleTimeCFourth.text = ""
             binding.shuttleTimeCFifth.text = ""
 
-            Log.d("ShuttleArrivalListAdapter", "timetableByStop: ${timetableByStop.size}")
             timetableByStop.filter { it.shuttleType == "DH" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.forEachIndexed { index, timetable ->
                 val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong())
                 val remainedTime = Duration.between(now, shuttleTime).toMinutes()
