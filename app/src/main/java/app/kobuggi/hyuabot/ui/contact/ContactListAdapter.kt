@@ -15,7 +15,7 @@ class ContactListAdapter(private var result: List<AppDatabaseItem>, private val 
             binding.searchResultName.text = item.name
             binding.searchResultPhone.text = item.phone
             binding.searchResultItem.setOnLongClickListener {
-                setSelectedPosition(adapterPosition)
+                setSelectedPosition(bindingAdapterPosition)
                 true
             }
             binding.searchResultItem.setOnClickListener {

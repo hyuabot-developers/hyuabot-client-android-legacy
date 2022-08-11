@@ -82,7 +82,7 @@ class CalendarFragment : Fragment(), DialogInterface.OnDismissListener {
         }
 
         val eventAdapter = CalendarEventAdapter(requireContext(), arrayListOf(),
-            { item : CalendarDatabaseItem -> run {  } },
+            { run {  } },
             { previousPosition: Int, currentPosition: Int -> setSelectedItem(previousPosition, currentPosition) }
         )
         binding.eventListOfMonth.adapter = eventAdapter
