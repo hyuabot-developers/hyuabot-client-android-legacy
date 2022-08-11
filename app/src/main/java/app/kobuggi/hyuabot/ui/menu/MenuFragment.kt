@@ -18,6 +18,8 @@ import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.ui.menu.info.AppInfoDialog
 import app.kobuggi.hyuabot.ui.menu.language.AppLanguageDialog
 import app.kobuggi.hyuabot.ui.menu.theme.AppThemeDialog
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -75,30 +77,37 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
             when(it.peekContent()){
                 R.string.reading_room -> {
                     val action = MenuFragmentDirections.openReadingRoom()
+                    logEvent("Reading Room Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.map -> {
                     val action = MenuFragmentDirections.openMap()
+                    logEvent("Map Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.contact -> {
                     val action = MenuFragmentDirections.openContact()
+                    logEvent("Contact Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.calendar -> {
                     val action = MenuFragmentDirections.openCalendar()
+                    logEvent("Calendar Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.language -> {
                     val dialog = AppLanguageDialog()
+                    logEvent("Language Dialog")
                     dialog.show(childFragmentManager, "AppLanguageDialog")
                 }
                 R.string.app_theme -> {
                     val dialog = AppThemeDialog()
+                    logEvent("Theme Dialog")
                     dialog.show(childFragmentManager, "AppThemeDialog")
                 }
                 R.string.donation -> {
                     try {
+                        logEvent("Donation")
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qr.kakaopay.com/FWxVPo8iO"))
                         startActivity(intent)
                     } catch (e: ActivityNotFoundException) {
@@ -106,6 +115,7 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                     }
                 }
                 R.string.scoring -> {
+                    logEvent("Scoring")
                     val uri = Uri.parse("market://details?id=app.kobuggi.hyuabot")
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
@@ -116,6 +126,7 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                     }
                 }
                 R.string.developer_email -> {
+                    logEvent("Developer Email")
                     try {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:jil8885@hanyang.ac.kr"))
                         startActivity(intent)
@@ -124,6 +135,7 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                     }
                 }
                 R.string.developer_chat -> {
+                    logEvent("Developer Chat")
                     try {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
                         startActivity(intent)
@@ -132,6 +144,7 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                     }
                 }
                 R.string.about -> {
+                    logEvent("About Dialog")
                     val dialog = AppInfoDialog()
                     dialog.show(childFragmentManager, "AppInfoDialog")
                 }
@@ -154,6 +167,14 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
         vm.moveToSomewhere(0)
         if (requireActivity() is MainActivity){
             (requireActivity() as MainActivity).onDismiss(dialogInterface)
+        }
+    }
+
+    private fun logEvent(eventName: String){
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT){
+                param(FirebaseAnalytics.Param.ITEM_ID, eventName)
+            }
         }
     }
 }
