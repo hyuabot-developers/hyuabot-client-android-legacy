@@ -63,8 +63,9 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         super.onResume()
         vm.showCafeteriaLocationDialog.value = Event(false)
         if (requireActivity() is MainActivity){
-            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT){
-                param(FirebaseAnalytics.Param.ITEM_ID, "Cafeteria Fragment")
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Cafeteria")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "CafeteriaFragment")
             }
         }
     }

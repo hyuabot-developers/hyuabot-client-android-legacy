@@ -46,12 +46,6 @@ class BusFragment : Fragment() {
                 val busTimetableItem = vm.timetableRouteName.value!!
                 val busRouteColor = vm.timetableRouteColor.value!!
                 val action = BusFragmentDirections.openBusTimetable(busTimetableItem, busRouteColor)
-                if (requireActivity() is MainActivity){
-                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                        param(FirebaseAnalytics.Param.ITEM_ID, "Bus Timetable Open")
-                        param(FirebaseAnalytics.Param.ITEM_NAME, busTimetableItem)
-                    }
-                }
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }
@@ -68,8 +62,9 @@ class BusFragment : Fragment() {
         super.onResume()
         vm.startFetchData()
         if (requireActivity() is MainActivity){
-            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                param(FirebaseAnalytics.Param.ITEM_ID, "Bus Fragment")
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Bus")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "app.kobuggi.hyuabot.ui.bus.BusFragment")
             }
         }
     }

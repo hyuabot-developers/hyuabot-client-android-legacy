@@ -3,7 +3,6 @@ package app.kobuggi.hyuabot.ui.bus.timetable
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentBusTimetableBinding
-import com.google.android.material.appbar.AppBarLayout
+import app.kobuggi.hyuabot.ui.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -47,6 +48,13 @@ class BusTimetableFragment: Fragment() {
         val context = requireContext()
         val routeName: String = args.busTimetableRoute
         val routeColor: String = args.busRouteColor
+
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Bus Timetable")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "BusTimetableFragment")
+            }
+        }
 
         val window = requireActivity().window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)

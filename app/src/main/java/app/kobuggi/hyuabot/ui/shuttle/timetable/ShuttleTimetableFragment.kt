@@ -10,7 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentShuttleTimetableBinding
+import app.kobuggi.hyuabot.ui.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -68,6 +71,16 @@ class ShuttleTimetableFragment: Fragment() {
             }
             if (it.any { shuttleItem -> shuttleItem.shuttleType == item.shuttleType }){
                 binding.shuttleTimetableNoData.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Shuttle Timetable")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ShuttleTimetableFragment")
             }
         }
     }

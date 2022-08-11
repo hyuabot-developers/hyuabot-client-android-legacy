@@ -77,22 +77,18 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
             when(it.peekContent()){
                 R.string.reading_room -> {
                     val action = MenuFragmentDirections.openReadingRoom()
-                    logEvent("Reading Room Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.map -> {
                     val action = MenuFragmentDirections.openMap()
-                    logEvent("Map Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.contact -> {
                     val action = MenuFragmentDirections.openContact()
-                    logEvent("Contact Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.calendar -> {
                     val action = MenuFragmentDirections.openCalendar()
-                    logEvent("Calendar Fragment")
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
                 R.string.language -> {
@@ -151,6 +147,16 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
             }
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Menu")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "MenuFragment")
+            }
+        }
     }
 
     override fun onPause() {

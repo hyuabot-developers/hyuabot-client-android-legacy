@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.databinding.FragmentReadingRoomBinding
+import app.kobuggi.hyuabot.ui.MainActivity
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,5 +41,15 @@ class ReadingRoomFragment : Fragment() {
             binding.refreshLayout.isRefreshing = false
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Reading Room")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "ReadingRoomFragment")
+            }
+        }
     }
 }

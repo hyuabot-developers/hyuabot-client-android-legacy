@@ -56,10 +56,6 @@ class SubwayFragment : Fragment() {
                 val subwayRouteHeading = vm.timetableHeading
                 val action = SubwayFragmentDirections.openSubwayTimetable(subwayRouteName.value!!, subwayRouteHeading.value!!, subwayRouteColor.value!!)
                 if (requireActivity() is MainActivity){
-                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                        param(FirebaseAnalytics.Param.ITEM_ID, "Subway Timetable Open")
-                        param(FirebaseAnalytics.Param.ITEM_NAME, "${subwayRouteName.value!!} ${subwayRouteHeading.value!!}")
-                    }
                     (requireActivity() as MainActivity).navController.navigate(action)
                 }
             }
@@ -71,9 +67,10 @@ class SubwayFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         vm.startFetchData()
-        if (requireActivity() is MainActivity){
-            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                param(FirebaseAnalytics.Param.ITEM_ID, "Subway Fragment")
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW){
+                param(FirebaseAnalytics.Param.SCREEN_NAME, "Subway")
+                param(FirebaseAnalytics.Param.SCREEN_CLASS, "SubwayFragment")
             }
         }
     }
