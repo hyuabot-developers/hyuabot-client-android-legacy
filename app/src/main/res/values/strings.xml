@@ -107,4 +107,7 @@
     <string name="no_search_schedule">일정이 없습니다.</string>
     <string name="current_seat_header">잔여 좌석</string>
     <string name="total_seat_header">전체 좌석</string>
+    <string name="campus">캠퍼스 선택</string>
+    <string name="seoul_campus">서울</string>
+    <string name="erica_campus">에리카</string>
 </resources>

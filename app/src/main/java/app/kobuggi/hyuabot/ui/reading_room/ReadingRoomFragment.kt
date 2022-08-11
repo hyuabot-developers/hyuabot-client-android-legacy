@@ -30,6 +30,9 @@ class ReadingRoomFragment : Fragment() {
         vm.rooms.observe(viewLifecycleOwner) {
             adapter.setReadingRooms(it)
         }
+        vm.isCampus.observe(viewLifecycleOwner) {
+            vm.fetchReadingRoomData()
+        }
         return binding.root
     }
 }
