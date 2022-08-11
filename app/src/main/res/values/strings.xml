@@ -110,4 +110,14 @@
     <string name="campus">캠퍼스 선택</string>
     <string name="seoul_campus">서울</string>
     <string name="erica_campus">에리카</string>
+    <string name="room_name_1_2f">제1열람실 (2F)</string>
+    <string name="room_name_2_4f">제2열람실 (4F)</string>
+    <string name="room_name_3_4f">제3열람실 (4F)</string>
+    <string name="holmz_room">HOLMZ 열람석</string>
+    <string name="law_room_1_3f">법학 제1열람실[3층]</string>
+    <string name="law_room_2a_4f">법학 제2열람실A[4층]</string>
+    <string name="law_room_2b_4f">법학 제2열람실B[4층]</string>
+    <string name="room_name_1_underground_1f">제1열람실[지하1층]</string>
+    <string name="room_name_2_underground_1f">제2열람실[지하1층]</string>
+    <string name="room_name_3_3f">제3열람실[3층]</string>
 </resources>
