@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.calendar
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -30,7 +31,7 @@ import java.time.temporal.WeekFields
 import java.util.*
 
 @AndroidEntryPoint
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<CalendarViewModel>()
     private lateinit var binding: FragmentCalendarBinding
 
@@ -128,5 +129,14 @@ class CalendarFragment : Fragment() {
             (LocalDateTime.parse(it.startDate!!.split("+")[0]) <= startOfDay && LocalDateTime.parse(it.endDate!!.split("+")[0]) > startOfDay) ||
             (LocalDateTime.parse(it.startDate.split("+")[0]) in startOfDay..endOfDay)
         }?.groupBy { it.targetGrade!! } ?: mapOf()
+    }
+
+    override fun onDismiss(dialogInterface: DialogInterface) {
+        vm.showDaySchedule.value = Event(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.showDaySchedule.value = Event(false)
     }
 }
