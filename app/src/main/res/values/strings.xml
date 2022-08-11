@@ -120,4 +120,7 @@
     <string name="room_name_1_underground_1f">제1열람실[지하1층]</string>
     <string name="room_name_2_underground_1f">제2열람실[지하1층]</string>
     <string name="room_name_3_3f">제3열람실[3층]</string>
+    <string name="no_email_app">이메일 전송을 지원하는 앱이 없습니다.</string>
+    <string name="no_internet_app">인터넷 앱이 없습니다.</string>
+    <string name="no_dial_app">전화를 걸 수 있는 앱이 없습니다.</string>
 </resources>

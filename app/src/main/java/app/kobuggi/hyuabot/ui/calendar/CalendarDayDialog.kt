@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.calendar
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,5 +49,12 @@ class CalendarDayDialog : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (parentFragment is CalendarFragment) {
+            (parentFragment as CalendarFragment).onDismiss(dialog)
+        }
     }
 }

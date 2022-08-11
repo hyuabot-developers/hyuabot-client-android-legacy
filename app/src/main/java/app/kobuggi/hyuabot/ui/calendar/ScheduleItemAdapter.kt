@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 
 class ScheduleItemAdapter(private val context: Context, private val scheduleList: List<CalendarDatabaseItem>) : RecyclerView.Adapter<ScheduleItemAdapter.ScheduleItemViewHolder>() {
     inner class ScheduleItemViewHolder(val binding: ItemCalendarScheduleItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(value: CalendarDatabaseItem) {
+        fun bind(position: Int, value: CalendarDatabaseItem) {
             binding.scheduleItemName.text = value.name
 
             val endDate = LocalDateTime.parse(value.endDate!!.split("+")[0])
@@ -19,6 +19,10 @@ class ScheduleItemAdapter(private val context: Context, private val scheduleList
                 binding.scheduleItemEndTime.text = context.getString(R.string.schedule_item_end_time, endDate.year, endDate.monthValue, endDate.dayOfMonth, endDate.hour, endDate.minute)
             } else {
                 binding.scheduleItemEndTime.text = context.getString(R.string.schedule_item_end_time_without_minute, endDate.year, endDate.monthValue, endDate.dayOfMonth, endDate.hour)
+            }
+
+            if (position == scheduleList.size - 1){
+                binding.scheduleItemSeparator.visibility = ViewGroup.GONE
             }
         }
     }
@@ -29,7 +33,7 @@ class ScheduleItemAdapter(private val context: Context, private val scheduleList
     }
 
     override fun onBindViewHolder(holder: ScheduleItemViewHolder, position: Int) {
-        holder.bind(scheduleList[position])
+        holder.bind(position, scheduleList[position])
     }
 
     override fun getItemCount(): Int = scheduleList.size
