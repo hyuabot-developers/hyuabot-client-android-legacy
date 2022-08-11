@@ -154,6 +154,6 @@ dependencies {
     implementation 'com.github.kizitonwose:CalendarView:1.0.4'
 
     // Google Analytics
-    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
 }
