@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.databinding.FragmentReadingRoomBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +23,20 @@ class ReadingRoomFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
+        val adapter = ReadingRoomAdapter(arrayListOf())
+        binding.readingRoomList.adapter = adapter
+        binding.readingRoomList.layoutManager = LinearLayoutManager(requireContext())
+        vm.fetchReadingRoomData()
+        vm.rooms.observe(viewLifecycleOwner) {
+            adapter.setReadingRooms(it)
+        }
+        vm.isCampus.observe(viewLifecycleOwner) {
+            vm.fetchReadingRoomData()
+        }
+        binding.refreshLayout.setOnRefreshListener {
+            vm.fetchReadingRoomData()
+            binding.refreshLayout.isRefreshing = false
+        }
         return binding.root
     }
 }
