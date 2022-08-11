@@ -1,0 +1,7 @@
+query ReadingRoom($campusId : Int!, $isActive : Boolean!) {
+    readingRoom(campusId: $campusId, isActive: $isActive) {
+        roomName,
+        activeSeat,
+        availableSeat,
+    }
+}

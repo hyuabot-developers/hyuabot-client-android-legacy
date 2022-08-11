@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph.xml"
+    app:startDestination="@id/fragment_shuttle">
+    <fragment
+        android:id="@+id/fragment_shuttle"
+        android:name="app.kobuggi.hyuabot.ui.shuttle.ShuttleFragment"
+        app:layout="@layout/fragment_shuttle" >
+        <action
+            android:id="@+id/open_shuttle_timetable"
+            app:destination="@id/fragment_shuttle_timetable" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_bus"
+        android:name="app.kobuggi.hyuabot.ui.bus.BusFragment"
+        app:layout="@layout/fragment_bus" >
+        <action
+            android:id="@+id/open_bus_timetable"
+            app:destination="@id/fragment_bus_timetable" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_subway"
+        android:name="app.kobuggi.hyuabot.ui.subway.SubwayFragment"
+        app:layout="@layout/fragment_subway" >
+        <action
+            android:id="@+id/open_subway_timetable"
+            app:destination="@id/fragment_subway_timetable" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_cafeteria"
+        android:name="app.kobuggi.hyuabot.ui.cafeteria.CafeteriaFragment"
+        app:layout="@layout/fragment_cafeteria" />
+    <fragment
+        android:id="@+id/fragment_menu"
+        android:name="app.kobuggi.hyuabot.ui.menu.MenuFragment"
+        app:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/open_reading_room"
+            app:destination="@id/fragment_reading_room" />
+        <action
+            android:id="@+id/open_calendar"
+            app:destination="@id/fragment_calendar" />
+        <action
+            android:id="@+id/open_map"
+            app:destination="@id/fragment_map" />
+        <action
+            android:id="@+id/open_contact"
+            app:destination="@id/fragment_contact" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_reading_room"
+        android:name="app.kobuggi.hyuabot.ui.reading_room.ReadingRoomFragment"
+        app:layout="@layout/fragment_reading_room" />
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="app.kobuggi.hyuabot.ui.map.MapFragment"
+        app:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/fragment_contact"
+        android:name="app.kobuggi.hyuabot.ui.contact.ContactFragment"
+        app:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/fragment_calendar"
+        android:name="app.kobuggi.hyuabot.ui.calendar.CalendarFragment"
+        app:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/fragment_shuttle_timetable"
+        android:name="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableFragment"
+        app:layout="@layout/fragment_shuttle_timetable">
+        <argument
+            android:name="shuttle_timetable_item"
+            android:id="@+id/shuttle_timetable_item"
+            app:argType="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_bus_timetable"
+        android:name="app.kobuggi.hyuabot.ui.bus.timetable.BusTimetableFragment"
+        app:layout="@layout/fragment_bus_timetable">
+        <argument
+            android:name="bus_timetable_route"
+            android:id="@+id/bus_timetable_route"
+            app:argType="string" />
+        <argument
+            android:name="bus_route_color"
+            android:id="@+id/bus_route_color"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_subway_timetable"
+        android:name="app.kobuggi.hyuabot.ui.subway.timetable.SubwayTimetableFragment"
+        app:layout="@layout/fragment_bus_timetable">
+        <argument
+            android:name="subway_route_name"
+            android:id="@+id/subway_route_name"
+            app:argType="string" />
+        <argument
+            android:name="subway_route_heading"
+            android:id="@+id/subway_route_heading"
+            app:argType="string" />
+        <argument
+            android:name="subway_route_color"
+            android:id="@+id/subway_route_color"
+            app:argType="string" />
+    </fragment>
+</navigation>
