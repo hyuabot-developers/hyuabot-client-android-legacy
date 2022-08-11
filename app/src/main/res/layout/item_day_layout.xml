@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendar_day_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="1dp"
+        android:background="@color/cardBackground">
+
+        <TextView
+            android:id="@+id/calendar_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="12sp"
+            tools:text="24" />
+
+        <View
+            android:id="@+id/calendar_day_schedule_first"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="18dp"
+            android:background="@color/hanyang_primary" />
+
+        <View
+            android:id="@+id/calendar_day_schedule_second"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@color/hanyang_secondary" />
+        <View
+            android:id="@+id/calendar_day_schedule_third"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@color/hanyang_tertiary" />
+        <View
+            android:id="@+id/calendar_day_schedule_fourth"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@color/hanyang_quaternary" />
+        <View
+            android:id="@+id/calendar_day_schedule_other"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@color/primaryTextColor" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

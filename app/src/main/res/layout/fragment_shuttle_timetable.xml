@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <data>
+        <variable
+            name="vm"
+            type="app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetableViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cardBackground"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/shuttle_timetable_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/white"
+            android:background="@color/hanyang_primary" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/shuttle_timetable_tab"
+            app:layout_constraintTop_toBottomOf="@id/shuttle_timetable_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/cardBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/shuttle_timetable_viewpager"
+            android:background="@color/cardBackground"
+            app:layout_constraintTop_toBottomOf="@id/shuttle_timetable_tab"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/shuttle_timetable_no_data"
+            android:background="@color/cardBackground"
+            app:layout_constraintTop_toBottomOf="@id/shuttle_timetable_tab"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/no_arrival_data"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <ProgressBar
+            android:id="@+id/shuttle_timetable_progress"
+            android:background="@color/cardBackground"
+            app:layout_constraintTop_toBottomOf="@id/shuttle_timetable_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="175dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
