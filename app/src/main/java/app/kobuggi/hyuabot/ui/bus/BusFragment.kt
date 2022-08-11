@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import app.kobuggi.hyuabot.databinding.FragmentBusBinding
 import app.kobuggi.hyuabot.ui.MainActivity
-import app.kobuggi.hyuabot.ui.shuttle.ShuttleFragmentDirections
-import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
 import app.kobuggi.hyuabot.utils.Event
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,6 +46,12 @@ class BusFragment : Fragment() {
                 val busTimetableItem = vm.timetableRouteName.value!!
                 val busRouteColor = vm.timetableRouteColor.value!!
                 val action = BusFragmentDirections.openBusTimetable(busTimetableItem, busRouteColor)
+                if (requireActivity() is MainActivity){
+                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, "Bus Timetable Open")
+                        param(FirebaseAnalytics.Param.ITEM_NAME, busTimetableItem)
+                    }
+                }
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }
@@ -61,6 +67,11 @@ class BusFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         vm.startFetchData()
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                param(FirebaseAnalytics.Param.ITEM_ID, "Bus Fragment")
+            }
+        }
     }
 
     override fun onPause() {
