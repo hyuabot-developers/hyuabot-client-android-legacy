@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -97,8 +98,12 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                     dialog.show(childFragmentManager, "AppThemeDialog")
                 }
                 R.string.donation -> {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qr.kakaopay.com/FWxVPo8iO"))
-                    startActivity(intent)
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qr.kakaopay.com/FWxVPo8iO"))
+                        startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(requireContext(), R.string.no_internet_app, Toast.LENGTH_SHORT).show()
+                    }
                 }
                 R.string.scoring -> {
                     val uri = Uri.parse("market://details?id=app.kobuggi.hyuabot")
@@ -111,12 +116,20 @@ class MenuFragment : Fragment(), DialogInterface.OnDismissListener{
                     }
                 }
                 R.string.developer_email -> {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:jil8885@hanyang.ac.kr"))
-                    startActivity(intent)
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:jil8885@hanyang.ac.kr"))
+                        startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(requireContext(), R.string.no_email_app, Toast.LENGTH_SHORT).show()
+                    }
                 }
                 R.string.developer_chat -> {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
-                    startActivity(intent)
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://open.kakao.com/o/sW2kAinb"))
+                        startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(requireContext(), R.string.no_internet_app, Toast.LENGTH_SHORT).show()
+                    }
                 }
                 R.string.about -> {
                     val dialog = AppInfoDialog()
