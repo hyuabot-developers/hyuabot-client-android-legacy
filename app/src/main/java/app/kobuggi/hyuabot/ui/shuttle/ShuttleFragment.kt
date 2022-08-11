@@ -46,14 +46,18 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             val fusedLocationClient = requireActivity().let {
                 LocationServices.getFusedLocationProviderClient(it)
             }
-            if(!vm.locationChecked.value!!) {
-                fusedLocationClient.lastLocation.addOnSuccessListener {
-                    vm.sortedStopList.value = getSortedStopList(it)
-                    Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
-                    vm.locationChecked.value = true
+            try {
+                if(!vm.locationChecked.value!!) {
+                    fusedLocationClient.lastLocation.addOnSuccessListener {
+                        vm.sortedStopList.value = getSortedStopList(it)
+                        Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
+                        vm.locationChecked.value = true
+                    }
                 }
-            }
-            fusedLocationClient.lastLocation.addOnFailureListener {
+                fusedLocationClient.lastLocation.addOnFailureListener {
+                    Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: NullPointerException) {
                 Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
