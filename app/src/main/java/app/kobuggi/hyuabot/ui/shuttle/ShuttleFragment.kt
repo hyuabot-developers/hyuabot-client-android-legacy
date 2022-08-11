@@ -67,11 +67,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
-        if (requireActivity() is MainActivity){
-            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
-                param(FirebaseAnalytics.Param.ITEM_ID, "Shuttle Fragment")
-            }
-        }
         vm.fetchShuttleTimetable()
         checkLocationPermission()
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
@@ -138,6 +133,11 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showShuttleStopLocationDialog.value = Event(false)
         vm.openShuttleTimetableEvent.value = Event(false)
         vm.startFetchData()
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                param(FirebaseAnalytics.Param.ITEM_ID, "Shuttle Fragment")
+            }
+        }
     }
 
     override fun onPause() {
