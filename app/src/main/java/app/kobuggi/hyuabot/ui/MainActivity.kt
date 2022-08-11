@@ -27,7 +27,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     lateinit var navController: NavController
     private lateinit var assetPackManager: AssetPackManager
     private val fastFollowAssetPack = "fast_follow_pack"
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)

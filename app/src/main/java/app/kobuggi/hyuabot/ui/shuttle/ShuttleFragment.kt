@@ -22,6 +22,8 @@ import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
 import app.kobuggi.hyuabot.utils.Event
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -65,6 +67,11 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding = FragmentShuttleBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
+        if (requireActivity() is MainActivity){
+            (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                param(FirebaseAnalytics.Param.ITEM_ID, "Shuttle Fragment")
+            }
+        }
         vm.fetchShuttleTimetable()
         checkLocationPermission()
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
@@ -89,6 +96,13 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 vm.openShuttleTimetableEvent.value = Event(false)
                 val shuttleTimetableItem = ShuttleTimetable(vm.shuttleStopName.value!!, vm.shuttleTimetableType.value!!)
                 val action = ShuttleFragmentDirections.openShuttleTimetable(shuttleTimetableItem)
+                if (requireActivity() is MainActivity){
+                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, "Shuttle Timetable Open")
+                        param(FirebaseAnalytics.Param.ITEM_NAME, getString(vm.shuttleStopName.value!!))
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, vm.shuttleTimetableType.value!!)
+                    }
+                }
                 (requireActivity() as MainActivity).navController.navigate(action)
             }
         }
@@ -107,6 +121,12 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.showShuttleStopLocationDialog.observe(viewLifecycleOwner) {
             if(it.peekContent()) {
                 val dialog = ShuttleStopLocationDialog().newInstance(vm.showShuttleStopLocation.value!!, vm.shuttleStopName.value!!)
+                if (requireActivity() is MainActivity){
+                    (requireActivity() as MainActivity).firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, "Shuttle Stop Location Dialog")
+                        param(FirebaseAnalytics.Param.ITEM_NAME, getString(vm.shuttleStopName.value!!))
+                    }
+                }
                 dialog.show(childFragmentManager, "ShuttleStopLocationDialog")
             }
         }
