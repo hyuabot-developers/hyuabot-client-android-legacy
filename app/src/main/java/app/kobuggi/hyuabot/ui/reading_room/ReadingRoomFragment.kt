@@ -33,6 +33,10 @@ class ReadingRoomFragment : Fragment() {
         vm.isCampus.observe(viewLifecycleOwner) {
             vm.fetchReadingRoomData()
         }
+        binding.refreshLayout.setOnRefreshListener {
+            vm.fetchReadingRoomData()
+            binding.refreshLayout.isRefreshing = false
+        }
         return binding.root
     }
 }
