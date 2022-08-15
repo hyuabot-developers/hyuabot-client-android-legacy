@@ -9,14 +9,9 @@ query ShuttleTimetable($period : String!, $weekday : String!, $shuttleType : Str
     }
 }
 
-query ShuttlePeriod {
+query ShuttleDate {
     shuttle{
-        period
-    }
-}
-
-query ShuttleWeekday {
-    shuttle{
-        weekday
+        period,
+        weekday,
     }
 }
