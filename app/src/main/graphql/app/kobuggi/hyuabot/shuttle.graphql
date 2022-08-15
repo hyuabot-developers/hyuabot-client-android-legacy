@@ -14,3 +14,9 @@ query ShuttlePeriod {
         period
     }
 }
+
+query ShuttleWeekday {
+    shuttle{
+        weekday
+    }
+}
