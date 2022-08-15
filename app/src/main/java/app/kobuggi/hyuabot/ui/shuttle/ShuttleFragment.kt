@@ -1,6 +1,7 @@
 package app.kobuggi.hyuabot.ui.shuttle
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
@@ -37,6 +38,8 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041)),
         ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817))
     )
+
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val requestResult = tryRequestLocationPermission()
@@ -48,8 +51,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             }
             if(!vm.locationChecked.value!!) {
                 fusedLocationClient.lastLocation.addOnSuccessListener {
-                    vm.sortedStopList.value = getSortedStopList(it)
-                    Toast.makeText(requireContext(), "가장 가까운 셔틀버스 정류장은 ${getString(vm.sortedStopList.value!![0].nameID)}입니다.", Toast.LENGTH_SHORT).show()
+                    vm.closestStop.value = getClosestShuttleStop(it)
                     vm.locationChecked.value = true
                 }
             }
@@ -57,7 +59,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-        Log.d("onCreate", "${vm.sortedStopList.value}")
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +70,21 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.vm = vm
         vm.fetchShuttleTimetable()
         checkLocationPermission()
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
+
+        val shuttleInformationList = listOf(
+            ShuttleInformationItem(R.drawable.hanyang_shuttle_stop, getString(R.string.closest_shuttle_stop), ""),
+        )
+        val shuttleInformationAdapter = ShuttleInformationAdapter(shuttleInformationList)
+        binding.shuttleTopRecyclerView.apply {
+            adapter = shuttleInformationAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
+        vm.closestStop.observe(viewLifecycleOwner) {
+            shuttleInformationAdapter.setClosestShuttleStop(getString(it.nameID))
+        }
+
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), stopList, arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
         }, {
             stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
@@ -82,9 +97,6 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.shuttleTimetable.observe(viewLifecycleOwner) {
             shuttleArrivalListAdapter.setShuttleTimetable(it)
             vm.isLoading.value = false
-        }
-        vm.sortedStopList.observe(viewLifecycleOwner) {
-            shuttleArrivalListAdapter.setShuttleStopList(it)
         }
         vm.openShuttleTimetableEvent.observe(viewLifecycleOwner) {
             if(it.peekContent() && requireActivity() is MainActivity) {
@@ -170,8 +182,8 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         return true
     }
 
-    private fun getSortedStopList(location: Location): List<ShuttleStopInfo> {
-        return stopList.sortedBy { getDistanceFromStop(it.location, location) }
+    private fun getClosestShuttleStop(location: Location): ShuttleStopInfo {
+        return stopList.minBy { getDistanceFromStop(it.location, location) }
     }
 
     private fun getDistanceFromStop(stopLocation: LatLng, currentLocation: Location): Float {

@@ -31,7 +31,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
     val shuttleStopName = MutableLiveData<Int>()
     val shuttleTimetableType = MutableLiveData<String>()
     val locationChecked = MutableLiveData(false)
-    val sortedStopList = MutableLiveData(listOf<ShuttleStopInfo>())
+    val closestStop = MutableLiveData<ShuttleStopInfo>()
     val isLoading = MutableLiveData(false)
     private val disposable = CompositeDisposable()
     private var shuttlePeriod : String? = null
