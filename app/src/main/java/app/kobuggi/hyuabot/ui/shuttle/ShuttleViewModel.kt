@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.kobuggi.hyuabot.R
-import app.kobuggi.hyuabot.ShuttlePeriodQuery
-import app.kobuggi.hyuabot.ShuttleTimetableQuery
+import app.kobuggi.hyuabot.*
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
 import com.google.android.gms.maps.model.LatLng
@@ -25,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : ViewModel() {
     val shuttleTimetable : MutableLiveData<List<ShuttleTimetableQuery.Timetable>> = MutableLiveData(arrayListOf())
+    val shuttleEntireTimetable : MutableLiveData<List<ShuttleTimetableQuery.Timetable>> = MutableLiveData(arrayListOf())
     val showShuttleStopLocationDialog = MutableLiveData<Event<Boolean>>()
     val openShuttleTimetableEvent = MutableLiveData<Event<Boolean>>()
     val showShuttleStopLocation = MutableLiveData<LatLng>()
@@ -35,26 +34,47 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
     val isLoading = MutableLiveData(false)
     private val disposable = CompositeDisposable()
     private var shuttlePeriod : String? = null
-    private suspend fun fetchShuttlePeriod() {
-        shuttlePeriod = client.query(ShuttlePeriodQuery()).execute().data?.shuttle?.period!!
+    private var shuttleWeekday : String? = null
+    private suspend fun fetchShuttleDate() {
+        val query = client.query(ShuttleDateQuery()).execute().data
+        shuttlePeriod = query?.shuttle?.period!!
+        shuttleWeekday = query.shuttle.weekday
     }
 
     fun fetchShuttleTimetable() {
         isLoading.value = true
         val startTime = LocalTime.now().minusMinutes(30).toString()
         viewModelScope.launch {
-            if (shuttlePeriod == null){
+            if (shuttlePeriod == null || shuttleWeekday == null) {
                 val fetchShuttlePeriodJob = CoroutineScope(Dispatchers.IO).async {
-                    fetchShuttlePeriod()
+                    fetchShuttleDate()
                 }
                 fetchShuttlePeriodJob.await()
             }
             Log.d("ShuttleViewModel", "period: $shuttlePeriod")
             val result = client.query(
-                ShuttleTimetableQuery(shuttlePeriod!!, "weekdays","", "Dormitory", startTime, "23:59")
+                ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
             ).execute()
             if (result.data != null) {
                 shuttleTimetable.value = result.data!!.shuttle.timetable
+            }
+        }
+    }
+
+    fun fetchShuttleEntireTimetable() {
+        viewModelScope.launch {
+            if (shuttlePeriod == null || shuttleWeekday == null) {
+                val fetchShuttlePeriodJob = CoroutineScope(Dispatchers.IO).async {
+                    fetchShuttleDate()
+                }
+                fetchShuttlePeriodJob.await()
+            }
+            Log.d("ShuttleViewModel", "period: $shuttlePeriod")
+            val result = client.query(
+                ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
+            ).execute()
+            if (result.data != null) {
+                shuttleEntireTimetable.value = result.data!!.shuttle.timetable
             }
         }
     }

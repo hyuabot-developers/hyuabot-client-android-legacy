@@ -1,17 +1,11 @@
 package app.kobuggi.hyuabot.ui.bus.timetable
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.BusQuery
-import app.kobuggi.hyuabot.ShuttlePeriodQuery
-import app.kobuggi.hyuabot.ShuttleTimetableQuery
 import com.apollographql.apollo3.ApolloClient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

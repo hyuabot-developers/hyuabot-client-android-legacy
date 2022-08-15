@@ -69,12 +69,14 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
         vm.fetchShuttleTimetable()
+        vm.fetchShuttleEntireTimetable()
         checkLocationPermission()
 
         val shuttleInformationList = listOf(
             ShuttleInformationItem(R.drawable.hanyang_shuttle_stop, getString(R.string.closest_shuttle_stop), ""),
+            ShuttleInformationItem(R.drawable.hanyang_shuttle, getString(R.string.shuttle_first_last_bus), ""),
         )
-        val shuttleInformationAdapter = ShuttleInformationAdapter(shuttleInformationList)
+        val shuttleInformationAdapter = ShuttleInformationAdapter(requireContext(), shuttleInformationList)
         binding.shuttleTopRecyclerView.apply {
             adapter = shuttleInformationAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -82,6 +84,9 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         }
         vm.closestStop.observe(viewLifecycleOwner) {
             shuttleInformationAdapter.setClosestShuttleStop(getString(it.nameID))
+        }
+        vm.shuttleEntireTimetable.observe(viewLifecycleOwner) {
+            shuttleInformationAdapter.setShuttleFirstLastBus(it)
         }
 
         val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), stopList, arrayListOf(), {

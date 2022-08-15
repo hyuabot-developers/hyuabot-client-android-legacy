@@ -9,11 +9,13 @@
     app:cardCornerRadius="5dp" >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:padding="10dp">
         <ImageView
             android:id="@+id/shuttle_information_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitCenter"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +24,7 @@
             android:id="@+id/shuttle_information_title"
             android:layout_width="0dp"
             android:layout_height="25dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"

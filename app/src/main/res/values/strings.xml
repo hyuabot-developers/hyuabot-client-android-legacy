@@ -124,4 +124,6 @@
     <string name="no_internet_app">인터넷 앱이 없습니다.</string>
     <string name="no_dial_app">전화를 걸 수 있는 앱이 없습니다.</string>
     <string name="closest_shuttle_stop">가장 가까운 정류장</string>
+    <string name="shuttle_first_last_bus">오늘의 첫/막차 (셔틀콕)</string>
+    <string name="shuttle_first_last_bus_time">%1$s시 %2$s분/%3$s시 %4$s분</string>
 </resources>
