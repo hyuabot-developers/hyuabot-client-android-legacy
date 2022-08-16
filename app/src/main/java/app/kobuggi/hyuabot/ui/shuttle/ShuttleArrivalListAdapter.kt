@@ -57,13 +57,13 @@ class ShuttleArrivalListAdapter(private val context: Context,
                 shuttleTimetable.filter { it.shuttleType == "C" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) }
             }
             Log.d("timetable", timetableByStopC.toString())
-            val shuttleDHAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDH.subList(0, if(timetableByStopDH.isNotEmpty()) minOf(2, timetableByStopDH.size - 1) else 0)){
+            val shuttleDHAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDH.subList(0, if(timetableByStopDH.isNotEmpty()) minOf(if (binding.expandButton.isSelected) 5 else 2, timetableByStopDH.size - 1) else 0)){
                 onClickCard(stopList[position].nameID, "DH")
             }
-            val shuttleDYAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDY.subList(0, if(timetableByStopDY.isNotEmpty()) minOf(2, timetableByStopDY.size - 1) else 0)){
+            val shuttleDYAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDY.subList(0, if(timetableByStopDY.isNotEmpty()) minOf(if (binding.expandButton.isSelected) 5 else 2, timetableByStopDY.size - 1) else 0)){
                 onClickCard(stopList[position].nameID, "DY")
             }
-            val shuttleCAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopC.subList(0, if(timetableByStopC.isNotEmpty()) minOf(2, timetableByStopC.size - 1) else 0)){
+            val shuttleCAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopC.subList(0, if(timetableByStopC.isNotEmpty()) minOf(if (binding.expandButton.isSelected) 5 else 2, timetableByStopC.size - 1) else 0)){
                 onClickCard(stopList[position].nameID, "C")
             }
             binding.shuttleDHTime.adapter = shuttleDHAdapter
