@@ -1,6 +1,6 @@
-query ShuttleTimetable($period : String!, $weekday : String!, $shuttleType : String!, $startStop : String!, $startTime : String!, $endTime : String!) {
+query ShuttleTimetable($period : String!, $weekday : String!, $startTime : String!, $endTime : String!) {
     shuttle{
-        timetable(period: $period, weekday: $weekday, shuttleType: $shuttleType, startStop: $startStop, startTime: $startTime, endTime: $endTime) {
+        timetable(period: $period, weekday: $weekday, startTime: $startTime, endTime: $endTime) {
             weekday
             startStop
             shuttleType
@@ -9,8 +9,9 @@ query ShuttleTimetable($period : String!, $weekday : String!, $shuttleType : Str
     }
 }
 
-query ShuttlePeriod {
+query ShuttleDate {
     shuttle{
-        period
+        period,
+        weekday,
     }
 }

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <color name="hanyang_primary">#0E4A84</color>
+  <color name="hanyang_secondary">#7D8928</color>
+  <color name="hanyang_tertiary">#F08100</color>
+  <color name="hanyang_quaternary">#88774F</color>
+  <color name="background">#EEEEF0</color>
+  <color name="cardBackground">#FFFFFF</color>
+  <color name="primaryTextColor">#000000</color>
+  <color name="secondaryTextColor">#FFFFFF</color>
+  <color name="black">#000000</color>
+  <color name="white">#FFFFFF</color>
   <color name="gnt_test_background_color">#00F4F4F4</color>
   <color name="gnt_test_background_color_2">#00A3A3A3</color>
   <color name="gnt_black">#000000</color>
