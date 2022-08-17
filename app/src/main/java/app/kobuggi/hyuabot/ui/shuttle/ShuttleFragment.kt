@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,32 +15,37 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import app.kobuggi.hyuabot.BuildConfig
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentShuttleBinding
 import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.ui.shuttle.timetable.ShuttleTimetable
 import app.kobuggi.hyuabot.utils.Event
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<ShuttleViewModel>()
     private lateinit var binding: FragmentShuttleBinding
-    private val stopList = listOf(
-        ShuttleStopInfo(R.string.dormitory, LatLng(37.29339607529377, 126.83630604103446)),
-        ShuttleStopInfo(R.string.shuttlecock_o, LatLng(37.29875417910844, 126.83784054072336)),
-        ShuttleStopInfo(R.string.station, LatLng(37.308494476826155, 126.85310236423418)),
-        ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041)),
-        ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817))
-    )
+    private lateinit var adLoader: AdLoader
+    private val nativeAdList = arrayListOf<NativeAd>()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            loadAD()
+        }
         val requestResult = tryRequestLocationPermission()
         if (!requestResult) {
             Toast.makeText(requireContext(), "위치 정보를 사용하기 위해서는 위치 정보 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
@@ -89,7 +93,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             shuttleInformationAdapter.setShuttleFirstLastBus(it)
         }
 
-        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), stopList, arrayListOf(), {
+        val shuttleArrivalListAdapter = ShuttleArrivalListAdapter(requireContext(), arrayListOf(), arrayListOf(), {
            location, titleID -> vm.clickShuttleStopLocation(location, titleID)
         }, {
             stopID, shuttleType -> vm.openShuttleTimetableFragment(stopID, shuttleType)
@@ -98,6 +102,9 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         binding.shuttleArrivalList.layoutManager = LinearLayoutManager(requireContext())
         if(binding.shuttleArrivalList.itemAnimator is SimpleItemAnimator){
             (binding.shuttleArrivalList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
+        vm.stopLiveData.observe(viewLifecycleOwner) {
+            shuttleArrivalListAdapter.setShuttleArrivalList(it)
         }
         vm.shuttleTimetable.observe(viewLifecycleOwner) {
             shuttleArrivalListAdapter.setShuttleTimetable(it)
@@ -188,7 +195,7 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
     }
 
     private fun getClosestShuttleStop(location: Location): ShuttleStopInfo {
-        return stopList.minBy { getDistanceFromStop(it.location, location) }
+        return vm.stopLiveData.value!!.minBy { getDistanceFromStop(it.location, location) }
     }
 
     private fun getDistanceFromStop(stopLocation: LatLng, currentLocation: Location): Float {
@@ -196,5 +203,31 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
         location.latitude = stopLocation.latitude
         location.longitude = stopLocation.longitude
         return currentLocation.distanceTo(location)
+    }
+
+    private fun loadAD() {
+        val builder = AdLoader.Builder(requireContext(), BuildConfig.ADMOB_UNIT_ID)
+        adLoader =
+            builder.forNativeAd { nativeAD ->
+                nativeAdList.add(nativeAD)
+                if (!adLoader.isLoading) {
+                    insertAD()
+                }
+            }.withAdListener(
+                object : AdListener() {
+                    override fun onAdFailedToLoad(p0: LoadAdError) {
+                        super.onAdFailedToLoad(p0)
+                        if (!adLoader.isLoading){
+                            insertAD()
+                        }
+                    }
+                }).build()
+        adLoader.loadAds(AdRequest.Builder().build(), 1)
+    }
+
+    private fun insertAD(){
+        if (nativeAdList.isNotEmpty()){
+            vm.insertAD(nativeAdList.first())
+        }
     }
 }
