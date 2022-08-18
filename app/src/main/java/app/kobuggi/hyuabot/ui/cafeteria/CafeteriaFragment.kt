@@ -9,9 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import app.kobuggi.hyuabot.BuildConfig
 import app.kobuggi.hyuabot.databinding.FragmentCafeteriaBinding
 import app.kobuggi.hyuabot.ui.MainActivity
 import app.kobuggi.hyuabot.utils.Event
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +26,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
     private val vm by viewModels<CafeteriaViewModel>()
     private lateinit var binding: FragmentCafeteriaBinding
+    private lateinit var adLoader: AdLoader
+    private val nativeAdList = arrayListOf<NativeAd>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            loadAD()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,5 +88,31 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
     override fun onDismiss(p0: DialogInterface?) {
         vm.showCafeteriaLocationDialog.value = Event(false)
         vm.fetchData()
+    }
+
+    private fun loadAD() {
+        val builder = AdLoader.Builder(requireContext(), BuildConfig.ADMOB_UNIT_ID)
+        adLoader =
+            builder.forNativeAd { nativeAD ->
+                nativeAdList.add(nativeAD)
+                if (!adLoader.isLoading) {
+                    insertAD()
+                }
+            }.withAdListener(
+                object : AdListener() {
+                    override fun onAdFailedToLoad(p0: LoadAdError) {
+                        super.onAdFailedToLoad(p0)
+                        if (!adLoader.isLoading){
+                            insertAD()
+                        }
+                    }
+                }).build()
+        adLoader.loadAds(AdRequest.Builder().build(), 1)
+    }
+
+    private fun insertAD(){
+        if (nativeAdList.isNotEmpty()){
+            vm.insertAD(nativeAdList.first())
+        }
     }
 }
