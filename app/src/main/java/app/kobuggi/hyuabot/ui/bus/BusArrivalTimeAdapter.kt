@@ -12,6 +12,7 @@ import kotlin.math.min
 
 class BusArrivalTimeAdapter(private val context: Context, private var realtimeList: List<BusQuery.Realtime>, private var timetableList: List<BusQuery.Timetable>, val onClickCard: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val arrivalTimeList = mutableListOf<Any>()
+    private var itemCount = 2
     init {
         arrivalTimeList.addAll(realtimeList)
         arrivalTimeList.addAll(timetableList)
@@ -60,7 +61,7 @@ class BusArrivalTimeAdapter(private val context: Context, private var realtimeLi
         }
     }
 
-    override fun getItemCount(): Int = min(realtimeList.size + timetableList.size, 5)
+    override fun getItemCount(): Int = min(realtimeList.size + timetableList.size, itemCount)
 
     override fun getItemViewType(position: Int): Int {
         return if (arrivalTimeList[position] is BusQuery.Realtime){
@@ -76,6 +77,11 @@ class BusArrivalTimeAdapter(private val context: Context, private var realtimeLi
         arrivalTimeList.clear()
         arrivalTimeList.addAll(realtimeList)
         arrivalTimeList.addAll(timetableList)
+        notifyDataSetChanged()
+    }
+
+    fun setItemCount(itemCount: Int) {
+        this.itemCount = itemCount
         notifyDataSetChanged()
     }
 }

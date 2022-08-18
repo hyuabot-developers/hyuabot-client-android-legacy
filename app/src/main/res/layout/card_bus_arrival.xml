@@ -58,5 +58,16 @@
                 android:layout_height="30dp"
                 android:orientation="vertical" />
         </LinearLayout>
+        <ImageButton
+            android:id="@+id/expand_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/expand_button_selector"
+            android:padding="10dp"
+            android:gravity="center"
+            app:tint="@color/primaryTextColor" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

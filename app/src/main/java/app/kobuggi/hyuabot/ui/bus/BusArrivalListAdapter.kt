@@ -28,17 +28,26 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
 
             val now = LocalTime.now()
             val timetable = busList[position].timetable.filter { LocalTime.parse(it.departureTime.toString()).isAfter(now) }
+            val adapter = BusArrivalTimeAdapter(context, busList[position].realtime, timetable){
+                onClickTimetableButton(busList[position].routeName, routeColor[busList[position].routeName]!!)
+            }
+            binding.busArrivalList.adapter = adapter
+            binding.busArrivalList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             if (busList[position].realtime.size + timetable.size > 0) {
-                val adapter = BusArrivalTimeAdapter(context, busList[position].realtime, timetable){
-                    onClickTimetableButton(busList[position].routeName, routeColor[busList[position].routeName]!!)
-                }
-                binding.busArrivalList.adapter = adapter
-                binding.busArrivalList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 binding.busArrivalList.visibility = View.VISIBLE
                 binding.busNoData.visibility = View.GONE
             } else {
                 binding.busArrivalList.visibility = View.GONE
                 binding.busNoData.visibility = View.VISIBLE
+            }
+
+            binding.expandButton.setOnClickListener {
+                binding.expandButton.isSelected = !binding.expandButton.isSelected
+                adapter.itemCount = if (binding.expandButton.isSelected) {
+                    5
+                } else {
+                    2
+                }
             }
         }
     }
