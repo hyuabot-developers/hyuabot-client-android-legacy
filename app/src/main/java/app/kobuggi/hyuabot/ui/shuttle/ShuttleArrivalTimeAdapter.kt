@@ -10,6 +10,8 @@ import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 
 class ShuttleArrivalTimeAdapter(private val context: Context, private val currentTime: LocalTime, private var arrivalTimeList: List<LocalTime>, val onClickCard: () -> Unit) : RecyclerView.Adapter<ShuttleArrivalTimeAdapter.ShuttleArrivalTimeViewHolder>() {
+    private var itemCount = 2
+
     inner class ShuttleArrivalTimeViewHolder(private val binding: ItemShuttleArrivalTimeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(arrivalTime: LocalTime) {
             val remainedTime = currentTime.until(arrivalTime, ChronoUnit.MINUTES)
@@ -32,10 +34,15 @@ class ShuttleArrivalTimeAdapter(private val context: Context, private val curren
         holder.bind(arrivalTimeList[position])
     }
 
-    override fun getItemCount(): Int = arrivalTimeList.size
+    override fun getItemCount(): Int = minOf(itemCount, arrivalTimeList.size)
 
     fun setArrivalTimeList(arrivalTimeList: List<LocalTime>) {
         this.arrivalTimeList = arrivalTimeList
+        notifyDataSetChanged()
+    }
+
+    fun setItemCount(itemCount: Int) {
+        this.itemCount = itemCount
         notifyDataSetChanged()
     }
 }
