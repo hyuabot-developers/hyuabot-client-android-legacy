@@ -15,7 +15,7 @@ class SubwayTimetableAdapter(
 ): RecyclerView.Adapter<SubwayTimetableAdapter.SubwayTimetableViewHolder>() {
     inner class SubwayTimetableViewHolder(private val binding: ItemSubwayTimetableBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
-            binding.subwayTimetableTerminalStation.text = timetable[position].terminalStation
+            binding.subwayTimetableTerminalStation.text = timetable[position].terminalStation.replace("신인천", "인천")
             binding.subwayTimetableDepartureTime.text = context.getString(
                 R.string.shuttle_timetable, timetable[position].departureTime.hour.toString().padStart(2, '0'), timetable[position].departureTime.minute.toString().padStart(2, '0')
             )

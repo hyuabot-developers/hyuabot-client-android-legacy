@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
+
 
 @HiltAndroidApp
 class GlobalApplication : Application() {
@@ -47,5 +50,9 @@ class GlobalApplication : Application() {
                 }
             }
         }
+        MobileAds.initialize(this)
+        val testDeviceIds: List<String> = listOf("98A0F2211F0AD23799E4A6F63A14CF46")
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        MobileAds.setRequestConfiguration(configuration)
     }
 }

@@ -4,8 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.SubwayQuery
+import app.kobuggi.hyuabot.ui.bus.BusRouteItem
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.google.android.gms.ads.nativead.NativeAd
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -18,12 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SubwayViewModel @Inject constructor(private val client: ApolloClient) : ViewModel() {
     private val disposable = CompositeDisposable()
-    val subwayData = MutableLiveData<List<SubwayQuery.Subway>>()
+    private val _subwayData = arrayListOf<SubwayRouteItem>()
+    val subwayData = MutableLiveData<List<SubwayRouteItem>>()
     val isLoading = MutableLiveData(false)
     val moveToTimetableFragmentEvent = MutableLiveData<Event<Boolean>>()
     val timetableRouteName = MutableLiveData<String>()
     val timetableRouteColor = MutableLiveData<String>()
     val timetableHeading = MutableLiveData<String>()
+    private var nativeAd: NativeAd? = null
 
     private fun fetchData() {
         isLoading.value = true
@@ -40,7 +44,12 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
                 )
             ).execute()
             if (result.data != null) {
-                subwayData.value = result.data!!.subway
+                _subwayData.clear()
+                _subwayData.addAll(result.data!!.subway.map { SubwayRouteItem(it) })
+                if (nativeAd != null) {
+                    _subwayData.add(1, SubwayRouteItem(null, nativeAd!!))
+                }
+                subwayData.value = _subwayData
             }
         }
     }
@@ -69,6 +78,12 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+
+    fun insertAD(nativeAd: NativeAd){
+        this.nativeAd = nativeAd
+        _subwayData.add(1, SubwayRouteItem(null, nativeAd))
+        subwayData.value = _subwayData
     }
 }
 

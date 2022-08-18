@@ -156,4 +156,7 @@ dependencies {
     // Google Analytics
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Google Admob
+    implementation 'com.google.android.gms:play-services-ads:21.1.0'
 }

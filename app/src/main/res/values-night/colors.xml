@@ -9,4 +9,5 @@
     <color name="primaryTextColor">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="tint_color">#FFFFFF</color>
 </resources>

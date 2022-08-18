@@ -5,18 +5,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.ShuttleTimetableQuery
+import app.kobuggi.hyuabot.databinding.CardShuttleAdBinding
 import app.kobuggi.hyuabot.databinding.CardShuttleArrivalBinding
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdView
 import com.google.android.gms.maps.model.LatLng
-import java.time.Duration
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class ShuttleArrivalListAdapter(private val context: Context, stopList: List<ShuttleStopInfo> , timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit, val onClickCard: (stopID: Int, shuttleType: String) -> Unit) : RecyclerView.Adapter<ShuttleArrivalListAdapter.ShuttleArrivalViewHolder>() {
+class ShuttleArrivalListAdapter(private val context: Context,
+                                private var stopList: List<ShuttleStopInfo>, timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit, val onClickCard: (stopID: Int, shuttleType: String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var shuttleTimetable: List<ShuttleTimetableQuery.Timetable> = timetable
-    private var stopList: List<ShuttleStopInfo> = stopList
     private val timeDelta = hashMapOf(
         R.string.dormitory to arrayListOf(-5, -5, -5),
         R.string.shuttlecock_o to arrayListOf(0, 0, 0),
@@ -40,107 +47,67 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
             }
 
             val now = LocalTime.now()
-            val timetableByStop = if(position == 0){
-                shuttleTimetable.filter { it.startStop == "Dormitory" }
+            val timetableByStopDH = if(position == 0){
+                shuttleTimetable.filter { it.shuttleType == "DH" && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) }
             } else {
-                shuttleTimetable
+                shuttleTimetable.filter { it.shuttleType == "DH" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) }
+            }
+            val timetableByStopDY = if(position == 0){
+                shuttleTimetable.filter { it.shuttleType == "DY" && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) }
+            } else {
+                shuttleTimetable.filter { it.shuttleType == "DY" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) }
+            }
+            val timetableByStopC = if(position == 0){
+                shuttleTimetable.filter { it.shuttleType == "C" && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) }
+            } else {
+                shuttleTimetable.filter { it.shuttleType == "C" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) }
+            }
+            Log.d("timetable", timetableByStopC.toString())
+            val shuttleDHAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDH){
+                onClickCard(stopList[position].nameID, "DH")
+            }
+            val shuttleDYAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDY){
+                onClickCard(stopList[position].nameID, "DY")
+            }
+            val shuttleCAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopC){
+                onClickCard(stopList[position].nameID, "C")
+            }
+            binding.shuttleDHTime.adapter = shuttleDHAdapter
+            binding.shuttleDHTime.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.shuttleDYTime.adapter = shuttleDYAdapter
+            binding.shuttleDYTime.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.shuttleCTime.adapter = shuttleCAdapter
+            binding.shuttleCTime.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            if (timetableByStopDH.isEmpty()){
+                binding.shuttleDHNoData.visibility = View.VISIBLE
+                binding.shuttleDHTime.visibility = View.GONE
+            } else {
+                binding.shuttleDHNoData.visibility = View.GONE
+                binding.shuttleDHTime.visibility = View.VISIBLE
+            }
+            if (timetableByStopDY.isEmpty()){
+                binding.shuttleDYNoData.visibility = View.VISIBLE
+                binding.shuttleDYTime.visibility = View.GONE
+            } else {
+                binding.shuttleDYNoData.visibility = View.GONE
+                binding.shuttleDYTime.visibility = View.VISIBLE
+            }
+            if (timetableByStopC.isEmpty()){
+                binding.shuttleCNoData.visibility = View.VISIBLE
+                binding.shuttleCTime.visibility = View.GONE
+            } else {
+                binding.shuttleCNoData.visibility = View.GONE
+                binding.shuttleCTime.visibility = View.VISIBLE
             }
 
-            binding.shuttleTimeDHFirst.text = "운행 종료"
-            binding.shuttleTimeDHSecond.visibility = View.GONE
-            binding.shuttleTimeDHThird.visibility = View.GONE
-            binding.shuttleTimeDHFourth.visibility = View.GONE
-            binding.shuttleTimeDHFifth.visibility = View.GONE
-            binding.shuttleTimeDHSecond.text = ""
-            binding.shuttleTimeDHThird.text = ""
-            binding.shuttleTimeDHFourth.text = ""
-            binding.shuttleTimeDHFifth.text = ""
-
-            binding.shuttleTimeDYFirst.text = "운행 종료"
-            binding.shuttleTimeDYSecond.visibility = View.GONE
-            binding.shuttleTimeDYThird.visibility = View.GONE
-            binding.shuttleTimeDYFourth.visibility = View.GONE
-            binding.shuttleTimeDYFifth.visibility = View.GONE
-            binding.shuttleTimeDYSecond.text = ""
-            binding.shuttleTimeDYThird.text = ""
-            binding.shuttleTimeDYFourth.text = ""
-            binding.shuttleTimeDYFifth.text = ""
-
-            binding.shuttleTimeCFirst.text = "운행 종료"
-            binding.shuttleTimeCSecond.visibility = View.GONE
-            binding.shuttleTimeCThird.visibility = View.GONE
-            binding.shuttleTimeCFourth.visibility = View.GONE
-            binding.shuttleTimeCFifth.visibility = View.GONE
-            binding.shuttleTimeCSecond.text = ""
-            binding.shuttleTimeCThird.text = ""
-            binding.shuttleTimeCFourth.text = ""
-            binding.shuttleTimeCFifth.text = ""
-
-            timetableByStop.filter { it.shuttleType == "DH" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.forEachIndexed { index, timetable ->
-                val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong())
-                val remainedTime = Duration.between(now, shuttleTime).toMinutes()
-                when (index) {
-                    0 -> {
-                        binding.shuttleTimeDHFirst.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    1 -> {
-                        binding.shuttleTimeDHSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                        binding.shuttleTimeDHSecond.visibility = View.VISIBLE
-                    }
-                    2 -> {
-                        binding.shuttleTimeDHThird.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    3 -> {
-                        binding.shuttleTimeDHFourth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    4 -> {
-                        binding.shuttleTimeDHFifth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                }
+            binding.shuttleStopLocation.setOnClickListener{
+                onClickLocationButton(stopList[position].location, stopList[position].nameID)
             }
-            timetableByStop.filter { it.shuttleType == "DY" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) > now }.forEachIndexed { index, timetable ->
-                val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong())
-                val remainedTime = Duration.between(now, shuttleTime).toMinutes()
-                when (index) {
-                    0 -> {
-                        binding.shuttleTimeDYFirst.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    1 -> {
-                        binding.shuttleTimeDYSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                        binding.shuttleTimeDYSecond.visibility = View.VISIBLE
-                    }
-                    2 -> {
-                        binding.shuttleTimeDYThird.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    3 -> {
-                        binding.shuttleTimeDYFourth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    4 -> {
-                        binding.shuttleTimeDYFifth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                }
-            }
-            timetableByStop.filter { it.shuttleType == "C" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) > now }.forEachIndexed { index, timetable ->
-                val shuttleTime = LocalTime.parse(timetable.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong())
-                val remainedTime = Duration.between(now, shuttleTime).toMinutes()
-                when (index) {
-                    0 -> {
-                        binding.shuttleTimeCFirst.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    1 -> {
-                        binding.shuttleTimeCSecond.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                        binding.shuttleTimeCSecond.visibility = View.VISIBLE
-                    }
-                    2 -> {
-                        binding.shuttleTimeCThird.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    3 -> {
-                        binding.shuttleTimeCFourth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                    4 -> {
-                        binding.shuttleTimeCFifth.text = context.getString(R.string.shuttle_time, shuttleTime.hour.toString().padStart(2, '0'), shuttleTime.minute.toString().padStart(2, '0'), remainedTime)
-                    }
-                }
+            binding.expandButton.setOnClickListener {
+                binding.expandButton.isSelected = !binding.expandButton.isSelected
+                shuttleDHAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 2
+                shuttleDYAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 2
+                shuttleCAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 2
             }
             binding.shuttleDH.setOnClickListener {
                 onClickCard(stopList[position].nameID, "DH")
@@ -151,41 +118,51 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
             binding.shuttleC.setOnClickListener {
                 onClickCard(stopList[position].nameID, "C")
             }
-            binding.shuttleStopLocation.setOnClickListener {
-                onClickLocationButton(stopList[position].location, stopList[position].nameID)
-            }
-            binding.expandButton.setOnClickListener {
-                binding.expandButton.isSelected = !binding.expandButton.isSelected
-
-                val visible = if(binding.expandButton.isSelected){
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-                binding.shuttleTimeDHThird.visibility = if(binding.shuttleTimeDHThird.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeDHFourth.visibility = if(binding.shuttleTimeDHFourth.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeDHFifth.visibility = if(binding.shuttleTimeDHFifth.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeDYThird.visibility = if(binding.shuttleTimeDYThird.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeDYFourth.visibility = if(binding.shuttleTimeDYFourth.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeDYFifth.visibility = if(binding.shuttleTimeDYFifth.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeCThird.visibility = if(binding.shuttleTimeCThird.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeCFourth.visibility = if(binding.shuttleTimeCFourth.text.isNotEmpty()) visible else View.GONE
-                binding.shuttleTimeCFifth.visibility = if(binding.shuttleTimeCFifth.text.isNotEmpty()) visible else View.GONE
-            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShuttleArrivalViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_shuttle_arrival, parent, false)
-        return ShuttleArrivalViewHolder(CardShuttleArrivalBinding.bind(view))
+    inner class ShuttleArrivalAdViewHolder(private val binding: CardShuttleAdBinding) : RecyclerView.ViewHolder(binding.root){
+        init {
+            val adView: NativeAdView = binding.adView
+            adView.headlineView = adView.findViewById(R.id.ad_headline)
+            adView.bodyView = adView.findViewById(R.id.ad_body)
+            adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
+            adView.iconView = adView.findViewById(R.id.ad_icon)
+            adView.priceView = adView.findViewById(R.id.ad_price)
+            adView.starRatingView = adView.findViewById(R.id.ad_stars)
+            adView.storeView = adView.findViewById(R.id.ad_store)
+            adView.advertiserView = adView.findViewById(R.id.ad_advertiser)
+        }
+
+        fun getADView(): NativeAdView {
+            return binding.adView
+        }
     }
 
-    override fun onBindViewHolder(holder: ShuttleArrivalViewHolder, position: Int) {
-        holder.bind(position)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == 1){
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.card_shuttle_arrival, parent, false)
+            return ShuttleArrivalViewHolder(CardShuttleArrivalBinding.bind(view))
+        }
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_shuttle_ad, parent, false)
+        return ShuttleArrivalAdViewHolder(CardShuttleAdBinding.bind(view))
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (getItemViewType(position) == 1){
+            (holder as ShuttleArrivalViewHolder).bind(position)
+        } else {
+            val nativeAd = stopList[position].nativeAd as NativeAd
+            populateNativeAD(nativeAd, (holder as ShuttleArrivalAdViewHolder).getADView())
+        }
     }
 
     override fun getItemCount(): Int {
         return stopList.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (timeDelta.containsKey(stopList[position].nameID)) 1 else 0
     }
 
     fun setShuttleTimetable(shuttleTimetable: List<ShuttleTimetableQuery.Timetable>) {
@@ -193,8 +170,47 @@ class ShuttleArrivalListAdapter(private val context: Context, stopList: List<Shu
         notifyItemRangeChanged(0, itemCount)
     }
 
-    fun setShuttleStopList(stopList: List<ShuttleStopInfo>) {
-        this.stopList = stopList
+    private fun populateNativeAD(nativeAD: NativeAd, adView: NativeAdView) {
+        (adView.headlineView as TextView).text = nativeAD.headline
+        (adView.bodyView as TextView).text = nativeAD.body
+        (adView.callToActionView as Button).text = nativeAD.callToAction
+
+        val icon = nativeAD.icon
+        if (icon != null) {
+            (adView.iconView as ImageView).setImageDrawable(icon.drawable)
+            (adView.iconView as ImageView).visibility = View.VISIBLE
+        } else {
+            adView.iconView?.visibility = View.INVISIBLE
+        }
+        if (nativeAD.price != null) {
+            (adView.priceView as TextView).text = nativeAD.price
+            (adView.priceView as TextView).visibility = View.VISIBLE
+        } else {
+            adView.priceView?.visibility = View.INVISIBLE
+        }
+        if (nativeAD.store != null) {
+            (adView.storeView as TextView).text = nativeAD.store
+            (adView.storeView as TextView).visibility = View.VISIBLE
+        } else {
+            adView.storeView?.visibility = View.INVISIBLE
+        }
+        if (nativeAD.advertiser != null) {
+            (adView.advertiserView as TextView).text = nativeAD.advertiser
+            (adView.advertiserView as TextView).visibility = View.VISIBLE
+        } else {
+            adView.advertiserView?.visibility = View.INVISIBLE
+        }
+        if (nativeAD.starRating != null) {
+            (adView.starRatingView as RatingBar).rating = nativeAD.starRating!!.toFloat()
+            (adView.starRatingView as RatingBar).visibility = View.VISIBLE
+        } else {
+            adView.starRatingView?.visibility = View.INVISIBLE
+        }
+        adView.setNativeAd(nativeAD)
+    }
+
+    fun setShuttleArrivalList(list: List<ShuttleStopInfo>?) {
+        stopList = list ?: listOf()
         notifyItemRangeChanged(0, itemCount)
     }
 }
