@@ -55,6 +55,8 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/subway_timetable_tab"
                 android:background="@color/cardBackground"
+                app:tabTextColor="@android:color/darker_gray"
+                app:tabSelectedTextColor="@color/tint_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <androidx.viewpager2.widget.ViewPager2

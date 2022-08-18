@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ItemSubwayArrivalBinding
 import app.kobuggi.hyuabot.ui.subway.SubwayArrivalItem
+import kotlin.math.min
 
 class SubwayArrivalItemAdapter(private val context: Context, private var arrivalList: List<SubwayArrivalItem>, private val onItemClick: () -> Unit) : RecyclerView.Adapter<SubwayArrivalItemAdapter.SubwayArrivalViewHolder>() {
+    private var itemCount = arrivalList.filter { it.currentStation != null }.size
     inner class SubwayArrivalViewHolder(private val binding: ItemSubwayArrivalBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
             binding.subwayHeading.text = arrivalList[position].terminalStation.replace("신인천", "인천")
@@ -35,11 +37,16 @@ class SubwayArrivalItemAdapter(private val context: Context, private var arrival
     }
 
     override fun getItemCount(): Int {
-        return arrivalList.size
+        return min(itemCount, arrivalList.size)
     }
 
     fun setArrivalList(arrivalList: List<SubwayArrivalItem>) {
         this.arrivalList = arrivalList
+        notifyDataSetChanged()
+    }
+
+    fun setExpanded(isExpanded: Boolean) {
+        this.itemCount = if (isExpanded) arrivalList.size else arrivalList.filter { it.currentStation != null }.size
         notifyDataSetChanged()
     }
 }
