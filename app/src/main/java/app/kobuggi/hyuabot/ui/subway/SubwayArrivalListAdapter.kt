@@ -53,14 +53,21 @@ class SubwayArrivalListAdapter(private val context: Context, private var subwayL
                 arrivalListDown.add(SubwayArrivalItem(remainedTime, timetable.terminalStation, null))
             }
 
-            binding.subwayUpArrivalList.adapter = SubwayArrivalItemAdapter(context, arrivalListUp.subList(0, arrivalListUp.size.coerceAtMost(5))){
+            val subwayUPAdapter = SubwayArrivalItemAdapter(context, arrivalListUp.subList(0, arrivalListUp.size.coerceAtMost(5))){
                 onClickArrivalItem(subwayList[position].routeName, routeColor[subwayList[position].routeName]!!, "up")
             }
-            binding.subwayDownArrivalList.adapter = SubwayArrivalItemAdapter(context, arrivalListDown.subList(0, arrivalListDown.size.coerceAtMost(5))){
+            binding.subwayUpArrivalList.adapter = subwayUPAdapter
+            val subwayDownAdapter = SubwayArrivalItemAdapter(context, arrivalListDown.subList(0, arrivalListDown.size.coerceAtMost(5))){
                 onClickArrivalItem(subwayList[position].routeName, routeColor[subwayList[position].routeName]!!, "down")
             }
+            binding.subwayDownArrivalList.adapter = subwayDownAdapter
             binding.subwayUpArrivalList.layoutManager = LinearLayoutManager(context)
             binding.subwayDownArrivalList.layoutManager = LinearLayoutManager(context)
+            binding.expandButton.setOnClickListener {
+                binding.expandButton.isSelected = !binding.expandButton.isSelected
+                subwayUPAdapter.setExpanded(binding.expandButton.isSelected)
+                subwayDownAdapter.setExpanded(binding.expandButton.isSelected)
+            }
         }
     }
 
