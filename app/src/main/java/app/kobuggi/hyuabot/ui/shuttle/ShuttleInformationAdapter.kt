@@ -8,13 +8,14 @@ import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.ShuttleTimetableQuery
 import app.kobuggi.hyuabot.databinding.CardShuttleInformationBinding
 
-class ShuttleInformationAdapter(private val context: Context, private var informationList: List<ShuttleInformationItem>) :
+class ShuttleInformationAdapter(private val context: Context, private var informationList: List<ShuttleInformationItem>, private val onClickCard: (Int) -> Unit) :
     RecyclerView.Adapter<ShuttleInformationAdapter.ShuttleInformationViewHolder>() {
     inner class ShuttleInformationViewHolder(private val binding: CardShuttleInformationBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ShuttleInformationItem) {
+        fun bind(position: Int, item: ShuttleInformationItem) {
             binding.shuttleInformationImage.setImageResource(item.imageResourceID)
             binding.shuttleInformationTitle.text = item.title
             binding.shuttleInformationContent.text = item.content
+            binding.shuttleInformationCard.setOnClickListener { onClickCard(position) }
         }
     }
 
@@ -27,7 +28,7 @@ class ShuttleInformationAdapter(private val context: Context, private var inform
     }
 
     override fun onBindViewHolder(holder: ShuttleInformationViewHolder, position: Int) {
-        holder.bind(informationList[position])
+        holder.bind(position, informationList[position])
     }
 
     override fun getItemCount(): Int = informationList.size

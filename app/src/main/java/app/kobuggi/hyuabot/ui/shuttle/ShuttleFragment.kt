@@ -80,7 +80,22 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
             ShuttleInformationItem(R.drawable.hanyang_shuttle_stop, getString(R.string.closest_shuttle_stop), ""),
             ShuttleInformationItem(R.drawable.hanyang_shuttle, getString(R.string.shuttle_first_last_bus), ""),
         )
-        val shuttleInformationAdapter = ShuttleInformationAdapter(requireContext(), shuttleInformationList)
+        val shuttleInformationAdapter = ShuttleInformationAdapter(requireContext(), shuttleInformationList){
+            position -> kotlin.run {
+                if (position == 0){
+                    binding.shuttleArrivalList.smoothScrollToPosition(
+                        when(vm.closestStop.value?.nameID) {
+                            R.string.dormitory -> 0
+                            R.string.shuttlecock_o -> 1
+                            R.string.station -> 3
+                            R.string.terminal -> 4
+                            R.string.shuttlecock_i -> 5
+                            else -> 0
+                        }
+                    )
+                }
+            }
+        }
         binding.shuttleTopRecyclerView.apply {
             adapter = shuttleInformationAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
