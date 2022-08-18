@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.BusQuery
+import app.kobuggi.hyuabot.ui.shuttle.ShuttleStopInfo
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -18,11 +21,13 @@ import javax.inject.Inject
 @HiltViewModel
 class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewModel() {
     private val disposable = CompositeDisposable()
-    val busData = MutableLiveData<List<BusQuery.Bus>>()
+    val busData = mutableListOf<BusRouteItem>()
+    val busDataLiveData = MutableLiveData<List<BusRouteItem>>()
     val isLoading = MutableLiveData(false)
     val moveToTimetableFragmentEvent = MutableLiveData<Event<Boolean>>()
     val timetableRouteName = MutableLiveData<String>()
     val timetableRouteColor = MutableLiveData<String>()
+    private var nativeAd: NativeAd? = null
 
     private fun fetchData() {
         viewModelScope.launch {
@@ -35,9 +40,14 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
                 )
             ).execute()
             if (result.data != null) {
-                busData.value = result.data!!.bus.filter {
+                busData.clear()
+                busData.addAll(result.data!!.bus.filter {
                     (it.routeName == "707-1" && it.stopName == "한양대정문") || (it.routeName != "707-1" && it.stopName == "한양대게스트하우스")
+                }.map { BusRouteItem(it, null) })
+                if (nativeAd != null) {
+                    insertAD(nativeAd!!)
                 }
+                busDataLiveData.value = busData
             } else {
                 Log.e("BusViewModel", result.errors.toString())
             }
@@ -67,6 +77,12 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+
+    fun insertAD(nativeAd: NativeAd){
+        this.nativeAd = nativeAd
+        busData.add(1, BusRouteItem(null, nativeAd))
+        busDataLiveData.value = busData
     }
 }
 
