@@ -15,12 +15,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.kobuggi.hyuabot.BuildConfig
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentContactTabBinding
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.nativead.NativeAd
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ContactTab : Fragment(), DialogInterface.OnDismissListener {
+    private lateinit var adLoader: AdLoader
+    private val nativeAdList = arrayListOf<NativeAd>()
+
     fun newInstance(position: Int): ContactTab {
         val bundle = Bundle(1)
         val fragment = ContactTab()
@@ -37,6 +46,9 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         position = arguments?.getInt("position") ?: 0
+        if (savedInstanceState == null) {
+            loadAD()
+        }
     }
 
     override fun onCreateView(
@@ -94,6 +106,32 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(requireContext(), requireContext().getString(R.string.no_dial_app), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun loadAD() {
+        val builder = AdLoader.Builder(requireContext(), BuildConfig.ADMOB_UNIT_ID)
+        adLoader =
+            builder.forNativeAd { nativeAD ->
+                nativeAdList.add(nativeAD)
+                if (!adLoader.isLoading) {
+                    insertAD()
+                }
+            }.withAdListener(
+                object : AdListener() {
+                    override fun onAdFailedToLoad(p0: LoadAdError) {
+                        super.onAdFailedToLoad(p0)
+                        if (!adLoader.isLoading){
+                            insertAD()
+                        }
+                    }
+                }).build()
+        adLoader.loadAds(AdRequest.Builder().build(), 1)
+    }
+
+    private fun insertAD(){
+        if (nativeAdList.isNotEmpty()){
+            vm.insertAD(nativeAdList.first())
         }
     }
 }
