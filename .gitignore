@@ -17,3 +17,7 @@ local.properties
 .idea/
 
 app/google-services.json
+
+app/release/
+
+fast_follow_pack/build/intermediates/asset_pack_manifest/
