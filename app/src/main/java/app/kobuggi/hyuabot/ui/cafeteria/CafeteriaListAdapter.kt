@@ -31,9 +31,17 @@ class CafeteriaListAdapter(private val context: Context, private var cafeteriaLi
         LatLng(37.298236,126.8344932),
         LatLng(37.2956619,126.837185)
     )
+    private val cafeteriaName = hashMapOf(
+        "교직원식당" to R.string.cafeteria_teacher,
+        "학생식당" to R.string.cafeteria_student,
+        "창업보육센터" to R.string.cafeteria_changbo,
+        "푸드코트" to R.string.cafeteria_food_court,
+        "창의인재원식당" to R.string.cafeteria_dormitory
+    )
+
     inner class CafeteriaViewHolder(private val binding: CardCafeteriaMenuBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(cafeteriaItem: CafeteriaMenuQuery.Cafeterium) {
-            binding.cafeteriaName.text = cafeteriaItem.cafeteriaName
+            binding.cafeteriaName.text = cafeteriaName[cafeteriaItem.cafeteriaName]?.let { context.getString(it) } ?: cafeteriaItem.cafeteriaName
 
             val menuGroupByTime = cafeteriaItem.menu.groupBy { it.timeType }
             val timeList = arrayListOf(
@@ -74,7 +82,12 @@ class CafeteriaListAdapter(private val context: Context, private var cafeteriaLi
                 notifyItemRangeChanged(0, cafeteriaList.size)
             }
             binding.cafeteriaLocation.setOnClickListener {
-                onClickLocationButton(cafeteriaLocationList[position], cafeteriaItem.cafeteriaName)
+                val index = if (itemCount == 6){
+                    if (bindingAdapterPosition < 1) bindingAdapterPosition else bindingAdapterPosition - 1
+                } else {
+                    bindingAdapterPosition
+                }
+                onClickLocationButton(cafeteriaLocationList[index], cafeteriaItem.cafeteriaName)
             }
         }
     }

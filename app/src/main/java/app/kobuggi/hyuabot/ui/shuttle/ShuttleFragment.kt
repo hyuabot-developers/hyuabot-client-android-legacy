@@ -58,9 +58,10 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                     vm.closestStop.value = getClosestShuttleStop(it)
                     vm.locationChecked.value = true
                 }
-            }
-            fusedLocationClient.lastLocation.addOnFailureListener {
-                Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                fusedLocationClient.lastLocation.addOnFailureListener {
+                    Toast.makeText(requireContext(), "위치 정보를 가져올 수 없습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }

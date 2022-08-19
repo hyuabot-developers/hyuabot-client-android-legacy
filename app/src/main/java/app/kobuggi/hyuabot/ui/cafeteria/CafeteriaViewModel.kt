@@ -1,6 +1,5 @@
 package app.kobuggi.hyuabot.ui.cafeteria
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,8 +40,6 @@ class CafeteriaViewModel @Inject constructor(private val client: ApolloClient) :
                     _cafeteriaMenu.add(1, CafeteriaItem(null, nativeAd!!))
                 }
                 cafeteriaMenu.value = _cafeteriaMenu
-            } else {
-                Log.d("BusViewModel", result.errors.toString())
             }
         }
     }

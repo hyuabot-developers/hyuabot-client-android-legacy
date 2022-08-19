@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +70,6 @@ class ContactTab : Fragment(), DialogInterface.OnDismissListener {
         )
         vm.contactList.observe(viewLifecycleOwner) {
             adapter.setResult(it)
-            Log.d("ContactTab", "contactList: ${it.size}")
             if(it.isEmpty()) {
                 binding.contactList.visibility = View.GONE
                 binding.contactSearchNoResult.visibility = View.VISIBLE

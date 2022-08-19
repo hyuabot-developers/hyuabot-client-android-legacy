@@ -1,6 +1,5 @@
 package app.kobuggi.hyuabot.ui.subway
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -51,8 +50,6 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
                     _subwayData.add(1, SubwayRouteItem(null, nativeAd!!))
                 }
                 subwayData.value = _subwayData
-            } else {
-                Log.d("SubwayViewModel", result.errors.toString())
             }
         }
     }

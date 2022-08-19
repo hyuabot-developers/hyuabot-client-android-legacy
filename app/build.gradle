@@ -37,13 +37,19 @@ android {
         applicationId "app.kobuggi.hyuabot"
         minSdk 28
         targetSdk 33
-        versionCode 206
-        versionName "2.0-internal-220805"
+        versionCode 209
+        versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "admob_id", properties["ADMOB_ID"]
         buildConfigField "String", "admob_unit_id", properties["ADMOB_UNIT_ID"]
         buildConfigField "String", "server_url", properties["API_URL"]
         manifestPlaceholders = [mapKey: "${properties.getProperty("MAP_KEY")}"]
+    }
+
+    bundle {
+        language {
+            enableSplit false
+        }
     }
 
     buildTypes {

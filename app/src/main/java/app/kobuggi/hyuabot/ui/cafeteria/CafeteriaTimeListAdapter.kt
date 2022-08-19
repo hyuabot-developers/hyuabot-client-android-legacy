@@ -9,9 +9,14 @@ import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ItemCafeteriaTimeBinding
 
 class CafeteriaTimeListAdapter(private val context: Context, private val menuList: ArrayList<CafeteriaTimeItem>) : RecyclerView.Adapter<CafeteriaTimeListAdapter.MenuListViewHolder>() {
+    private val menuType = hashMapOf(
+        "조식" to R.string.breakfast,
+        "중식" to R.string.lunch,
+        "석식" to R.string.dinner
+    )
     inner class MenuListViewHolder(private val binding: ItemCafeteriaTimeBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int) {
-            binding.cafeteriaTime.text = menuList[position].timeType
+            binding.cafeteriaTime.text = menuType[menuList[position].timeType]?.let { context.getString(it) } ?: menuList[position].timeType
 
             val cafeteriaMenuListAdapter = CafeteriaMenuListAdapter(context, menuList[position].menuList)
             binding.menuList.adapter = cafeteriaMenuListAdapter

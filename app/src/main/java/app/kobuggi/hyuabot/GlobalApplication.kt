@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import app.kobuggi.hyuabot.utils.LocaleHelper
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import dagger.hilt.android.HiltAndroidApp
@@ -50,9 +51,13 @@ class GlobalApplication : Application() {
                 }
             }
         }
+        val localeCode = getSharedPreferences("hyuabot", 0).getString("locale", "")
+        if (localeCode != "" && localeCode != null) {
+            LocaleHelper.setLocale(localeCode)
+        }
         MobileAds.initialize(this)
-        val testDeviceIds: List<String> = listOf("98A0F2211F0AD23799E4A6F63A14CF46")
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-        MobileAds.setRequestConfiguration(configuration)
+//        val testDeviceIds: List<String> = listOf("98A0F2211F0AD23799E4A6F63A14CF46")
+//        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+//        MobileAds.setRequestConfiguration(configuration)
     }
 }

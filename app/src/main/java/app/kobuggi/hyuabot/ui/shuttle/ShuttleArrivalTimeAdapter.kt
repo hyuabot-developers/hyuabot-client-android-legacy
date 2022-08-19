@@ -36,13 +36,13 @@ class ShuttleArrivalTimeAdapter(private val context: Context, private val curren
 
     override fun getItemCount(): Int = minOf(itemCount, arrivalTimeList.size)
 
-    fun setArrivalTimeList(arrivalTimeList: List<LocalTime>) {
-        this.arrivalTimeList = arrivalTimeList
-        notifyDataSetChanged()
-    }
-
     fun setItemCount(itemCount: Int) {
+        val oldItemCount = this.itemCount
         this.itemCount = itemCount
-        notifyDataSetChanged()
+        if (itemCount > oldItemCount) {
+            notifyItemRangeInserted(oldItemCount, itemCount - oldItemCount)
+        } else {
+            notifyItemRangeRemoved(itemCount, oldItemCount - itemCount)
+        }
     }
 }

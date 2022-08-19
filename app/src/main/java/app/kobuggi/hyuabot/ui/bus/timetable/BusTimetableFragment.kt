@@ -75,9 +75,9 @@ class BusTimetableFragment: Fragment() {
             else -> context.getString(R.string.bus_route_interval,0, 0)
         }
         binding.busRoute.text = when(routeName){
-            "10-1" -> context.getString(R.string.bus_route, context.getString(R.string.purgio_6th), context.getString(R.string.sangnoksu_station))
-            "707-1" -> context.getString(R.string.bus_route, context.getString(R.string.new_ansan_college), context.getString(R.string.suwon_station))
-            "3102" -> context.getString(R.string.bus_route, context.getString(R.string.saesol_high_school), context.getString(R.string.gangnam_station))
+            "10-1" -> context.getString(R.string.bus_route, context.getString(R.string.purgio_6th), context.getString(R.string.sangnoksu_station).replace("\n", " "))
+            "707-1" -> context.getString(R.string.bus_route, context.getString(R.string.new_ansan_college), context.getString(R.string.suwon_station).replace("\n", " "))
+            "3102" -> context.getString(R.string.bus_route, context.getString(R.string.saesol_high_school), context.getString(R.string.gangnam_station).replace("\n", " "))
             else -> ""
         }
 
@@ -132,5 +132,8 @@ class BusTimetableFragment: Fragment() {
     override fun onDetach() {
         super.onDetach()
         callback.remove()
+        val window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = ResourcesCompat.getColor(resources, R.color.hanyang_primary, null)
     }
 }

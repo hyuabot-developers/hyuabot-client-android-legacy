@@ -1,7 +1,6 @@
 package app.kobuggi.hyuabot.ui.map
 
 import android.graphics.Bitmap
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -64,7 +63,7 @@ class MapViewModel @Inject constructor(private val repository: AppDatabaseReposi
         }
     }
 
-    fun onSelectedCategoryButtonClick(view: View) {
+    fun onSelectedCategoryButtonClick() {
         showCategoryButton.value = !showCategoryButton.value!!
     }
 

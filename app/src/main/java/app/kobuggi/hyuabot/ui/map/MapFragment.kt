@@ -14,6 +14,7 @@ import android.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.data.database.AppDatabaseItem
@@ -37,7 +38,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var clusterManager: ClusterManager<MapMarkerItem>
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +56,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         binding.searchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("MapFragment", "onQueryTextSubmit: $query")
                 if (query != null && query.isNotEmpty()) {
                     vm.getSearchResult(query)
                 }
@@ -64,7 +63,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                Log.d("MapFragment", "onQueryTextChange: $query")
                 if (query != null && query.isNotEmpty()) {
                     vm.getSearchResult(query)
                 }
@@ -132,21 +130,27 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.mapCategoryList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         vm.markerOptions.observe(viewLifecycleOwner) {
-            map.clear()
-            if (it.size > 1){
-                clusterManager.clearItems()
-                clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.snippet, item.icon!!) })
-                clusterManager.cluster()
-                val builder = LatLngBounds.Builder()
-                for (item in it) {
-                    builder.include(item.position)
+            try {
+                map.clear()
+                if (it.size > 1){
+                    clusterManager.clearItems()
+                    clusterManager.addItems(it.map { item -> MapMarkerItem(item.position, item.title!!, item.snippet, item.icon!!) })
+                    clusterManager.cluster()
+                    val builder = LatLngBounds.Builder()
+                    for (item in it) {
+                        builder.include(item.position)
+                    }
+                    val bounds = builder.build()
+                    map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+                } else if (it.size == 1) {
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(it[0].position, 16f))
+                    val marker = map.addMarker(it[0])
+                    marker!!.showInfoWindow()
                 }
-                val bounds = builder.build()
-                map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
-            } else if (it.size == 1) {
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(it[0].position, 16f))
-                val marker = map.addMarker(it[0])
-                marker!!.showInfoWindow()
+            } catch (e: NullPointerException){
+                findNavController().navigateUp()
+            } catch (e: UninitializedPropertyAccessException){
+                findNavController().navigateUp()
             }
         }
 

@@ -1,6 +1,5 @@
 package app.kobuggi.hyuabot.ui.shuttle
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -66,7 +65,6 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 }
                 fetchShuttlePeriodJob.await()
             }
-            Log.d("ShuttleViewModel", "period: $shuttlePeriod")
             val result = client.query(
                 ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
             ).execute()
@@ -84,7 +82,6 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 }
                 fetchShuttlePeriodJob.await()
             }
-            Log.d("ShuttleViewModel", "period: $shuttlePeriod")
             val result = client.query(
                 ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
             ).execute()
