@@ -1,7 +1,6 @@
 package app.kobuggi.hyuabot.ui.shuttle
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +61,6 @@ class ShuttleArrivalListAdapter(private val context: Context,
             } else {
                 shuttleTimetable.filter { it.shuttleType == "C" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![2].toLong()) }
             }
-            Log.d("timetable", timetableByStopC.toString())
             val shuttleDHAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDH){
                 onClickCard(stopList[position].nameID, "DH")
             }
