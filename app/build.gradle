@@ -46,6 +46,12 @@ android {
         manifestPlaceholders = [mapKey: "${properties.getProperty("MAP_KEY")}"]
     }
 
+    bundle {
+        language {
+            enableSplit false
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
