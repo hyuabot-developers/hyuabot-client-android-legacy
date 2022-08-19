@@ -44,8 +44,6 @@ class SubwayArrivalItemAdapter(private val context: Context, private var arrival
             binding.subwayTimetableItem.setOnClickListener {
                 onItemClick()
             }
-            Log.d("locale", LocaleHelper.locale.toString())
-            Log.d("locale", Locale.getDefault().toString())
             if (LocaleHelper.locale.toString().startsWith("ko") || Locale.getDefault().toString().startsWith("ko")) {
                 binding.subwayCurrent.visibility = ViewGroup.VISIBLE
             } else {
