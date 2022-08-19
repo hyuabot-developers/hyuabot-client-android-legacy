@@ -129,4 +129,19 @@
     <string name="shuttle_first_last_bus_time">%1$s:%2$s/%3$s:%4$s</string>
     <string name="guest_house">Hanyang Convention Center</string>
     <string name="main_gate">Main Gate</string>
+    <string name="line_4">Line No. 4</string>
+    <string name="suin_bundang">Suin-bundang Line</string>
+    <string name="bound_for">For %1$s</string>
+    <string name="incheon">Incheon</string>
+    <string name="oido">Oido</string>
+    <string name="cheongnyeongli">Cheongnyangni</string>
+    <string name="wangsimni">Wangsimni</string>
+    <string name="jukjeon">Jukjeon</string>
+    <string name="gosaek">Gosaek</string>
+    <string name="ansan">Ansan</string>
+    <string name="danggogae">Danggogae</string>
+    <string name="nowon">Nowon</string>
+    <string name="hansung_univ">Hansung Univ.</string>
+    <string name="sadang">Sadang</string>
+    <string name="geumjeong">Geumjeong</string>
 </resources>

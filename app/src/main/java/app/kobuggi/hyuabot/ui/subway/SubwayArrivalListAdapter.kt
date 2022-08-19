@@ -33,11 +33,15 @@ class SubwayArrivalListAdapter(private val context: Context, private var subwayL
         "4호선" to "#00A5DE",
         "수인분당선" to "#F5A200",
     )
+    private val routeName = hashMapOf(
+        "4호선" to R.string.line_4,
+        "수인분당선" to R.string.suin_bundang,
+    )
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     inner class SubwayArrivalViewHolder(private val binding: CardSubwayArrivalBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(arrivalItem: SubwayQuery.Subway) {
             binding.subwayRouteName.setBackgroundColor(Color.parseColor(routeColor[arrivalItem.routeName] ?: "#000000"))
-            binding.subwayRouteName.text = arrivalItem.routeName
+            binding.subwayRouteName.text = routeName[arrivalItem.routeName]?.let { context.getString(it) } ?: arrivalItem.routeName
             val now = LocalDateTime.now()
 
             val arrivalListUp = arrayListOf<SubwayArrivalItem>()
