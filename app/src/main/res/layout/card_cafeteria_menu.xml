@@ -21,19 +21,15 @@
             <TextView
                 android:id="@+id/cafeteria_name"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="4"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:fontWeight="900" />
-            <View
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="match_parent" />
             <ImageButton
                 android:id="@+id/cafeteria_location"
                 android:layout_width="0dp"

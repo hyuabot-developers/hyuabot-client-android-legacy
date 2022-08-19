@@ -27,6 +27,10 @@ class SubwayTimetableFragment: Fragment() {
     private lateinit var binding : FragmentSubwayTimetableBinding
     private val vm by viewModels<SubwayTimetableViewModel>()
     private lateinit var callback: OnBackPressedCallback
+    private val routeNameHashMap = hashMapOf(
+        "4호선" to R.string.line_4,
+        "수인분당선" to R.string.suin_bundang,
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +63,7 @@ class SubwayTimetableFragment: Fragment() {
             window.statusBarColor = ResourcesCompat.getColor(resources, R.color.hanyang_primary, null)
             findNavController().navigateUp()
         }
-        binding.toolbar.title = routeName
+        binding.toolbar.title = routeNameHashMap[routeName]?.let { context.getString(it) } ?: routeName
 
         vm.fetchSubwayTimetable(routeName, heading)
         vm.subwayTimetable.observe(viewLifecycleOwner){

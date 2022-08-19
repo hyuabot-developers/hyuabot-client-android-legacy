@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HYUABOT</string>
+    <string name="app_name">휴아봇</string>
     <string name="menu">메뉴</string>
     <string name="cafeteria">학식</string>
     <string name="subway">전철</string>
@@ -126,4 +126,29 @@
     <string name="closest_shuttle_stop">가장 가까운 정류장</string>
     <string name="shuttle_first_last_bus">오늘의 첫/막차 (셔틀콕)</string>
     <string name="shuttle_first_last_bus_time">%1$s시 %2$s분/%3$s시 %4$s분</string>
+    <string name="guest_house">한양대컨벤션센터</string>
+    <string name="main_gate">한양대정문</string>
+    <string name="line_4">4호선</string>
+    <string name="suin_bundang">수인분당선</string>
+    <string name="bound_for">%1$s 행</string>
+    <string name="incheon">인천</string>
+    <string name="oido">오이도</string>
+    <string name="cheongnyeongli">청량리</string>
+    <string name="wangsimni">왕십리</string>
+    <string name="jukjeon">죽전</string>
+    <string name="gosaek">고색</string>
+    <string name="ansan">안산</string>
+    <string name="danggogae">당고개</string>
+    <string name="nowon">노원</string>
+    <string name="hansung_univ">한성대입구</string>
+    <string name="sadang">사당</string>
+    <string name="geumjeong">금정</string>
+    <string name="breakfast">조식</string>
+    <string name="lunch">중식</string>
+    <string name="dinner">석식</string>
+    <string name="cafeteria_teacher">교직원식당</string>
+    <string name="cafeteria_student">학생식당</string>
+    <string name="cafeteria_changbo">창업보육센터</string>
+    <string name="cafeteria_food_court">푸드코트</string>
+    <string name="cafeteria_dormitory">창의인재원식당</string>
 </resources>
