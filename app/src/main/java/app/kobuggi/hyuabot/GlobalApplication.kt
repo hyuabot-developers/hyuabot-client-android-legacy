@@ -56,8 +56,8 @@ class GlobalApplication : Application() {
             LocaleHelper.setLocale(localeCode)
         }
         MobileAds.initialize(this)
-        val testDeviceIds: List<String> = listOf("98A0F2211F0AD23799E4A6F63A14CF46")
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-        MobileAds.setRequestConfiguration(configuration)
+//        val testDeviceIds: List<String> = listOf("98A0F2211F0AD23799E4A6F63A14CF46")
+//        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+//        MobileAds.setRequestConfiguration(configuration)
     }
 }
