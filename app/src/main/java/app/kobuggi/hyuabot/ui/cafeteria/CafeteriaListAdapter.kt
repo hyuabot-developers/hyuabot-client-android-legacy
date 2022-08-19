@@ -74,7 +74,12 @@ class CafeteriaListAdapter(private val context: Context, private var cafeteriaLi
                 notifyItemRangeChanged(0, cafeteriaList.size)
             }
             binding.cafeteriaLocation.setOnClickListener {
-                onClickLocationButton(cafeteriaLocationList[if (bindingAdapterPosition < 1) bindingAdapterPosition else bindingAdapterPosition + 1], cafeteriaItem.cafeteriaName)
+                val index = if (itemCount == 6){
+                    if (bindingAdapterPosition < 1) bindingAdapterPosition else bindingAdapterPosition - 1
+                } else {
+                    bindingAdapterPosition
+                }
+                onClickLocationButton(cafeteriaLocationList[index], cafeteriaItem.cafeteriaName)
             }
         }
     }
