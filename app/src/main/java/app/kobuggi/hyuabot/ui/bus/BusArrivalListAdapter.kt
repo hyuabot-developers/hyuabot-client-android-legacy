@@ -45,6 +45,14 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
                 binding.busArrivalList.visibility = View.GONE
                 binding.busNoData.visibility = View.VISIBLE
             }
+            binding.expandButton.setOnClickListener {
+                binding.expandButton.isSelected = !binding.expandButton.isSelected
+                adapter.itemCount = if (binding.expandButton.isSelected) {
+                    5
+                } else {
+                    2
+                }
+            }
         }
     }
 

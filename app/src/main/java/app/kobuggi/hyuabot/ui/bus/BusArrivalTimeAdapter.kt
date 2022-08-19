@@ -71,17 +71,13 @@ class BusArrivalTimeAdapter(private val context: Context, private var realtimeLi
         }
     }
 
-    fun setArrivalTimeList(realtimeList: List<BusQuery.Realtime>, timetableList: List<BusQuery.Timetable>) {
-        this.realtimeList = realtimeList
-        this.timetableList = timetableList
-        arrivalTimeList.clear()
-        arrivalTimeList.addAll(realtimeList)
-        arrivalTimeList.addAll(timetableList)
-        notifyDataSetChanged()
-    }
-
     fun setItemCount(itemCount: Int) {
+        val oldItemCount = this.itemCount
         this.itemCount = itemCount
-        notifyDataSetChanged()
+        if (itemCount > oldItemCount) {
+            notifyItemRangeInserted(oldItemCount, itemCount - oldItemCount)
+        } else {
+            notifyItemRangeRemoved(itemCount, oldItemCount - itemCount)
+        }
     }
 }

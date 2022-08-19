@@ -40,13 +40,13 @@ class SubwayArrivalItemAdapter(private val context: Context, private var arrival
         return min(itemCount, arrivalList.size)
     }
 
-    fun setArrivalList(arrivalList: List<SubwayArrivalItem>) {
-        this.arrivalList = arrivalList
-        notifyDataSetChanged()
-    }
-
     fun setExpanded(isExpanded: Boolean) {
+        val oldItemCount = itemCount
         this.itemCount = if (isExpanded) arrivalList.size else arrivalList.filter { it.currentStation != null }.size
-        notifyDataSetChanged()
+        if (itemCount > oldItemCount) {
+            notifyItemRangeInserted(oldItemCount, itemCount - oldItemCount)
+        } else {
+            notifyItemRangeRemoved(itemCount, oldItemCount - itemCount)
+        }
     }
 }
