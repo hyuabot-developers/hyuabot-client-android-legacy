@@ -144,4 +144,12 @@
     <string name="hansung_univ">Hansung Univ.</string>
     <string name="sadang">Sadang</string>
     <string name="geumjeong">Geumjeong</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="cafeteria_teacher">Staff Cafeteria</string>
+    <string name="cafeteria_student">Student Cafeteria</string>
+    <string name="cafeteria_changbo">Business Incubation Center</string>
+    <string name="cafeteria_food_court">Food Court</string>
+    <string name="cafeteria_dormitory">Dormitory Cafeteria</string>
 </resources>

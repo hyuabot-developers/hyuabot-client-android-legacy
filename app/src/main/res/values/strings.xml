@@ -143,4 +143,12 @@
     <string name="hansung_univ">한성대입구</string>
     <string name="sadang">사당</string>
     <string name="geumjeong">금정</string>
+    <string name="breakfast">조식</string>
+    <string name="lunch">중식</string>
+    <string name="dinner">석식</string>
+    <string name="cafeteria_teacher">교직원식당</string>
+    <string name="cafeteria_student">학생식당</string>
+    <string name="cafeteria_changbo">창업보육센터</string>
+    <string name="cafeteria_food_court">푸드코트</string>
+    <string name="cafeteria_dormitory">창의인재원식당</string>
 </resources>
