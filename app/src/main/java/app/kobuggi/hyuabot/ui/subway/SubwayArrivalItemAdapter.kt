@@ -12,6 +12,7 @@ import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ItemSubwayArrivalBinding
 import app.kobuggi.hyuabot.ui.subway.SubwayArrivalItem
 import app.kobuggi.hyuabot.utils.LocaleHelper
+import java.util.*
 import kotlin.math.min
 
 class SubwayArrivalItemAdapter(private val context: Context, private var arrivalList: List<SubwayArrivalItem>, private val onItemClick: () -> Unit) : RecyclerView.Adapter<SubwayArrivalItemAdapter.SubwayArrivalViewHolder>() {
@@ -43,7 +44,11 @@ class SubwayArrivalItemAdapter(private val context: Context, private var arrival
             binding.subwayTimetableItem.setOnClickListener {
                 onItemClick()
             }
-            if (LocaleHelper.locale != null && LocaleHelper.locale.toString() != "ko") {
+            Log.d("locale", LocaleHelper.locale.toString())
+            Log.d("locale", Locale.getDefault().toString())
+            if (LocaleHelper.locale.toString().startsWith("ko") || Locale.getDefault().toString().startsWith("ko")) {
+                binding.subwayCurrent.visibility = ViewGroup.VISIBLE
+            } else {
                 binding.subwayCurrent.visibility = ViewGroup.GONE
             }
         }
