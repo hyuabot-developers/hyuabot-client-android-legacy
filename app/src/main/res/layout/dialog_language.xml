@@ -43,18 +43,5 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="50dp" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/primaryTextColor" />
-        <TextView
-            android:text="@string/language_chinese"
-            android:textSize="20sp"
-            android:textColor="@color/primaryTextColor"
-            android:textAlignment="center"
-            android:onClick="@{() -> vm.setChinese()}"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
     </LinearLayout>
 </layout>
