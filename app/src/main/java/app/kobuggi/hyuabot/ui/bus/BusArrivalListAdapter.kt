@@ -25,11 +25,22 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
         "707-1" to "#E60012",
         "3102" to "#E60012",
     )
+    private val routeStop = hashMapOf(
+        "10-1" to R.string.guest_house,
+        "707-1" to R.string.main_gate,
+        "3102" to R.string.guest_house,
+    )
+    private val terminalStop = hashMapOf(
+        "10-1" to R.string.sangnoksu_station,
+        "707-1" to R.string.suwon_station,
+        "3102" to R.string.gangnam_station,
+    )
+
     inner class BusArrivalViewHolder(private val binding: CardBusArrivalBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(arrivalList: BusQuery.Bus) {
             binding.busRouteName.setBackgroundColor(Color.parseColor(routeColor[arrivalList.routeName] ?: "#000000"))
-            binding.busRouteName.text = context.getString(R.string.bus_route_name, arrivalList.routeName, arrivalList.stopName)
-            binding.busTerminalStop.text = arrivalList.terminalStop
+            binding.busRouteName.text = context.getString(R.string.bus_route_name, arrivalList.routeName, routeStop[arrivalList.routeName]?.let { context.getString(it) } ?: "")
+            binding.busTerminalStop.text = terminalStop[arrivalList.routeName]?.let { context.getString(it) } ?: ""
 
             val now = LocalTime.now()
             val timetable = arrivalList.timetable.filter { LocalTime.parse(it.departureTime.toString()).isAfter(now) }

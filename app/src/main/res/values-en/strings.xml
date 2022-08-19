@@ -41,13 +41,13 @@
     <string name="no_arrival_data">No arrival data</string>
     <string name="notification">Notification</string>
     <string name="no_cafeteria_menu">No menu provided</string>
-    <string name="saesol_high_school">Saesol high school</string>
+    <string name="saesol_high_school">Songsan</string>
     <string name="new_ansan_college">Shin Ansan University</string>
     <string name="purgio_6th">Purgio 6th Apt.</string>
-    <string name="gangnam_station">Gangnam Stn</string>
-    <string name="suwon_station">Suwon Stn</string>
-    <string name="sangnoksu_station">Sangnoksu Stn</string>
-    <string name="bus_route">%1$s → %2$s</string>
+    <string name="gangnam_station">Gangnam\nStn</string>
+    <string name="suwon_station">Suwon\nStn</string>
+    <string name="sangnoksu_station">Sangnoksu\nStn</string>
+    <string name="bus_route">%1$s\n→ %2$s</string>
     <string name="bus_route_interval">Bus interval: %1$d ~ %2$d mins</string>
     <string name="bus_route_first_last_time">%1$s: %2$s:%3$s(First)/%4$s:%5$s(Last)</string>
     <string name="click_card_to_show_timetable">To see whole timetable, click arrival data.</string>
@@ -127,4 +127,6 @@
     <string name="closest_shuttle_stop">Closest shuttle stop</string>
     <string name="shuttle_first_last_bus">First/Last shuttle</string>
     <string name="shuttle_first_last_bus_time">%1$s:%2$s/%3$s:%4$s</string>
+    <string name="guest_house">Hanyang Convention Center</string>
+    <string name="main_gate">Main Gate</string>
 </resources>

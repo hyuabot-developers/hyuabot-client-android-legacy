@@ -126,4 +126,6 @@
     <string name="closest_shuttle_stop">가장 가까운 정류장</string>
     <string name="shuttle_first_last_bus">오늘의 첫/막차 (셔틀콕)</string>
     <string name="shuttle_first_last_bus_time">%1$s시 %2$s분/%3$s시 %4$s분</string>
+    <string name="guest_house">한양대컨벤션센터</string>
+    <string name="main_gate">한양대정문</string>
 </resources>
