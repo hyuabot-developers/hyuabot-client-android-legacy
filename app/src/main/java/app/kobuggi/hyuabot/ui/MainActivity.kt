@@ -49,7 +49,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     private lateinit var assetPackManager: AssetPackManager
     private val fastFollowAssetPack = "fast_follow_pack"
     lateinit var firebaseAnalytics: FirebaseAnalytics
-    lateinit var updateManager: AppUpdateManager
+    private val updateManager by lazy { AppUpdateManagerFactory.create(this) }
     lateinit var launcher : IntentSenderForResultStarter
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
@@ -57,7 +57,6 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.vm = vm
-        updateManager = AppUpdateManagerFactory.create(this)
         val navigationFragmentHost = supportFragmentManager.findFragmentById(R.id.fragment_container) as? NavHostFragment
         navController = navigationFragmentHost?.navController ?: return
         binding.bottomNavigationMenu.setupWithNavController(navController)
