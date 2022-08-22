@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentShuttleTimetableBinding
 import app.kobuggi.hyuabot.ui.MainActivity
+import app.kobuggi.hyuabot.utils.Event
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -69,6 +71,13 @@ class ShuttleTimetableFragment: Fragment() {
             }
             if (it.any { shuttleItem -> shuttleItem.shuttleType == item.shuttleType }){
                 binding.shuttleTimetableNoData.visibility = View.GONE
+            }
+        }
+        vm.showErrorToast.observe(viewLifecycleOwner){
+            if (it.peekContent()){
+                Toast.makeText(requireContext(), R.string.error_fetch_shuttle_timetable, Toast.LENGTH_SHORT).show()
+                vm.showErrorToast.value = Event(false)
+                binding.shuttleTimetableProgress.visibility = View.GONE
             }
         }
     }
