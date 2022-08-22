@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import app.kobuggi.hyuabot.GlobalActivity
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.play.core.assetpacks.AssetPackManager
 import com.google.android.play.core.assetpacks.AssetPackManagerFactory
 import com.google.android.play.core.assetpacks.AssetPackStateUpdateListener
@@ -24,6 +25,7 @@ import com.google.android.play.core.assetpacks.model.AssetPackStatus
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
 
