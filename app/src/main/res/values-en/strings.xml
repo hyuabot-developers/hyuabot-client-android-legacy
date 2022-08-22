@@ -152,4 +152,13 @@
     <string name="cafeteria_changbo">Business Incubation Center</string>
     <string name="cafeteria_food_court">Food Court</string>
     <string name="cafeteria_dormitory">Dormitory Cafeteria</string>
+    <string name="error_fetch_shuttle_date">Failed to fetch shuttle bus data.</string>
+    <string name="error_fetch_shuttle_timetable">Failed to fetch shuttle bus timetable.</string>
+    <string name="error_fetch_bus_data">Failed to fetch bus data.</string>
+    <string name="error_fetch_bus_timetable">Failed to fetch bus timetable.</string>
+    <string name="no_timetable_data">Failed to fetch timetable data.</string>
+    <string name="error_fetch_subway_data">Failed to fetch subway data.</string>
+    <string name="no_arrival_data_subway_down">Failed to fetch subway data(Down Line)</string>
+    <string name="no_arrival_data_subway_up">Failed to fetch subway data(Up Line)</string>
+    <string name="no_reading_room_data">Failed to fetch reading room list</string>
 </resources>
