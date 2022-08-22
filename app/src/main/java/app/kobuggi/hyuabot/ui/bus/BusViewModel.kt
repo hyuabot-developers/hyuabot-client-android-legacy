@@ -47,6 +47,9 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
                     busData.addAll(result.data!!.bus.filter {
                         (it.routeName == "707-1" && it.stopName == "한양대정문") || (it.routeName != "707-1" && it.stopName == "한양대게스트하우스")
                     }.map { BusRouteItem(it, null) })
+                    busData.forEach{
+                        Log.d("BusViewModel", it.toString())
+                    }
                     if (nativeAd != null) {
                         insertAD(nativeAd!!)
                     }
@@ -56,6 +59,13 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
                 }
             } catch (e: ApolloNetworkException){
                 showErrorToast.postValue(Event(true))
+                busData.clear()
+                busData.addAll(listOf(
+                    BusRouteItem(arrivalList= BusQuery.Bus(stopName = "한양대게스트하우스", routeName = "10-1", stopId = 216000379, routeId = 216000068, startStop = "푸르지오6차후문", terminalStop = "상록수역", timeFromStartStop = 11, realtime = listOf(), timetable = listOf())),
+                    BusRouteItem(arrivalList= BusQuery.Bus(stopName = "한양대게스트하우스", routeName = "3102", stopId = 216000379, routeId = 216000061, startStop = "새솔고", terminalStop = "강남역", timeFromStartStop = 28, realtime = listOf(), timetable = listOf())),
+                    BusRouteItem(arrivalList= BusQuery.Bus(stopName = "한양대정문", routeName = "707-1", stopId = 216000719, routeId = 216000070, startStop = "신안산대", terminalStop = "수원역", timeFromStartStop = 23, realtime = listOf(), timetable = listOf())),
+                ))
+                busDataLiveData.value = busData
             } finally {
                 isLoading.value = false
             }
