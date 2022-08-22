@@ -151,4 +151,5 @@
     <string name="cafeteria_changbo">창업보육센터</string>
     <string name="cafeteria_food_court">푸드코트</string>
     <string name="cafeteria_dormitory">창의인재원식당</string>
+    <string name="error_fetch_shuttle_date">네트워크 문제로 인해 셔틀버스 정보를 불러오는데 실패했습니다.</string>
 </resources>

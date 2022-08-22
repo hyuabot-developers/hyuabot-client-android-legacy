@@ -45,6 +45,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
     private val disposable = CompositeDisposable()
     private var shuttlePeriod : String? = null
     private var shuttleWeekday : String? = null
+    val showErrorToast = MutableLiveData<Event<Int>>()
 
     init {
         _stopLiveData.value = stopList
@@ -71,6 +72,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 fetchShuttlePeriodJob.await()
                 if (shuttlePeriod == null || shuttleWeekday == null) {
                     isLoading.value = false
+                    showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
                     return@launch
                 }
             }
@@ -79,6 +81,8 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
             ).execute()
             if (result.data != null) {
                 shuttleTimetable.value = result.data!!.shuttle.timetable
+            } else {
+                showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
             }
         }
     }
