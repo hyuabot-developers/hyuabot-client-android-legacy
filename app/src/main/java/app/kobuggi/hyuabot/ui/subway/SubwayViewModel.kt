@@ -7,6 +7,7 @@ import app.kobuggi.hyuabot.SubwayQuery
 import app.kobuggi.hyuabot.ui.bus.BusRouteItem
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -28,27 +29,38 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
     val timetableRouteColor = MutableLiveData<String>()
     val timetableHeading = MutableLiveData<String>()
     private var nativeAd: NativeAd? = null
+    val showErrorToast = MutableLiveData<Event<Boolean>>()
 
     private fun fetchData() {
         isLoading.value = true
         val now = LocalTime.now()
         viewModelScope.launch {
-            val result = client.query(
-                SubwayQuery(
-                    stations = listOf("한대앞"),
-                    routes = listOf("4호선", "수인분당선"),
-                    weekday = "now",
-                    heading = "",
-                    startTime = "${now.hour.toString().padStart(2, '0')}:${now.minute.toString().padStart(2, '0')}",
-                    endTime = "23:59"
-                )
-            ).execute()
-            if (result.data != null) {
-                _subwayData.clear()
-                _subwayData.addAll(result.data!!.subway.map { SubwayRouteItem(it) })
-                if (nativeAd != null) {
-                    _subwayData.add(1, SubwayRouteItem(null, nativeAd!!))
+            try {
+                val result = client.query(
+                    SubwayQuery(
+                        stations = listOf("한대앞"),
+                        routes = listOf("4호선", "수인분당선"),
+                        weekday = "now",
+                        heading = "",
+                        startTime = "${now.hour.toString().padStart(2, '0')}:${now.minute.toString().padStart(2, '0')}",
+                        endTime = "23:59"
+                    )
+                ).execute()
+                if (result.data != null) {
+                    _subwayData.clear()
+                    _subwayData.addAll(result.data!!.subway.map { SubwayRouteItem(it) })
+                    if (nativeAd != null) {
+                        _subwayData.add(1, SubwayRouteItem(null, nativeAd!!))
+                    }
+                    subwayData.value = _subwayData
                 }
+            } catch (e: ApolloNetworkException) {
+                showErrorToast.value = Event(true)
+                _subwayData.clear()
+                _subwayData.addAll(listOf(
+                    SubwayRouteItem(SubwayQuery.Subway("한대앞", "4호선", listOf(), listOf()), null),
+                    SubwayRouteItem(SubwayQuery.Subway("한대앞", "수인분당선", listOf(), listOf()), null)
+                ))
                 subwayData.value = _subwayData
             }
         }
