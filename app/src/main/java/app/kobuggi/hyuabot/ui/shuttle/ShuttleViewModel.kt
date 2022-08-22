@@ -57,7 +57,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
             shuttlePeriod = query?.shuttle?.period!!
             shuttleWeekday = query.shuttle.weekday
         } catch (e: ApolloNetworkException) {
-            e.printStackTrace()
+//            showErrorToast.postValue(Event(R.string.error_fetch_shuttle_date))
         }
     }
 
@@ -70,20 +70,18 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                     fetchShuttleDate()
                 }
                 fetchShuttlePeriodJob.await()
-                if (shuttlePeriod == null || shuttleWeekday == null) {
-                    isLoading.value = false
+            }
+            if (shuttlePeriod != null && shuttleWeekday != null) {
+                val result = client.query(
+                    ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
+                ).execute()
+                if (result.data != null) {
+                    shuttleTimetable.value = result.data!!.shuttle.timetable
+                } else {
                     showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
-                    return@launch
                 }
             }
-            val result = client.query(
-                ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
-            ).execute()
-            if (result.data != null) {
-                shuttleTimetable.value = result.data!!.shuttle.timetable
-            } else {
-                showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
-            }
+            isLoading.value = false
         }
     }
 
@@ -94,15 +92,14 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                     fetchShuttleDate()
                 }
                 fetchShuttlePeriodJob.await()
-                if (shuttlePeriod == null || shuttleWeekday == null) {
-                    return@launch
-                }
             }
-            val result = client.query(
-                ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
-            ).execute()
-            if (result.data != null) {
-                shuttleEntireTimetable.value = result.data!!.shuttle.timetable
+            if (shuttlePeriod != null && shuttleWeekday != null) {
+                val result = client.query(
+                    ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
+                ).execute()
+                if (result.data != null) {
+                    shuttleEntireTimetable.value = result.data!!.shuttle.timetable
+                }
             }
         }
     }
