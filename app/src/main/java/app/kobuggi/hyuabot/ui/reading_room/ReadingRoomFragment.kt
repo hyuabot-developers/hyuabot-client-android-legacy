@@ -47,6 +47,13 @@ class ReadingRoomFragment : Fragment() {
         vm.fetchReadingRoomData()
         vm.rooms.observe(viewLifecycleOwner) {
             adapter.setReadingRooms(it)
+            if (it.isEmpty()){
+                binding.readingRoomNoData.visibility = View.VISIBLE
+                binding.readingRoomList.visibility = View.GONE
+            } else {
+                binding.readingRoomNoData.visibility = View.GONE
+                binding.readingRoomList.visibility = View.VISIBLE
+            }
         }
         vm.isCampus.observe(viewLifecycleOwner) {
             vm.fetchReadingRoomData()
