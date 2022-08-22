@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.*
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,15 +45,20 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
     private val disposable = CompositeDisposable()
     private var shuttlePeriod : String? = null
     private var shuttleWeekday : String? = null
+    val showErrorToast = MutableLiveData<Event<Int>>()
 
     init {
         _stopLiveData.value = stopList
     }
 
     private suspend fun fetchShuttleDate() {
-        val query = client.query(ShuttleDateQuery()).execute().data
-        shuttlePeriod = query?.shuttle?.period!!
-        shuttleWeekday = query.shuttle.weekday
+        try {
+            val query = client.query(ShuttleDateQuery()).execute().data
+            shuttlePeriod = query?.shuttle?.period!!
+            shuttleWeekday = query.shuttle.weekday
+        } catch (e: ApolloNetworkException) {
+//            showErrorToast.postValue(Event(R.string.error_fetch_shuttle_date))
+        }
     }
 
     fun fetchShuttleTimetable() {
@@ -65,12 +71,17 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 }
                 fetchShuttlePeriodJob.await()
             }
-            val result = client.query(
-                ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
-            ).execute()
-            if (result.data != null) {
-                shuttleTimetable.value = result.data!!.shuttle.timetable
+            if (shuttlePeriod != null && shuttleWeekday != null) {
+                val result = client.query(
+                    ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
+                ).execute()
+                if (result.data != null) {
+                    shuttleTimetable.value = result.data!!.shuttle.timetable
+                } else {
+                    showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
+                }
             }
+            isLoading.value = false
         }
     }
 
@@ -82,11 +93,13 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 }
                 fetchShuttlePeriodJob.await()
             }
-            val result = client.query(
-                ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
-            ).execute()
-            if (result.data != null) {
-                shuttleEntireTimetable.value = result.data!!.shuttle.timetable
+            if (shuttlePeriod != null && shuttleWeekday != null) {
+                val result = client.query(
+                    ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
+                ).execute()
+                if (result.data != null) {
+                    shuttleEntireTimetable.value = result.data!!.shuttle.timetable
+                }
             }
         }
     }
@@ -96,7 +109,11 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
             Observable.interval(0, 1, TimeUnit.MINUTES)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    fetchShuttleTimetable()
+                    try {
+                        fetchShuttleTimetable()
+                    } catch (e: ApolloNetworkException){
+                        e.printStackTrace()
+                    }
                 }
         )
     }

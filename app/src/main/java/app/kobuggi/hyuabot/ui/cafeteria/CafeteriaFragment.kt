@@ -57,6 +57,13 @@ class CafeteriaFragment : Fragment(), DialogInterface.OnDismissListener {
         vm.cafeteriaMenu.observe(viewLifecycleOwner){
             cafeteriaListAdapter.setCafeteriaList(it)
             vm.isLoading.value = false
+            if (it.isEmpty()){
+                binding.cafeteriaNoData.visibility = View.VISIBLE
+                binding.cafeteriaMenuList.visibility = View.GONE
+            } else {
+                binding.cafeteriaNoData.visibility = View.GONE
+                binding.cafeteriaMenuList.visibility = View.VISIBLE
+            }
         }
 
         vm.showCafeteriaLocationDialog.observe(viewLifecycleOwner) {

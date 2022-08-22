@@ -76,6 +76,12 @@ class SubwayFragment : Fragment() {
             }
         }
         Toast.makeText(requireContext(), R.string.click_card_to_show_timetable, Toast.LENGTH_SHORT).show()
+        vm.showErrorToast.observe(viewLifecycleOwner) {
+            if (it.peekContent()){
+                Toast.makeText(requireContext(), R.string.error_fetch_subway_data, Toast.LENGTH_SHORT).show()
+                vm.showErrorToast.value = Event(false)
+            }
+        }
         return binding.root
     }
 

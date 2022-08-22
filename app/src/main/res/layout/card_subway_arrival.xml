@@ -32,11 +32,15 @@
             android:orientation="vertical" />
         <TextView
             android:id="@+id/subway_up_arrival_no_data"
-            android:text="@string/no_arrival_data"
+            android:text="@string/no_arrival_data_subway_up"
             android:textColor="@color/primaryTextColor"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="vertical" />
         <View
             android:layout_width="match_parent"
@@ -51,11 +55,15 @@
             android:orientation="vertical" />
         <TextView
             android:id="@+id/subway_down_arrival_no_data"
-            android:text="@string/no_arrival_data"
+            android:text="@string/no_arrival_data_subway_down"
             android:textColor="@color/primaryTextColor"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="vertical" />
         <ImageButton
             android:id="@+id/expand_button"

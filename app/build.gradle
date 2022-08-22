@@ -16,7 +16,7 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 android {
     assetPacks = [":fast_follow_pack"]
 
-    compileSdk 32
+    compileSdk 33
 
     signingConfigs {
         debugWithSignedKey {
@@ -37,8 +37,8 @@ android {
         applicationId "app.kobuggi.hyuabot"
         minSdk 28
         targetSdk 33
-        versionCode 209
-        versionName "2.0"
+        versionCode 210
+        versionName "2.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "admob_id", properties["ADMOB_ID"]
         buildConfigField "String", "admob_unit_id", properties["ADMOB_UNIT_ID"]
@@ -99,7 +99,7 @@ android {
 
 dependencies {
     implementation "androidx.core:core-ktx:1.8.0"
-    implementation "androidx.appcompat:appcompat:1.4.2"
+    implementation "androidx.appcompat:appcompat:1.5.0"
     implementation "com.google.android.material:material:1.6.1"
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
@@ -133,9 +133,9 @@ dependencies {
     implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0'
 
     // UI
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.0'
-    implementation 'androidx.fragment:fragment-ktx:1.5.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.2'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // Apollo GraphQL
@@ -162,7 +162,12 @@ dependencies {
     // Google Analytics
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
 
     // Google Admob
     implementation 'com.google.android.gms:play-services-ads:21.1.0'
+
+    // In app update
+    implementation("com.google.android.play:app-update:2.0.0")
+    implementation("com.google.android.play:app-update-ktx:2.0.0")
 }

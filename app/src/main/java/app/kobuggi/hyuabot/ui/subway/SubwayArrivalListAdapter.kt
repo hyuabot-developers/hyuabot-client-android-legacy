@@ -74,6 +74,16 @@ class SubwayArrivalListAdapter(private val context: Context, private var subwayL
             val subwayDownAdapter = SubwayArrivalItemAdapter(context, arrivalListDown.subList(0, arrivalListDown.size.coerceAtMost(5))){
                 onClickArrivalItem(arrivalItem.routeName, routeColor[arrivalItem.routeName]!!, "down")
             }
+            if (arrivalListUp.isEmpty()){
+                binding.subwayUpArrivalList.visibility = View.GONE
+                binding.subwayUpArrivalNoData.visibility = View.VISIBLE
+                binding.subwayUpArrivalNoData.setOnClickListener { onClickArrivalItem(arrivalItem.routeName, routeColor[arrivalItem.routeName]!!, "up") }
+            }
+            if (arrivalListDown.isEmpty()){
+                binding.subwayDownArrivalList.visibility = View.GONE
+                binding.subwayDownArrivalNoData.visibility = View.VISIBLE
+                binding.subwayDownArrivalNoData.setOnClickListener { onClickArrivalItem(arrivalItem.routeName, routeColor[arrivalItem.routeName]!!, "down") }
+            }
             binding.subwayDownArrivalList.adapter = subwayDownAdapter
             binding.subwayUpArrivalList.layoutManager = LinearLayoutManager(context)
             binding.subwayDownArrivalList.layoutManager = LinearLayoutManager(context)

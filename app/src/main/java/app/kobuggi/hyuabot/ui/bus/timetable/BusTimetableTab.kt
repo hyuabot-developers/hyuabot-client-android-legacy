@@ -34,6 +34,9 @@ class BusTimetableTab(private val timetable : List<BusQuery.Timetable>): Fragmen
             binding.busTimetableList.smoothScrollToPosition((
                 timetable.indexOf(timetable.first { LocalTime.parse(it.departureTime.toString(), formatter).isAfter(LocalTime.now()) }) + 5).coerceAtMost(timetable.size - 1)
             )
+        } else {
+            binding.busTimetableList.visibility = View.GONE
+            binding.busTimetableNoData.visibility = View.VISIBLE
         }
         return binding.root
     }

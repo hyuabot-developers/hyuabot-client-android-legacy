@@ -151,4 +151,17 @@
     <string name="cafeteria_changbo">창업보육센터</string>
     <string name="cafeteria_food_court">푸드코트</string>
     <string name="cafeteria_dormitory">창의인재원식당</string>
+    <string name="error_fetch_shuttle_date">네트워크 문제로 인해 셔틀버스 정보를 불러오는데 실패했습니다.</string>
+    <string name="error_fetch_shuttle_timetable">네트워크 오류로 인해 셔틀버스 시간표를 불러오는데 실패했습니다.</string>
+    <string name="error_fetch_bus_data">네트워크 오류로 인해 버스 정보를 불러오는데 실패했습니다.</string>
+    <string name="error_fetch_bus_timetable">네트워크 오류로 인해 버스 시간표를 불러오는데 실패했습니다.</string>
+    <string name="no_timetable_data">조회된 시간표 정보가 없습니다.</string>
+    <string name="error_fetch_subway_data">네트워크 오류로 인해 전철 정보를 불러오는데 실패했습니다.</string>
+    <string name="no_arrival_data_subway_down">도착 정보가 없습니다.(하행)</string>
+    <string name="no_arrival_data_subway_up">도착 정보가 없습니다.(상행)</string>
+    <string name="no_reading_room_data">조회된 열람실 목록이 없습니다.</string>
+    <string name="need_permission_get_notification">알림을 받기 위해서는 접근 권한이 필요합니다.</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="update_cancelled">앱 업데이트가 취소되었습니다.</string>
+    <string name="update_available">사용 가능한 업데이트가 있습니다.</string>
 </resources>

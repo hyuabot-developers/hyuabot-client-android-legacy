@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.contact
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,6 @@ class ContactTabViewModel @Inject constructor(private val repository: AppDatabas
     val contactList = MutableLiveData<List<ContactItem>>()
     private val _contactList = arrayListOf<ContactItem>()
     private val category = "on campus"
-    private var nativeAd: NativeAd? = null
 
     private fun getContactFilterByCategory(category: String) = repository.getPhoneItemsFilterByCategory(category)
     private fun getContactExceptByCategory(category: String) = repository.getPhoneItemsExceptByCategory(category)
@@ -26,14 +26,13 @@ class ContactTabViewModel @Inject constructor(private val repository: AppDatabas
             if (position == 0) {
                 getContactFilterByCategory(category).collect{
                     _contactList.addAll(it.map { item -> ContactItem(item.name, item.phone.toString(), null) })
+                    contactList.value = _contactList
                 }
             } else {
                 getContactExceptByCategory(category).collect{
                     _contactList.addAll(it.map { item -> ContactItem(item.name, item.phone.toString(), null) })
+                    contactList.value = _contactList
                 }
-            }
-            if (nativeAd != null) {
-                _contactList.add(0, ContactItem("", "", nativeAd))
             }
         }
     }
@@ -63,15 +62,6 @@ class ContactTabViewModel @Inject constructor(private val repository: AppDatabas
                 }
             }
         }
-        if (nativeAd != null) {
-            _contactList.add(0, ContactItem("", "", nativeAd))
-        }
-        contactList.value = _contactList
-    }
-
-    fun insertAD(nativeAd: NativeAd){
-        this.nativeAd = nativeAd
-        _contactList.add(0, ContactItem("", "", nativeAd))
         contactList.value = _contactList
     }
 }

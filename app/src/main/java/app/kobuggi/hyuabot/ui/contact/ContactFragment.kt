@@ -63,7 +63,6 @@ class ContactFragment : Fragment() {
         })
 
         val toast = Toast.makeText(context,  requireContext().getString(R.string.contact_message), Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
         return binding.root
     }

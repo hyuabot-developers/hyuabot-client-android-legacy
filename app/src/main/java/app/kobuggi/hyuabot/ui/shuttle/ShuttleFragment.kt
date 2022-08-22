@@ -158,6 +158,12 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 dialog.show(childFragmentManager, "ShuttleStopLocationDialog")
             }
         }
+        vm.showErrorToast.observe(viewLifecycleOwner) {
+            if (it.peekContent() > 0){
+                Toast.makeText(requireContext(), getString(it.peekContent()), Toast.LENGTH_SHORT).show()
+                vm.showErrorToast.value = Event(-1)
+            }
+        }
         return binding.root
     }
 

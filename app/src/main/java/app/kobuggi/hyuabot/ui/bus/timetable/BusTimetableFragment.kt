@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.FragmentBusTimetableBinding
 import app.kobuggi.hyuabot.ui.MainActivity
+import app.kobuggi.hyuabot.utils.Event
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -112,6 +114,12 @@ class BusTimetableFragment: Fragment() {
             }.attach()
             if (it.isNotEmpty()){
                 binding.busTimetableProgress.visibility = View.GONE
+            }
+        }
+        vm.showErrorToast.observe(viewLifecycleOwner){
+            if (it.peekContent()){
+                Toast.makeText(context, context.getString(R.string.error_fetch_bus_timetable), Toast.LENGTH_SHORT).show()
+                vm.showErrorToast.value = Event(false)
             }
         }
     }

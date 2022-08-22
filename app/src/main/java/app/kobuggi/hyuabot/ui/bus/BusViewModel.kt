@@ -8,6 +8,7 @@ import app.kobuggi.hyuabot.BusQuery
 import app.kobuggi.hyuabot.ui.shuttle.ShuttleStopInfo
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,29 +28,46 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     val moveToTimetableFragmentEvent = MutableLiveData<Event<Boolean>>()
     val timetableRouteName = MutableLiveData<String>()
     val timetableRouteColor = MutableLiveData<String>()
+    val showErrorToast = MutableLiveData(Event(false))
     private var nativeAd: NativeAd? = null
 
     private fun fetchData() {
         viewModelScope.launch {
             isLoading.value = true
-            val result = client.query(
-                BusQuery(
-                    routes = listOf("10-1", "3102", "707-1"),
-                    stopList = listOf("한양대게스트하우스", "한양대정문"),
-                    weekday = "weekdays"
-                )
-            ).execute()
-            if (result.data != null) {
-                busData.clear()
-                busData.addAll(result.data!!.bus.filter {
-                    (it.routeName == "707-1" && it.stopName == "한양대정문") || (it.routeName != "707-1" && it.stopName == "한양대게스트하우스")
-                }.map { BusRouteItem(it, null) })
-                if (nativeAd != null) {
-                    insertAD(nativeAd!!)
+            try {
+                val result = client.query(
+                    BusQuery(
+                        routes = listOf("10-1", "3102", "707-1"),
+                        stopList = listOf("한양대게스트하우스", "한양대정문"),
+                        weekday = "weekdays"
+                    )
+                ).execute()
+                if (result.data != null) {
+                    busData.clear()
+                    busData.addAll(result.data!!.bus.filter {
+                        (it.routeName == "707-1" && it.stopName == "한양대정문") || (it.routeName != "707-1" && it.stopName == "한양대게스트하우스")
+                    }.map { BusRouteItem(it, null) })
+                    busData.forEach{
+                        Log.d("BusViewModel", it.toString())
+                    }
+                    if (nativeAd != null) {
+                        insertAD(nativeAd!!)
+                    }
+                    busDataLiveData.value = busData
+                } else {
+                    Log.e("BusViewModel", result.errors.toString())
                 }
+            } catch (e: ApolloNetworkException){
+                showErrorToast.postValue(Event(true))
+                busData.clear()
+                busData.addAll(listOf(
+                    BusRouteItem(arrivalList= BusQuery.Bus(stopName = "한양대게스트하우스", routeName = "10-1", stopId = 216000379, routeId = 216000068, startStop = "푸르지오6차후문", terminalStop = "상록수역", timeFromStartStop = 11, realtime = listOf(), timetable = listOf())),
+                    BusRouteItem(arrivalList= BusQuery.Bus(stopName = "한양대게스트하우스", routeName = "3102", stopId = 216000379, routeId = 216000061, startStop = "새솔고", terminalStop = "강남역", timeFromStartStop = 28, realtime = listOf(), timetable = listOf())),
+                    BusRouteItem(arrivalList= BusQuery.Bus(stopName = "한양대정문", routeName = "707-1", stopId = 216000719, routeId = 216000070, startStop = "신안산대", terminalStop = "수원역", timeFromStartStop = 23, realtime = listOf(), timetable = listOf())),
+                ))
                 busDataLiveData.value = busData
-            } else {
-                Log.e("BusViewModel", result.errors.toString())
+            } finally {
+                isLoading.value = false
             }
         }
     }

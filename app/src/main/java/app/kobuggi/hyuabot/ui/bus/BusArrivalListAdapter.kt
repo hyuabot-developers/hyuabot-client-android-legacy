@@ -47,6 +47,9 @@ class BusArrivalListAdapter(private val context: Context, private var busList: L
             val adapter = BusArrivalTimeAdapter(context, arrivalList.realtime, timetable){
                 onClickTimetableButton(arrivalList.routeName, routeColor[arrivalList.routeName]!!)
             }
+            binding.homeBusArrivalCard.setOnClickListener {
+                onClickTimetableButton(arrivalList.routeName, routeColor[arrivalList.routeName]!!)
+            }
             binding.busArrivalList.adapter = adapter
             binding.busArrivalList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             if (arrivalList.realtime.size + timetable.size > 0) {
