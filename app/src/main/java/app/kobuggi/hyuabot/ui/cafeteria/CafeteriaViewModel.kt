@@ -7,6 +7,7 @@ import app.kobuggi.hyuabot.CafeteriaMenuQuery
 import app.kobuggi.hyuabot.ui.bus.BusRouteItem
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,19 +27,24 @@ class CafeteriaViewModel @Inject constructor(private val client: ApolloClient) :
     fun fetchData() {
         isLoading.value = true
         viewModelScope.launch {
-            val result = client.query(
-                CafeteriaMenuQuery(
-                    campusId = 1,
-                    cafeteriaIdList = listOf(),
-                    timeType = "",
-                )
-            ).execute()
-            if (result.data != null) {
-                _cafeteriaMenu.clear()
-                _cafeteriaMenu.addAll(result.data!!.cafeteria.map { CafeteriaItem(it) })
-                if (nativeAd != null) {
-                    _cafeteriaMenu.add(1, CafeteriaItem(null, nativeAd!!))
+            try {
+                val result = client.query(
+                    CafeteriaMenuQuery(
+                        campusId = 1,
+                        cafeteriaIdList = listOf(),
+                        timeType = "",
+                    )
+                ).execute()
+                if (result.data != null) {
+                    _cafeteriaMenu.clear()
+                    _cafeteriaMenu.addAll(result.data!!.cafeteria.map { CafeteriaItem(it) })
+                    if (nativeAd != null) {
+                        _cafeteriaMenu.add(1, CafeteriaItem(null, nativeAd!!))
+                    }
+                    cafeteriaMenu.value = _cafeteriaMenu
                 }
+            } catch (e: ApolloNetworkException){
+                _cafeteriaMenu.clear()
                 cafeteriaMenu.value = _cafeteriaMenu
             }
         }
