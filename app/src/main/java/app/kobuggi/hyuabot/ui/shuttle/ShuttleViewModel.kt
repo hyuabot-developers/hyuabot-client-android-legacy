@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.*
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,9 +51,13 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
     }
 
     private suspend fun fetchShuttleDate() {
-        val query = client.query(ShuttleDateQuery()).execute().data
-        shuttlePeriod = query?.shuttle?.period!!
-        shuttleWeekday = query.shuttle.weekday
+        try {
+            val query = client.query(ShuttleDateQuery()).execute().data
+            shuttlePeriod = query?.shuttle?.period!!
+            shuttleWeekday = query.shuttle.weekday
+        } catch (e: ApolloNetworkException) {
+            e.printStackTrace()
+        }
     }
 
     fun fetchShuttleTimetable() {
@@ -64,6 +69,10 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                     fetchShuttleDate()
                 }
                 fetchShuttlePeriodJob.await()
+                if (shuttlePeriod == null || shuttleWeekday == null) {
+                    isLoading.value = false
+                    return@launch
+                }
             }
             val result = client.query(
                 ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
@@ -81,6 +90,9 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                     fetchShuttleDate()
                 }
                 fetchShuttlePeriodJob.await()
+                if (shuttlePeriod == null || shuttleWeekday == null) {
+                    return@launch
+                }
             }
             val result = client.query(
                 ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
@@ -96,7 +108,11 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
             Observable.interval(0, 1, TimeUnit.MINUTES)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    fetchShuttleTimetable()
+                    try {
+                        fetchShuttleTimetable()
+                    } catch (e: ApolloNetworkException){
+                        e.printStackTrace()
+                    }
                 }
         )
     }
