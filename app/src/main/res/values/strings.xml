@@ -160,4 +160,5 @@
     <string name="no_arrival_data_subway_down">도착 정보가 없습니다.(하행)</string>
     <string name="no_arrival_data_subway_up">도착 정보가 없습니다.(상행)</string>
     <string name="no_reading_room_data">조회된 열람실 목록이 없습니다.</string>
+    <string name="need_permission_get_notification">알림을 받기 위해서는 접근 권한이 필요합니다.</string>
 </resources>

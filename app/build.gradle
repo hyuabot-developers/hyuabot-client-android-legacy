@@ -16,7 +16,7 @@ properties.load(project.rootProject.file("local.properties").newDataInputStream(
 android {
     assetPacks = [":fast_follow_pack"]
 
-    compileSdk 32
+    compileSdk 33
 
     signingConfigs {
         debugWithSignedKey {
@@ -162,6 +162,7 @@ dependencies {
     // Google Analytics
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
 
     // Google Admob
     implementation 'com.google.android.gms:play-services-ads:21.1.0'

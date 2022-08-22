@@ -1,8 +1,15 @@
 package app.kobuggi.hyuabot.ui
 
+import android.Manifest
 import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,6 +24,7 @@ import com.google.android.play.core.assetpacks.model.AssetPackStatus
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -40,6 +48,11 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
         binding.bottomNavigationMenu.setupWithNavController(navController)
         initAssetPackManager()
         firebaseAnalytics = Firebase.analytics
+        if (Build.VERSION.SDK_INT >= 33){
+            askNotificationPermission()
+        }
+        Firebase.messaging.subscribeToTopic("notification")
+            .addOnSuccessListener { Log.d("MainActivity", "Successfully subscribed to topic: notification") }
     }
 
     override fun onDismiss(dialogInterface: DialogInterface?) {
@@ -97,6 +110,23 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     private fun initFastFollow() {
         val assetsPath = getAbsolutePath(fastFollowAssetPack, "app.db")
         vm.initializeDatabase(assetsPath!!)
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted ->
+        if (!isGranted){
+            Toast.makeText(this, R.string.need_permission_get_notification, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @RequiresApi(33)
+    private fun askNotificationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            TODO()
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+            TODO()
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 
     override fun onDestroy() {
