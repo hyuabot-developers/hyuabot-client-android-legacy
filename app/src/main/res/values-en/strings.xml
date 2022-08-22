@@ -162,4 +162,6 @@
     <string name="no_arrival_data_subway_up">Failed to fetch subway data(Up Line)</string>
     <string name="no_reading_room_data">Failed to fetch reading room list</string>
     <string name="need_permission_get_notification">You need to grant permission to get notification.</string>
+    <string name="update_cancelled">App update is cancelled.</string>
+    <string name="update_available">App Update is available.</string>
 </resources>
