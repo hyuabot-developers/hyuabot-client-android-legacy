@@ -35,7 +35,7 @@ android {
 
     defaultConfig {
         applicationId "app.kobuggi.hyuabot"
-        minSdk 28
+        minSdk 26
         targetSdk 33
         versionCode 210
         versionName "2.0.1"
