@@ -2,6 +2,7 @@ package app.kobuggi.hyuabot.ui.shuttle.timetable
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,8 +64,8 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
         if(modifiedTimetable.isNotEmpty()){
-            binding.shuttleTimetableList.smoothScrollToPosition((
-                    modifiedTimetable.indexOf(modifiedTimetable.first { it.isAfter(LocalTime.now()) }) + 5).coerceAtMost(modifiedTimetable.size - 1)
+            binding.shuttleTimetableList.smoothScrollToPosition(
+                    (modifiedTimetable.indexOf(modifiedTimetable.firstOrNull { it.isAfter(LocalTime.now()) } ?: modifiedTimetable.last()) + 5).coerceAtMost(modifiedTimetable.size - 1)
             )
         }
         vm.showShuttleRouteDialog.observe(viewLifecycleOwner){

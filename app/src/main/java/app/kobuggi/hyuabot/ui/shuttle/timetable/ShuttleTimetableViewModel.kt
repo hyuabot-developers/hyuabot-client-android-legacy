@@ -41,15 +41,20 @@ class ShuttleTimetableViewModel @Inject constructor(private val client: ApolloCl
                 }
                 fetchShuttlePeriodJob.await()
             }
-            if (shuttlePeriod != null && shuttleWeekday != null) {
-                val result = client.query(
-                    ShuttleTimetableQuery(shuttlePeriod!!, "", "00:00", "23:59")
-                ).execute()
-                if (result.data != null) {
-                    shuttleTimetable.value = result.data!!.shuttle.timetable
-                } else {
-                    showErrorToast.postValue(Event(true))
+            try {
+                if (shuttlePeriod != null && shuttleWeekday != null) {
+                    val result = client.query(
+                        ShuttleTimetableQuery(shuttlePeriod!!, "", "00:00", "23:59")
+                    ).execute()
+                    if (result.data != null) {
+                        shuttleTimetable.value = result.data!!.shuttle.timetable
+                    } else {
+                        showErrorToast.postValue(Event(true))
+                    }
                 }
+            } catch (e: ApolloNetworkException) {
+                shuttleTimetable.value = arrayListOf()
+                showErrorToast.postValue(Event(true))
             }
         }
     }

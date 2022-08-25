@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import app.kobuggi.hyuabot.GlobalActivity
+import app.kobuggi.hyuabot.GlobalApplication
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ActivityMainBinding
 import com.google.android.gms.tasks.OnCompleteListener
@@ -44,25 +45,24 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     private val vm by viewModels<MainViewModel>()
-    private lateinit var binding: ActivityMainBinding
-    lateinit var navController: NavController
-    private lateinit var assetPackManager: AssetPackManager
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val assetPackManager by lazy { AssetPackManagerFactory.getInstance(GlobalApplication.instance) }
     private val fastFollowAssetPack = "fast_follow_pack"
-    lateinit var firebaseAnalytics: FirebaseAnalytics
-    lateinit var updateManager: AppUpdateManager
+    private val updateManager by lazy { AppUpdateManagerFactory.create(this) }
     lateinit var launcher : IntentSenderForResultStarter
+    val firebaseAnalytics by lazy { Firebase.analytics }
+    val navController by lazy {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        navHostFragment.navController
+    }
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.vm = vm
-        updateManager = AppUpdateManagerFactory.create(this)
-        val navigationFragmentHost = supportFragmentManager.findFragmentById(R.id.fragment_container) as? NavHostFragment
-        navController = navigationFragmentHost?.navController ?: return
         binding.bottomNavigationMenu.setupWithNavController(navController)
         initAssetPackManager()
-        firebaseAnalytics = Firebase.analytics
         if (Build.VERSION.SDK_INT >= 33){
             askNotificationPermission()
         }
@@ -76,7 +76,6 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     }
 
     private fun initAssetPackManager() {
-        assetPackManager = AssetPackManagerFactory.getInstance(applicationContext)
         val assetPath = getAbsolutePath(fastFollowAssetPack, "app.db")
         if (assetPath != null) {
             vm.upgradeDatabase(assetPath)

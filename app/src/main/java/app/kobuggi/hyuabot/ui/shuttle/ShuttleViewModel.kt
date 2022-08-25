@@ -72,12 +72,16 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 fetchShuttlePeriodJob.await()
             }
             if (shuttlePeriod != null && shuttleWeekday != null) {
-                val result = client.query(
-                    ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
-                ).execute()
-                if (result.data != null) {
-                    shuttleTimetable.value = result.data!!.shuttle.timetable
-                } else {
+                try {
+                    val result = client.query(
+                        ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
+                    ).execute()
+                    if (result.data != null) {
+                        shuttleTimetable.value = result.data!!.shuttle.timetable
+                    } else {
+                        showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
+                    }
+                } catch (e: ApolloNetworkException) {
                     showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
                 }
             }
@@ -94,11 +98,15 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                 fetchShuttlePeriodJob.await()
             }
             if (shuttlePeriod != null && shuttleWeekday != null) {
-                val result = client.query(
-                    ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
-                ).execute()
-                if (result.data != null) {
-                    shuttleEntireTimetable.value = result.data!!.shuttle.timetable
+                try {
+                    val result = client.query(
+                        ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
+                    ).execute()
+                    if (result.data != null) {
+                        shuttleEntireTimetable.value = result.data!!.shuttle.timetable
+                    }
+                } catch (e: ApolloNetworkException) {
+                    shuttleEntireTimetable.value = arrayListOf()
                 }
             }
         }
