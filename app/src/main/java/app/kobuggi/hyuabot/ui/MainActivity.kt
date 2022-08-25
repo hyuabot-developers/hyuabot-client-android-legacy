@@ -44,7 +44,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     private val vm by viewModels<MainViewModel>()
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     lateinit var navController: NavController
     private lateinit var assetPackManager: AssetPackManager
     private val fastFollowAssetPack = "fast_follow_pack"
@@ -54,7 +54,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
         binding.lifecycleOwner = this
         binding.vm = vm
         val navigationFragmentHost = supportFragmentManager.findFragmentById(R.id.fragment_container) as? NavHostFragment
