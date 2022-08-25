@@ -58,8 +58,10 @@ class CafeteriaViewModel @Inject constructor(private val client: ApolloClient) :
 
     fun insertAD(nativeAd: NativeAd){
         this.nativeAd = nativeAd
-        _cafeteriaMenu.add(1, CafeteriaItem(null, nativeAd))
-        cafeteriaMenu.value = _cafeteriaMenu
+        if (_cafeteriaMenu.isNotEmpty()) {
+            _cafeteriaMenu.add(1, CafeteriaItem(null, nativeAd))
+            cafeteriaMenu.value = _cafeteriaMenu
+        }
     }
 }
 
