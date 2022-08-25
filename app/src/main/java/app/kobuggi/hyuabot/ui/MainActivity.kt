@@ -54,7 +54,7 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.vm = vm
         val navigationFragmentHost = supportFragmentManager.findFragmentById(R.id.fragment_container) as? NavHostFragment
