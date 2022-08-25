@@ -54,8 +54,10 @@ class ShuttleFragment : Fragment(), DialogInterface.OnDismissListener {
                 LocationServices.getFusedLocationProviderClient(it)
             }
             if(!vm.locationChecked.value!!) {
-                fusedLocationClient.lastLocation.addOnSuccessListener {
-                    vm.closestStop.value = getClosestShuttleStop(it)
+                fusedLocationClient.lastLocation.addOnSuccessListener { it: Location? ->
+                    if (it != null){
+                        vm.closestStop.value = getClosestShuttleStop(it)
+                    }
                     vm.locationChecked.value = true
                 }
                 fusedLocationClient.lastLocation.addOnFailureListener {
