@@ -43,8 +43,8 @@ class SubwayTimetableTab(private val timetable : List<SubwayQuery.Timetable>): F
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         )
         if(timetable.isNotEmpty()){
-            binding.subwayTimetableList.smoothScrollToPosition((
-                timetable.indexOf(timetable.first { LocalTime.parse(it.departureTime, formatter).isAfter(LocalTime.now()) }) + 10).coerceAtMost(timetable.size - 1)
+            binding.subwayTimetableList.smoothScrollToPosition(
+                (timetable.indexOf(timetable.firstOrNull { LocalTime.parse(it.departureTime, formatter).isAfter(LocalTime.now()) } ?: timetable.last()) + 10).coerceAtMost(timetable.size - 1)
             )
         } else {
             binding.subwayTimetableList.visibility = View.GONE
