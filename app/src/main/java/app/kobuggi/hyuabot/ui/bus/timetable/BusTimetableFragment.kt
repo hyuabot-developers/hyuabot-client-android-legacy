@@ -87,19 +87,23 @@ class BusTimetableFragment: Fragment() {
         vm.fetchBusTimetable(routeName)
         vm.busTimetable.observe(viewLifecycleOwner){
             if (it.isNotEmpty()){
-                val weekdayFirst = LocalTime.parse(it.first { item -> item.weekday == "weekdays" }.departureTime.toString(), formatter)
-                val weekdayLast = LocalTime.parse(it.last { item -> item.weekday == "weekdays" }.departureTime.toString(), formatter)
-                val saturdayFirst = LocalTime.parse(it.first { item -> item.weekday == "saturday" }.departureTime.toString(), formatter)
-                val saturdayLast = LocalTime.parse(it.last { item -> item.weekday == "saturday" }.departureTime.toString(), formatter)
-                val sundayFirst = LocalTime.parse(it.first { item -> item.weekday == "sunday" }.departureTime.toString(), formatter)
-                val sundayLast = LocalTime.parse(it.last { item -> item.weekday == "sunday" }.departureTime.toString(), formatter)
+                try {
+                    val weekdayFirst = LocalTime.parse(it.first { item -> item.weekday == "weekdays" }.departureTime.toString(), formatter)
+                    val weekdayLast = LocalTime.parse(it.last { item -> item.weekday == "weekdays" }.departureTime.toString(), formatter)
+                    val saturdayFirst = LocalTime.parse(it.first { item -> item.weekday == "saturday" }.departureTime.toString(), formatter)
+                    val saturdayLast = LocalTime.parse(it.last { item -> item.weekday == "saturday" }.departureTime.toString(), formatter)
+                    val sundayFirst = LocalTime.parse(it.first { item -> item.weekday == "sunday" }.departureTime.toString(), formatter)
+                    val sundayLast = LocalTime.parse(it.last { item -> item.weekday == "sunday" }.departureTime.toString(), formatter)
 
-                var firstLastBusString = context.getString(R.string.bus_route_first_last_time, context.getString(R.string.weekdays), weekdayFirst.hour.toString().padStart(2, '0'), weekdayFirst.minute.toString().padStart(2, '0'), weekdayLast.hour.toString().padStart(2, '0'), weekdayLast.minute.toString().padStart(2, '0'))
-                firstLastBusString += "\n"
-                firstLastBusString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.saturday), saturdayFirst.hour.toString().padStart(2, '0'), saturdayFirst.minute.toString().padStart(2, '0'), saturdayLast.hour.toString().padStart(2, '0'), saturdayLast.minute.toString().padStart(2, '0'))
-                firstLastBusString += "\n"
-                firstLastBusString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.sunday), sundayFirst.hour.toString().padStart(2, '0'), sundayFirst.minute.toString().padStart(2, '0'), sundayLast.hour.toString().padStart(2, '0'), sundayLast.minute.toString().padStart(2, '0'))
-                binding.busRouteFirstLastTime.text = firstLastBusString
+                    var firstLastBusString = context.getString(R.string.bus_route_first_last_time, context.getString(R.string.weekdays), weekdayFirst.hour.toString().padStart(2, '0'), weekdayFirst.minute.toString().padStart(2, '0'), weekdayLast.hour.toString().padStart(2, '0'), weekdayLast.minute.toString().padStart(2, '0'))
+                    firstLastBusString += "\n"
+                    firstLastBusString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.saturday), saturdayFirst.hour.toString().padStart(2, '0'), saturdayFirst.minute.toString().padStart(2, '0'), saturdayLast.hour.toString().padStart(2, '0'), saturdayLast.minute.toString().padStart(2, '0'))
+                    firstLastBusString += "\n"
+                    firstLastBusString += context.getString(R.string.bus_route_first_last_time, context.getString(R.string.sunday), sundayFirst.hour.toString().padStart(2, '0'), sundayFirst.minute.toString().padStart(2, '0'), sundayLast.hour.toString().padStart(2, '0'), sundayLast.minute.toString().padStart(2, '0'))
+                    binding.busRouteFirstLastTime.text = firstLastBusString
+                } catch (e: Exception){
+                    binding.busRouteFirstLastTime.text = context.getString(R.string.bus_route_first_last_time, context.getString(R.string.weekdays), "00", "00", "00", "00")
+                }
             }
             binding.busTimetableViewpager.adapter = BusTimetableTabAdapter( this, it)
             TabLayoutMediator(binding.busTimetableTab, binding.busTimetableViewpager) { tab, position ->
