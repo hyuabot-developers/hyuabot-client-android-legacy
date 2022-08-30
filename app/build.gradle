@@ -37,8 +37,8 @@ android {
         applicationId "app.kobuggi.hyuabot"
         minSdk 26
         targetSdk 33
-        versionCode 212
-        versionName "2.0.3"
+        versionCode 213
+        versionName "2.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "admob_id", properties["ADMOB_ID"]
         buildConfigField "String", "admob_unit_id", properties["ADMOB_UNIT_ID"]
