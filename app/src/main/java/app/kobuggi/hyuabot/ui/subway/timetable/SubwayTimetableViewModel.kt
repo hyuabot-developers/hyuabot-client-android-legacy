@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.SubwayQuery
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,12 +20,13 @@ class SubwayTimetableViewModel @Inject constructor(private val client: ApolloCli
             try {
                 val result = client.query(
                     SubwayQuery(
-                        stations = listOf("한대앞"),
-                        routes = listOf(routeName),
-                        weekday = "",
-                        heading = heading,
-                        startTime = "00:00",
-                        endTime = "23:59"
+                        routePair = listOf(
+                            app.kobuggi.hyuabot.type.SubwayQuery("한대앞", routeName),
+                        ),
+                        weekday = Optional.Absent,
+                        heading = Optional.presentIfNotNull(heading),
+                        startTime = Optional.Absent,
+                        endTime = Optional.Absent
                     )
                 ).execute()
                 if (result.data != null && result.data!!.subway.isNotEmpty()) {
