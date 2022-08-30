@@ -44,7 +44,7 @@ class ShuttleTimetableViewModel @Inject constructor(private val client: ApolloCl
             try {
                 if (shuttlePeriod != null && shuttleWeekday != null) {
                     val result = client.query(
-                        ShuttleTimetableQuery(shuttlePeriod!!, "", "00:00", "23:59")
+                        ShuttleTimetableQuery(shuttlePeriod!!)
                     ).execute()
                     if (result.data != null) {
                         shuttleTimetable.value = result.data!!.shuttle.timetable
