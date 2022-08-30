@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -48,6 +49,7 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     private fun fetchData() {
         viewModelScope.launch {
             isLoading.value = true
+            val startTime = LocalTime.now().minusMinutes(30).toString()
             try {
                 val result = client.query(
                     BusQuery(
@@ -56,7 +58,10 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
                             app.kobuggi.hyuabot.type.BusQuery("한양대정문", "707-1"),
                             app.kobuggi.hyuabot.type.BusQuery("한양대게스트하우스", "3102"),
                         ),
-                        weekday = Optional.presentIfNotNull(busWeekDay!!)
+                        weekday = Optional.presentIfNotNull(busWeekDay!!),
+                        startTime = Optional.presentIfNotNull(startTime),
+                        endTime = Optional.Absent,
+                        count = Optional.presentIfNotNull(5)
                     )
                 ).execute()
                 if (result.data != null) {

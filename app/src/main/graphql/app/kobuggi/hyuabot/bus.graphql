@@ -1,4 +1,4 @@
-query Bus($routePair: [BusQuery!]!, $weekday : String) {
+query Bus($routePair: [BusQuery!]!, $weekday : String, $startTime : String, $endTime : String, $count : Int) {
     bus(routePair: $routePair) {
         stopName,
         routeName,
@@ -7,7 +7,7 @@ query Bus($routePair: [BusQuery!]!, $weekday : String) {
         startStop,
         terminalStop,
         timeFromStartStop,
-        timetable(weekday: $weekday) {
+        timetable(weekday: $weekday, startTime: $startTime, endTime: $endTime, count: $count) {
             departureTime,
             weekday,
         }
