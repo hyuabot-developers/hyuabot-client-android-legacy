@@ -1,17 +1,21 @@
 type Query {
   shuttle: Shuttle!
 
-  subway(stations: [String!]!, routes: [String!]!): [SubwayItem!]!
+  subway(stations: [String!] = null, routes: [String!] = null, routePair: [SubwayQuery!] = null): [SubwayItem!]!
 
-  bus(stopList: [String!]!, routes: [String!]!): [BusItem!]!
+  bus(stopList: [String!] = null, routes: [String!] = null, routePair: [BusQuery!] = null): [BusItem!]!
 
-  readingRoom(roomName: String!, campusId: Int!, isActive: Boolean! = true): [ReadingRoomItem!]!
+  readingRoom(roomName: String = null, campusId: Int = 0, isActive: Boolean! = true): [ReadingRoomItem!]!
 
   cafeteria(campusId: Int!, cafeteriaIdList: [Int!]!): [CafeteriaItem!]!
 }
 
 type Shuttle {
-  timetable(period: String!, weekday: String!, shuttleType: String!, startStop: String!, startTime: String!, endTime: String!): [ShuttleTimetableItem!]!
+  period(date: String = null): String!
+
+  weekday(date: String = null): String!
+
+  timetable(period: String = null, weekday: String = null, shuttleType: String = null, startStop: String = null, startTime: String = null, endTime: String = null, count: Int! = 999): [ShuttleTimetableItem!]!
 }
 
 type ShuttleTimetableItem {
@@ -31,9 +35,9 @@ type SubwayItem {
 
   routeName: String!
 
-  timetable(heading: String!, weekday: String!, startTime: Time!, endTime: Time!): [SubwayTimetableItem!]!
+  timetable(heading: String = null, weekday: String = null, startTime: Time = null, endTime: Time = null, count: Int! = 999): [SubwayTimetableItem!]!
 
-  realtime(heading: String!): [SubwayRealtimeItem!]!
+  realtime(heading: String = null): [SubwayRealtimeItem!]!
 }
 
 type SubwayTimetableItem {
@@ -69,6 +73,12 @@ type SubwayRealtimeItem {
   status: String!
 }
 
+input SubwayQuery {
+  stationName: String!
+
+  routeName: String!
+}
+
 type BusItem {
   stopName: String!
 
@@ -84,13 +94,15 @@ type BusItem {
 
   timeFromStartStop: Int!
 
-  timetable(weekday: String!): [BusTimetableItem!]!
+  timetable(weekday: String = null, count: Int! = 999): [BusTimetableItem!]!
 
   realtime: [BusRealtimeItem!]!
 }
 
 type BusTimetableItem {
   departureTime: Time!
+
+  weekday: String!
 }
 
 type BusRealtimeItem {
@@ -101,6 +113,12 @@ type BusRealtimeItem {
   remainedTime: Int!
 
   remainedSeat: Int!
+}
+
+input BusQuery {
+  stopName: String!
+
+  routeName: String!
 }
 
 type ReadingRoomItem {
@@ -126,7 +144,7 @@ type CafeteriaItem {
 
   cafeteriaName: String!
 
-  menu(timeType: String!): [MenuItem!]!
+  menu(timeType: String = null): [MenuItem!]!
 }
 
 type MenuItem {
