@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.BusQuery
+import app.kobuggi.hyuabot.ShuttleDateQuery
 import app.kobuggi.hyuabot.ui.shuttle.ShuttleStopInfo
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
@@ -15,6 +17,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -29,7 +34,16 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     val timetableRouteName = MutableLiveData<String>()
     val timetableRouteColor = MutableLiveData<String>()
     val showErrorToast = MutableLiveData(Event(false))
+    private var busWeekDay : String? = null
     private var nativeAd: NativeAd? = null
+    private suspend fun fetchBusDate() {
+        try {
+            val query = client.query(ShuttleDateQuery()).execute().data
+            busWeekDay = query?.shuttle?.weekday
+        } catch (e: ApolloNetworkException) {
+//            showErrorToast.postValue(Event(R.string.error_fetch_shuttle_date))
+        }
+    }
 
     private fun fetchData() {
         viewModelScope.launch {
@@ -37,9 +51,12 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
             try {
                 val result = client.query(
                     BusQuery(
-                        routes = listOf("10-1", "3102", "707-1"),
-                        stopList = listOf("한양대게스트하우스", "한양대정문"),
-                        weekday = "weekdays"
+                        routePair = listOf(
+                            app.kobuggi.hyuabot.type.BusQuery("한양대게스트하우스", "10-1"),
+                            app.kobuggi.hyuabot.type.BusQuery("한양대정문", "707-1"),
+                            app.kobuggi.hyuabot.type.BusQuery("한양대게스트하우스", "3102"),
+                        ),
+                        weekday = Optional.presentIfNotNull(busWeekDay!!)
                     )
                 ).execute()
                 if (result.data != null) {
@@ -73,13 +90,21 @@ class BusViewModel @Inject constructor(private val client: ApolloClient) : ViewM
     }
 
     fun startFetchData() {
-        disposable.add(
-            Observable.interval(0, 1, TimeUnit.MINUTES)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    fetchData()
+        viewModelScope.launch {
+            if (busWeekDay == null) {
+                val busPeriodJob = CoroutineScope(Dispatchers.IO).async {
+                    fetchBusDate()
                 }
-        )
+                busPeriodJob.await()
+                disposable.add(
+                    Observable.interval(0, 1, TimeUnit.MINUTES)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            fetchData()
+                        }
+                )
+            }
+        }
     }
 
     fun moveToTimetableFragment(routeName: String, routeColor: String) {

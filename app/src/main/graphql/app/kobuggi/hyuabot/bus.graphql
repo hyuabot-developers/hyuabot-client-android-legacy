@@ -1,5 +1,5 @@
-query Bus($stopList : [String!]!, $routes : [String!]!, $weekday : String!) {
-    bus(stopList: $stopList, routes: $routes) {
+query Bus($routePair: [BusQuery!]!, $weekday : String) {
+    bus(routePair: $routePair) {
         stopName,
         routeName,
         stopId,
