@@ -7,6 +7,7 @@ import app.kobuggi.hyuabot.SubwayQuery
 import app.kobuggi.hyuabot.ui.bus.BusRouteItem
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,12 +39,15 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
             try {
                 val result = client.query(
                     SubwayQuery(
-                        stations = listOf("한대앞"),
-                        routes = listOf("4호선", "수인분당선"),
-                        weekday = "now",
-                        heading = "",
-                        startTime = "${now.hour.toString().padStart(2, '0')}:${now.minute.toString().padStart(2, '0')}",
-                        endTime = "23:59"
+                        routePair = listOf(
+                            app.kobuggi.hyuabot.type.SubwayQuery("한대앞", "4호선"),
+                            app.kobuggi.hyuabot.type.SubwayQuery("한대앞", "수인분당선"),
+                        ),
+                        weekday = Optional.Absent,
+                        heading = Optional.Absent,
+                        startTime = Optional.presentIfNotNull("${now.hour.toString().padStart(2, '0')}:${now.minute.toString().padStart(2, '0')}"),
+                        endTime = Optional.Absent,
+                        count = Optional.presentIfNotNull(10)
                     )
                 ).execute()
                 if (result.data != null) {

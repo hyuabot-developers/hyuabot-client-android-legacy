@@ -94,7 +94,7 @@ type BusItem {
 
   timeFromStartStop: Int!
 
-  timetable(weekday: String = null, count: Int! = 999): [BusTimetableItem!]!
+  timetable(weekday: String = null, startTime: String = null, endTime: String = null, count: Int! = 999): [BusTimetableItem!]!
 
   realtime: [BusRealtimeItem!]!
 }

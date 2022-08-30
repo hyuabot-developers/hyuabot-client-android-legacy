@@ -41,7 +41,7 @@ class ReadingRoomFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = vm
 
-        val adapter = ReadingRoomAdapter(arrayListOf())
+        val adapter = ReadingRoomAdapter(listOf())
         binding.readingRoomList.adapter = adapter
         binding.readingRoomList.layoutManager = LinearLayoutManager(requireContext())
         vm.fetchReadingRoomData()

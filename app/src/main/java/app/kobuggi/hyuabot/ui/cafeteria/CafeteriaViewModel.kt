@@ -7,6 +7,7 @@ import app.kobuggi.hyuabot.CafeteriaMenuQuery
 import app.kobuggi.hyuabot.ui.bus.BusRouteItem
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
@@ -32,7 +33,7 @@ class CafeteriaViewModel @Inject constructor(private val client: ApolloClient) :
                     CafeteriaMenuQuery(
                         campusId = 1,
                         cafeteriaIdList = listOf(),
-                        timeType = "",
+                        timeType = Optional.Absent,
                     )
                 ).execute()
                 if (result.data != null) {

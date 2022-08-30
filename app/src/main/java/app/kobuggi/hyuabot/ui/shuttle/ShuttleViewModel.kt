@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.kobuggi.hyuabot.*
 import app.kobuggi.hyuabot.utils.Event
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.maps.model.LatLng
@@ -74,7 +75,12 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
             if (shuttlePeriod != null && shuttleWeekday != null) {
                 try {
                     val result = client.query(
-                        ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, startTime, "23:59")
+                        ShuttleTimetableQuery(
+                            period =  shuttlePeriod!!,
+                            weekday = Optional.presentIfNotNull(shuttleWeekday!!),
+                            startTime = Optional.presentIfNotNull(startTime),
+                            count = Optional.presentIfNotNull(5)
+                        )
                     ).execute()
                     if (result.data != null) {
                         shuttleTimetable.value = result.data!!.shuttle.timetable
@@ -100,8 +106,10 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
             if (shuttlePeriod != null && shuttleWeekday != null) {
                 try {
                     val result = client.query(
-                        ShuttleTimetableQuery(shuttlePeriod!!, shuttleWeekday!!, "00:00", "23:59")
-                    ).execute()
+                        ShuttleTimetableQuery(
+                            period =  shuttlePeriod!!,
+                            weekday = Optional.presentIfNotNull(shuttleWeekday!!),
+                        )).execute()
                     if (result.data != null) {
                         shuttleEntireTimetable.value = result.data!!.shuttle.timetable
                     }

@@ -1,5 +1,6 @@
 package app.kobuggi.hyuabot.ui.reading_room
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,6 +88,7 @@ class ReadingRoomAdapter(private var items: List<ReadingRoomItem>) : RecyclerVie
         return if (items[position].nativeAd == null) 1 else 0
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setReadingRooms(items: List<ReadingRoomItem>) {
         this.items = items
         notifyDataSetChanged()
