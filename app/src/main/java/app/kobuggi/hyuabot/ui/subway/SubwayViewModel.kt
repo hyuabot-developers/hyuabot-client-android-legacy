@@ -98,8 +98,10 @@ class SubwayViewModel @Inject constructor(private val client: ApolloClient) : Vi
 
     fun insertAD(nativeAd: NativeAd){
         this.nativeAd = nativeAd
-        _subwayData.add(1, SubwayRouteItem(null, nativeAd))
-        subwayData.value = _subwayData
+        if (_subwayData.size > 0) {
+            _subwayData.add(1, SubwayRouteItem(null, nativeAd))
+            subwayData.value = _subwayData
+        }
     }
 }
 
