@@ -83,7 +83,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
                         )
                     ).execute()
                     if (result.data != null) {
-                        shuttleTimetable.value = result.data!!.shuttle.timetable
+                        shuttleTimetable.value = result.data!!.shuttle.timetable.sortedBy { it.shuttleTime }
                     } else {
                         showErrorToast.value = Event(R.string.error_fetch_shuttle_date)
                     }
