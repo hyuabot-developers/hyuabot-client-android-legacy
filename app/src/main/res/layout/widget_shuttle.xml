@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@drawable/rounded_background_white_radius24"
+    android:elevation="4dp"
+    android:padding="12dp"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/shuttle_stop_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="8dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/shuttle_stop_name"
+        android:layout_toStartOf="@id/refresh_button"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/shuttle_station"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/shuttle_terminal"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="15dp"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_refresh" />
+
+</RelativeLayout>
