@@ -164,4 +164,8 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="update_cancelled">앱 업데이트가 취소되었습니다.</string>
     <string name="update_available">사용 가능한 업데이트가 있습니다.</string>
+    <string name="happy_birthday">중요 알림</string>
+    <string name="close">팝업 닫기</string>
+    <string name="do_not_open_this_year">올해는 다시 열지 않기</string>
+    <string name="congratulation_message">안녕하세요, 휴아봇 개발자인 경원여객3102입니다.\n오늘(12/12)는 제 생일이라서요. ㅎㅎ\n많은 사람들에게 축하받고 싶었던 걸로 :)\n얼마 남지 않은 2학기 잘 마무리하고 시험 화이팅!</string>
 </resources>
