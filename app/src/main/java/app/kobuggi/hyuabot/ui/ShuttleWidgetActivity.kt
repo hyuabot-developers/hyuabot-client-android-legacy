@@ -29,12 +29,6 @@ class ShuttleWidgetActivity: GlobalActivity() {
     }
 
     private fun onClickButton(resID: Int){
-        if (resID == R.string.shuttle_stop_gps && Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT){
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, getString(R.string.need_permission_get_background_location), Toast.LENGTH_SHORT).show()
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION), 0)
-            }
-        }
         appWidgetID = intent.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID) ?: AppWidgetManager.INVALID_APPWIDGET_ID
         createWidget(resID)
     }

@@ -9,7 +9,7 @@ import app.kobuggi.hyuabot.databinding.CardSelectShuttleStopBinding
 
 class ShuttleStopListAdapter(private val context: Context, private val onClickButton: (stopID: Int) -> Unit): RecyclerView.Adapter<ShuttleStopListAdapter.ViewHolder>() {
     private val shuttleStopList = mutableListOf(
-        R.string.shuttle_stop_gps, R.string.dormitory, R.string.shuttlecock_o, R.string.station, R.string.terminal, R.string.shuttlecock_i
+        R.string.dormitory, R.string.shuttlecock_o, R.string.station, R.string.terminal, R.string.shuttlecock_i
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,7 +22,7 @@ class ShuttleStopListAdapter(private val context: Context, private val onClickBu
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return 5
     }
 
     inner class ViewHolder(private val  binding: CardSelectShuttleStopBinding): RecyclerView.ViewHolder(binding.root) {
