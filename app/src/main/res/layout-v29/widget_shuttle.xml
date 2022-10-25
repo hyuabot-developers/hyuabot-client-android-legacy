@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:background="@drawable/rounded_background_white_radius24"
-    android:theme="@android:style/Theme.Material.Light"
+    android:theme="@android:style/Theme.DeviceDefault.DayNight"
     android:elevation="4dp"
     android:padding="12dp"
     android:layout_margin="8dp">
