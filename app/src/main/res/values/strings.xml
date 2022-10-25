@@ -14,10 +14,11 @@
     <string name="shuttle_type_DY">예술인 직행</string>
     <string name="shuttle_type_C">순환 버스</string>
     <string name="shuttle_type_D">직행 버스</string>
-    <string name="shuttle_type_station">한대앞 행: 99분 후 출발</string>
-    <string name="shuttle_type_terminal">예술인 행: 99분 후 출발</string>
-    <string name="shuttle_type_campus">캠퍼스 행: 99분 후 출발</string>
-    <string name="shuttle_type_dormitory">기숙사 행: 99분 후 출발</string>
+    <string name="shuttle_type_station">한대앞 행: %1$d분 후 출발</string>
+    <string name="shuttle_need_refresh">새로고침 필요!</string>
+    <string name="shuttle_type_terminal">예술인 행: %1$d분 후 출발</string>
+    <string name="shuttle_type_campus">캠퍼스 행: %1$d분 후 출발</string>
+    <string name="shuttle_type_dormitory">기숙사 행: %1$d분 후 출발</string>
     <string name="shuttle_timetable">%1$s시 %2$s분</string>
     <string name="shuttle_time">%1$s시 %2$s분 (%3$d분 후) 출발</string>
     <string name="bus_route_name">%1$s (%2$s)</string>

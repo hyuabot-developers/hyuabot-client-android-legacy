@@ -1,11 +1,8 @@
 package app.kobuggi.hyuabot.ui
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.RemoteViews
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.kobuggi.hyuabot.GlobalActivity
 import app.kobuggi.hyuabot.R
@@ -39,7 +36,7 @@ class ShuttleWidgetActivity: GlobalActivity() {
     private fun createWidget(resID: Int){
         ShuttleWidgetUtility.saveWidgetStopID(this, appWidgetID!!, resID)
         val appWidgetManager = AppWidgetManager.getInstance(this)
-        ShuttleWidgetProvider.updateAppWidget(this, appWidgetManager, appWidgetID!!)
+        ShuttleWidgetProvider.updateAppWidget(this, appWidgetManager, appWidgetID!!, null)
         val resultValue = Intent().apply {
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetID)
         }
