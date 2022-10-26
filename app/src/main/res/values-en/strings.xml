@@ -168,4 +168,15 @@
     <string name="close">Close</string>
     <string name="do_not_open_this_year">Always close for this year</string>
     <string name="congratulation_message">Hello, I\'am a developer of this service.\nToday (12/12) is my birthday. HaHa\nI want to be congratulated by others :)\nPlease everyone finish this semester well!</string>
+    <string name="shuttle_type_station">To station: %1$d min(s) left</string>
+    <string name="shuttle_type_station_out_of_service">To station: Out of service</string>
+    <string name="shuttle_need_refresh">Need to refresh!</string>
+    <string name="shuttle_type_terminal">To terminal: %1$d min(s) left</string>
+    <string name="shuttle_type_terminal_out_of_service">To terminal: Out of service</string>
+    <string name="shuttle_type_campus">To campus: %1$d min(s) left</string>
+    <string name="shuttle_type_campus_out_of_service">To campus: Out of service</string>
+    <string name="shuttle_type_dormitory">To dormitory: %1$d min(s) left</string>
+    <string name="shuttle_type_dormitory_out_of_service">To dormitory: Out of service</string>
+    <string name="add_shuttle_widget">Add Shuttle bus widget</string>
+    <string name="need_permission_get_background_location">Allow background location to use from home widget</string>
 </resources>

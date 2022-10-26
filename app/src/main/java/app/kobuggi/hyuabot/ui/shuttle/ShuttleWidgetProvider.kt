@@ -61,15 +61,6 @@ class ShuttleWidgetProvider @Inject constructor(private val client: ApolloClient
                 }
 
                 setTextViewText(R.id.shuttle_stop_name, context.getString(resID).replace(" ", "\n").replace("(", "\n("))
-                if (types.size > 1){
-                    setTextViewText(R.id.shuttle_station, context.getString(types[0]))
-                    setTextViewText(R.id.shuttle_terminal, context.getString(types[1]))
-                }
-                else{
-                    setTextViewText(R.id.shuttle_station, context.getString(types[0]))
-                    setTextViewText(R.id.shuttle_terminal, "")
-                    setViewVisibility(R.id.shuttle_terminal, GONE)
-                }
                 val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
                 if (timetable != null){
                     val nextStation = timetable.filter { (it.shuttleType == "DH" || it.shuttleType == "C") && (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
@@ -77,11 +68,17 @@ class ShuttleWidgetProvider @Inject constructor(private val client: ApolloClient
                     if (nextStation.isNotEmpty()){
                         setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_station, Duration.between(now, nextStation.minOrNull()).toMinutes()))
                         setViewVisibility(R.id.shuttle_station, VISIBLE)
+                    } else {
+                        setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_station_out_of_service))
+                        setViewVisibility(R.id.shuttle_station, VISIBLE)
                     }
                     val nextTerminal = timetable.filter { (it.shuttleType == "DY" || it.shuttleType == "C") && (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
                         .map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) }
                     if (nextTerminal.isNotEmpty()){
                         setTextViewText(R.id.shuttle_terminal, context.getString(R.string.shuttle_type_terminal, Duration.between(now, nextStation.minOrNull()).toMinutes()))
+                        setViewVisibility(R.id.shuttle_terminal, VISIBLE)
+                    } else {
+                        setTextViewText(R.id.shuttle_terminal, context.getString(R.string.shuttle_type_terminal_out_of_service))
                         setViewVisibility(R.id.shuttle_terminal, VISIBLE)
                     }
                     val nextCampus = timetable.filter { (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
@@ -89,9 +86,16 @@ class ShuttleWidgetProvider @Inject constructor(private val client: ApolloClient
                     if (nextCampus.isNotEmpty() && (types[0] == R.string.shuttle_type_campus || types[0] == R.string.shuttle_type_dormitory)){
                         setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_campus, Duration.between(now, nextStation.minOrNull()).toMinutes()))
                         setViewVisibility(R.id.shuttle_station, VISIBLE)
+                    } else if (nextCampus.isEmpty()) {
+                        setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_campus_out_of_service))
+                        setViewVisibility(R.id.shuttle_station, VISIBLE)
                     }
                 } else {
                     setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_need_refresh))
+                    setViewVisibility(R.id.shuttle_terminal, GONE)
+                }
+                if (types.size == 1) {
+                    setTextViewText(R.id.shuttle_terminal, "")
                     setViewVisibility(R.id.shuttle_terminal, GONE)
                 }
                 val updateWidgetIntent = Intent(context, ShuttleWidgetProvider::class.java).apply {
