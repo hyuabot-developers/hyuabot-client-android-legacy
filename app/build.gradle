@@ -95,6 +95,7 @@ android {
         generateKotlinModels = true
     }
     namespace 'app.kobuggi.hyuabot'
+    buildToolsVersion '33.0.0'
 }
 
 dependencies {
