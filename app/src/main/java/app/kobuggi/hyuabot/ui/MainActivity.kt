@@ -10,12 +10,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import app.kobuggi.hyuabot.GlobalActivity
 import app.kobuggi.hyuabot.GlobalApplication
 import app.kobuggi.hyuabot.R
 import app.kobuggi.hyuabot.databinding.ActivityMainBinding
+import app.kobuggi.hyuabot.ui.birthday.BirthdayFragment
 import com.google.android.play.core.assetpacks.AssetPackManagerFactory
 import com.google.android.play.core.assetpacks.AssetPackStateUpdateListener
 import com.google.android.play.core.assetpacks.model.AssetPackStatus
@@ -24,6 +28,14 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -38,6 +50,9 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         navHostFragment.navController
     }
+    @Inject
+    lateinit var dataStore: DataStore<Preferences>
+
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +66,12 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
         }
         Firebase.messaging.subscribeToTopic("notification")
             .addOnSuccessListener { Log.d("MainActivity", "Successfully subscribed to topic: notification") }
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            if (checkBirthdayDialogYear()){
+                BirthdayFragment().show(supportFragmentManager, "birthday")
+            }
+        }
     }
 
     override fun onDismiss(dialogInterface: DialogInterface?) {
@@ -129,5 +150,14 @@ class MainActivity : GlobalActivity(), DialogInterface.OnDismissListener {
     override fun onDestroy() {
         super.onDestroy()
         assetPackManager.unregisterListener(assetPackStateUpdateListener)
+    }
+
+    private suspend fun checkBirthdayDialogYear(): Boolean {
+        val birthdayDialogYearPreference = intPreferencesKey("birthday_dialog_year")
+        val birthdayDialogYear: Flow<Int> = dataStore.data.map {
+            pref -> pref[birthdayDialogYearPreference] ?: 0
+        }
+        val now = LocalDateTime.now()
+        return birthdayDialogYear.first() != now.year && now.monthValue == 12 && now.dayOfMonth == 12
     }
 }

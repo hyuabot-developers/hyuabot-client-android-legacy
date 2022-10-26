@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="app.kobuggi.hyuabot.ui.birthday.BirthdayViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/happy_birthday"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:background="@color/hanyang_primary"
+            android:padding="20dp"
+            android:gravity="center"
+            />
+        <!-- congratulation message -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/congratulation_message"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15sp"
+            android:padding="20dp"
+            />
+        <!-- Do not open this year check box -->
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/do_not_open_this_year"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15sp"
+            android:padding="20dp"
+            android:layout_marginLeft="10dp"
+            android:checked="@={vm.doNotOpenThisYear}"
+        />
+        <!-- Close button -->
+        <TextView
+            android:id="@+id/close_button"
+            android:text="@string/close"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </LinearLayout>
+</layout>

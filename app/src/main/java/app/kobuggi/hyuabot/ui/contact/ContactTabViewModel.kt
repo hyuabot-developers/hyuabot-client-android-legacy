@@ -44,24 +44,27 @@ class ContactTabViewModel @Inject constructor(private val repository: AppDatabas
                 if (query.isNotEmpty()){
                     repository.getPhoneItemsFilterByName(category, "%$query%").collect{
                         _contactList.addAll(it.map { item -> ContactItem(item.name, item.phone.toString(), null) })
+                        contactList.value = _contactList
                     }
                 } else {
                     getContactFilterByCategory(category).collect{
                         _contactList.addAll(it.map { item -> ContactItem(item.name, item.phone.toString(), null) })
+                        contactList.value = _contactList
                     }
                 }
             } else {
                 if (query.isNotEmpty()){
                     repository.getPhoneItemsExceptByName(category, "%$query%").collect{
                         _contactList.addAll(it.map { item -> ContactItem(item.name, item.phone.toString(), null) })
+                        contactList.value = _contactList
                     }
                 } else {
                     getContactExceptByCategory(category).collect{
                         _contactList.addAll(it.map { item -> ContactItem(item.name, item.phone.toString(), null) })
+                        contactList.value = _contactList
                     }
                 }
             }
         }
-        contactList.value = _contactList
     }
 }
