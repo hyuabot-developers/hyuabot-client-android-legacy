@@ -72,19 +72,19 @@ class ShuttleWidgetProvider @Inject constructor(private val client: ApolloClient
                         setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_station_out_of_service))
                         setViewVisibility(R.id.shuttle_station, VISIBLE)
                     }
-                    val nextTerminal = timetable.filter { (it.shuttleType == "DY" || it.shuttleType == "C") && (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
+                    val nextTerminal = timetable.filter { ((it.shuttleType == "DY" && resID != R.string.station) || it.shuttleType == "C") && (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
                         .map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) }
                     if (nextTerminal.isNotEmpty()){
-                        setTextViewText(R.id.shuttle_terminal, context.getString(R.string.shuttle_type_terminal, Duration.between(now, nextStation.minOrNull()).toMinutes()))
+                        setTextViewText(R.id.shuttle_terminal, context.getString(R.string.shuttle_type_terminal, Duration.between(now, nextTerminal.minOrNull()).toMinutes()))
                         setViewVisibility(R.id.shuttle_terminal, VISIBLE)
                     } else {
                         setTextViewText(R.id.shuttle_terminal, context.getString(R.string.shuttle_type_terminal_out_of_service))
                         setViewVisibility(R.id.shuttle_terminal, VISIBLE)
                     }
-                    val nextCampus = timetable.filter { (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
+                    val nextCampus = timetable.filter { ((it.shuttleType == "DH" && resID != R.string.terminal) || (it.shuttleType == "DY" && resID != R.string.station) || it.shuttleType == "C")  && (it.startStop == "Dormitory" || resID != R.string.dormitory) && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) > now }
                         .map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(getTimeDelta(resID, it.shuttleType).toLong()) }
                     if (nextCampus.isNotEmpty() && (types[0] == R.string.shuttle_type_campus || types[0] == R.string.shuttle_type_dormitory)){
-                        setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_campus, Duration.between(now, nextStation.minOrNull()).toMinutes()))
+                        setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_campus, Duration.between(now, nextCampus.minOrNull()).toMinutes()))
                         setViewVisibility(R.id.shuttle_station, VISIBLE)
                     } else if (nextCampus.isEmpty()) {
                         setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_campus_out_of_service))
