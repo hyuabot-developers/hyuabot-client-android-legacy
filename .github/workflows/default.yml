@@ -1,15 +1,15 @@
 name: Android App Build
-on:
-  push:
-    branches:
-      - feat/*
-      - hotfix/*
-      - main
-  pull_request:
-    branches:
-      - main
 jobs:
   build:
+    on:
+      push:
+        branches:
+          - feat/*
+          - hotfix/*
+          - main
+      pull_request:
+        branches:
+          - main
     runs-on: self-hosted
     name: Android App Build
     steps:
@@ -69,3 +69,29 @@ jobs:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Build Release App Bundle
         run: ./gradlew bundleRelease
+      - name: Upload App Bundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: app/build/outputs/bundle/release/app-release.aab
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    name: Android App Deploy
+    steps:
+      - name: Download App Bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: app-release
+          path: app/build/outputs/bundle/release/
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v2
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
+          packageName: app.kobuggi.hyuabot
+          releaseFile: app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          userFraction: 0.1
+          whatsnewsDir: ./whatsnews
+          whatsnewsLanguage: ko-KR
+          whatsnewsFile: whatsnews.txt
