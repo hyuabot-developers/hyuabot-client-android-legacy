@@ -75,7 +75,7 @@ jobs:
           name: app-release
           path: app/build/outputs/bundle/release/app-release.aab
   deploy:
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'github-workflow'))
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feat/github-workflow')
     runs-on: self-hosted
     needs: build
     name: Android App Deploy
