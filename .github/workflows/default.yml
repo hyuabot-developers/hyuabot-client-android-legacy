@@ -50,7 +50,7 @@ jobs:
           echo "SIGNED_KEY_ALIAS=$SIGNED_KEY_ALIAS" > local.properties
           echo "SIGNED_KEY_PASSWORD=$SIGNED_KEY_PASSWORD" >> local.properties
           echo "SIGNED_STORE_PASSWORD=$SIGNED_STORE_PASSWORD" >> local.properties
-          echo "SIGNED_STORE_FILE=app/release-key.jks" >> local.properties
+          echo "SIGNED_STORE_FILE=./release-key.jks" >> local.properties
           echo "ADMOB_ID=\"$ADMOB_ID\"" >> local.properties
           echo "ADMOB_UNIT_ID=\"$ADMOB_UNIT_ID\"" >> local.properties
           echo "MAP_KEY=\"$MAP_KEY\"" >> local.properties
