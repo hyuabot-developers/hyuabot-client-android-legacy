@@ -1,13 +1,13 @@
-name: Android App Buikd
+name: Android App Build
 on:
     push:
         branches:
-        - feat/*
-        - hotfix/*
-        - main
+            - feat/*
+            - hotfix/*
+            - main
     pull_request:
         branches:
-        - main
+            - main
 jobs:
     build:
         - runs-on: self-hosted
