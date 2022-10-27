@@ -1,15 +1,15 @@
 name: Android App Build
+on:
+  push:
+    branches:
+      - feat/*
+      - hotfix/*
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
-    on:
-      push:
-        branches:
-          - feat/*
-          - hotfix/*
-          - main
-      pull_request:
-        branches:
-          - main
     runs-on: self-hosted
     name: Android App Build
     steps:
