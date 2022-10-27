@@ -179,4 +179,5 @@
     <string name="shuttle_type_dormitory_out_of_service">To dormitory: Out of service</string>
     <string name="add_shuttle_widget">Add Shuttle bus widget</string>
     <string name="need_permission_get_background_location">Allow background location to use from home widget</string>
+    <string name="shuttle_updated_time">Updated at %s</string>
 </resources>
