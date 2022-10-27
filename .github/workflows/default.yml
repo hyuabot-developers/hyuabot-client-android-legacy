@@ -61,5 +61,7 @@ jobs:
           ADMOB_UNIT_ID: ${{ secrets.ADMOB_UNIT_ID }}
           MAP_KEY: ${{ secrets.MAP_KEY }}
           API_URL: ${{ secrets.API_URL }}
+      - name: Create google-services.json
+        run: echo $GOOGLE_SERVICES_JSON | base64 --decode > app/google-services.json
       - name: Build Release App Bundle
         run: ./gradlew bundleRelease
