@@ -75,7 +75,7 @@ jobs:
           name: app-release
           path: app/build/outputs/bundle/release/app-release.aab
   deploy:
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: self-hosted
     needs: build
     name: Android App Deploy
