@@ -89,9 +89,6 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
           packageName: app.kobuggi.hyuabot
-          releaseFile: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: [app/build/outputs/bundle/release/app-release.aab]
           track: internal
-          userFraction: 0.1
-          whatsnewsDir: ./whatsnews
-          whatsnewsLanguage: ko-KR
-          whatsnewsFile: whatsnews.txt
+          whatsNewDirectory: ./changelogs
