@@ -40,14 +40,32 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Get sign key
+        run: echo $BASE64_KEYSTORE | base64 --decode > app/release-key.jks
+
+      - name: Create local.properties
+        run: |
+          echo "SIGNED_KEY_ALIAS=$SIGNED_KEY_ALIAS" > local.properties
+          echo "SIGNED_KEY_PASSWORD=$SIGNED_KEY_PASSWORD" >> local.properties
+          echo "SIGNED_STORE_PASSWORD=$SIGNED_STORE_PASSWORD" >> local.properties
+          echo "SIGNED_STORE_FILE=app/release-key.jks" >> local.properties
+          echo "ADMOB_ID=\"$ADMOB_ID\"" >> local.properties
+          echo "ADMOB_UNIT_ID=\"$ADMOB_UNIT_ID\"" >> local.properties
+          echo "MAP_KEY=\"$MAP_KEY\"" >> local.properties
+          echo "API_URL=\"$API_URL\"" >> local.properties
+        env:
+          - SIGNED_KEY_ALIAS: ${{ secrets.SIGNED_KEY_ALIAS }}
+          - SIGNED_KEY_PASSWORD: ${{ secrets.SIGNED_KEY_PASSWORD }}
+          - SIGNED_STORE_PASSWORD: ${{ secrets.SIGNED_STORE_PASSWORD }}
+          - ADMOB_ID: ${{ secrets.ADMOB_ID }}
+          - ADMOB_UNIT_ID: ${{ secrets.ADMOB_UNIT_ID }}
+          - MAP_KEY: ${{ secrets.MAP_KEY }}
+          - API_URL: ${{ secrets.API_URL }}
       - name: Run ktlint
         run: ./gradlew ktlintCheck
 
       - name: Run detekt
         run: ./gradlew detekt
-
-      - name: Get sign key
-        run: echo $BASE64_KEYSTORE | base64 --decode > app/release-key.jks
 
       - name: Build Release App Bundle
         run: ./gradlew bundleRelease
