@@ -42,6 +42,8 @@ jobs:
 
       - name: Get sign key
         run: echo $BASE64_KEYSTORE | base64 --decode > app/release-key.jks
+        env:
+          BASE64_KEYSTORE: ${{ secrets.BASE64_KEYSTORE }}
 
       - name: Create local.properties
         run: |
@@ -63,5 +65,7 @@ jobs:
           API_URL: ${{ secrets.API_URL }}
       - name: Create google-services.json
         run: echo $GOOGLE_SERVICES_JSON | base64 --decode > app/google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
       - name: Build Release App Bundle
         run: ./gradlew bundleRelease
