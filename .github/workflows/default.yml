@@ -54,13 +54,13 @@ jobs:
           echo "MAP_KEY=\"$MAP_KEY\"" >> local.properties
           echo "API_URL=\"$API_URL\"" >> local.properties
         env:
-          - SIGNED_KEY_ALIAS: ${{ secrets.SIGNED_KEY_ALIAS }}
-          - SIGNED_KEY_PASSWORD: ${{ secrets.SIGNED_KEY_PASSWORD }}
-          - SIGNED_STORE_PASSWORD: ${{ secrets.SIGNED_STORE_PASSWORD }}
-          - ADMOB_ID: ${{ secrets.ADMOB_ID }}
-          - ADMOB_UNIT_ID: ${{ secrets.ADMOB_UNIT_ID }}
-          - MAP_KEY: ${{ secrets.MAP_KEY }}
-          - API_URL: ${{ secrets.API_URL }}
+          SIGNED_KEY_ALIAS: ${{ secrets.SIGNED_KEY_ALIAS }}
+          SIGNED_KEY_PASSWORD: ${{ secrets.SIGNED_KEY_PASSWORD }}
+          SIGNED_STORE_PASSWORD: ${{ secrets.SIGNED_STORE_PASSWORD }}
+          ADMOB_ID: ${{ secrets.ADMOB_ID }}
+          ADMOB_UNIT_ID: ${{ secrets.ADMOB_UNIT_ID }}
+          MAP_KEY: ${{ secrets.MAP_KEY }}
+          API_URL: ${{ secrets.API_URL }}
       - name: Run ktlint
         run: ./gradlew ktlintCheck
 
