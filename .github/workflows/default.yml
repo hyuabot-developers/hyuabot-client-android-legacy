@@ -85,7 +85,7 @@ jobs:
           name: app-release
           path: app/build/outputs/bundle/release/
       - name: Upload to Google Play
-        uses: r0adkll/upload-google-play@v2
+        uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
           packageName: app.kobuggi.hyuabot
