@@ -179,4 +179,5 @@
     <string name="congratulation_message">안녕하세요, 휴아봇 개발자인 경원여객3102입니다.\n오늘(12/12)는 제 생일이라서요. ㅎㅎ\n많은 사람들에게 축하받고 싶었던 걸로 :)\n얼마 남지 않은 2학기 잘 마무리하고 시험 화이팅!</string>
     <string name="add_shuttle_widget">셔틀버스 위젯 추가</string>
     <string name="need_permission_get_background_location">홈 위젯에서 위치를 확인하기 위해 위치 권한을 항상 허용으로 바꿔주세요.</string>
+    <string name="shuttle_updated_time">업데이트 시간: %s</string>
 </resources>

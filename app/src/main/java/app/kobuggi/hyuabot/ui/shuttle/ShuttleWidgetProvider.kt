@@ -90,9 +90,12 @@ class ShuttleWidgetProvider @Inject constructor(private val client: ApolloClient
                         setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_type_campus_out_of_service))
                         setViewVisibility(R.id.shuttle_station, VISIBLE)
                     }
+                    setTextViewText(R.id.shuttle_updated_time, context.getString(R.string.shuttle_updated_time, now.format(DateTimeFormatter.ofPattern("HH:mm"))))
+                    setViewVisibility(R.id.shuttle_updated_time, VISIBLE)
                 } else {
                     setTextViewText(R.id.shuttle_station, context.getString(R.string.shuttle_need_refresh))
                     setViewVisibility(R.id.shuttle_terminal, GONE)
+                    setViewVisibility(R.id.shuttle_updated_time, GONE)
                 }
                 if (types.size == 1) {
                     setTextViewText(R.id.shuttle_terminal, "")
