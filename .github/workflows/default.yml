@@ -61,11 +61,5 @@ jobs:
           ADMOB_UNIT_ID: ${{ secrets.ADMOB_UNIT_ID }}
           MAP_KEY: ${{ secrets.MAP_KEY }}
           API_URL: ${{ secrets.API_URL }}
-      - name: Run ktlint
-        run: ./gradlew ktlintCheck
-
-      - name: Run detekt
-        run: ./gradlew detekt
-
       - name: Build Release App Bundle
         run: ./gradlew bundleRelease
