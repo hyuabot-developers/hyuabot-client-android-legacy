@@ -24,11 +24,11 @@ class ShuttleArrivalListAdapter(private val context: Context,
                                 private var stopList: List<ShuttleStopInfo>, timetable: List<ShuttleTimetableQuery.Timetable>, val onClickLocationButton: (location: LatLng, titleID: Int) -> Unit, val onClickCard: (stopID: Int, shuttleType: String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var shuttleTimetable: List<ShuttleTimetableQuery.Timetable> = timetable
     private val timeDelta = hashMapOf(
-        R.string.dormitory to arrayListOf(-5, -5, -5),
-        R.string.shuttlecock_o to arrayListOf(0, 0, 0),
-        R.string.station to arrayListOf(10, 0, 10),
-        R.string.terminal to arrayListOf(0, 10, 15),
-        R.string.shuttlecock_i to arrayListOf(20, 20, 25)
+        R.string.dormitory to arrayListOf(-5, -5, -5, -5),
+        R.string.shuttlecock_o to arrayListOf(0, 0, 0, 0),
+        R.string.station to arrayListOf(10, 0, 10, 10),
+        R.string.terminal to arrayListOf(0, 10, 15, 0),
+        R.string.shuttlecock_i to arrayListOf(20, 20, 25, 23)
     )
     private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
     inner class ShuttleArrivalViewHolder(private val binding: CardShuttleArrivalBinding) : RecyclerView.ViewHolder(binding.root){
@@ -37,21 +37,30 @@ class ShuttleArrivalListAdapter(private val context: Context,
 
             if (stopList[position].nameID == R.string.station) {
                 binding.shuttleDH.visibility = View.VISIBLE
+                binding.shuttleDJ.visibility = View.VISIBLE
                 binding.shuttleDY.visibility = View.GONE
-                binding.shuttleStopDivider.visibility = View.GONE
+                binding.shuttleStopDivider.visibility = View.VISIBLE
+                binding.shuttleStopDivider2.visibility = View.GONE
                 binding.shuttleTypeDH.text = context.getString(R.string.shuttle_type_D)
             } else if (stopList[position].nameID == R.string.terminal) {
                 binding.shuttleDH.visibility = View.GONE
                 binding.shuttleDY.visibility = View.VISIBLE
+                binding.shuttleDJ.visibility = View.GONE
                 binding.shuttleStopDivider.visibility = View.GONE
+                binding.shuttleStopDivider2.visibility = View.GONE
                 binding.shuttleTypeDY.text = context.getString(R.string.shuttle_type_D)
             }
 
             val now = LocalTime.now()
             val timetableByStopDH = if(position == 0){
-                shuttleTimetable.filter { it.shuttleType == "DH" && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) }
+                shuttleTimetable.filter { (it.shuttleType == "DH" || it.shuttleType == "DJ") && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) }
             } else {
-                shuttleTimetable.filter { it.shuttleType == "DH" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) }
+                shuttleTimetable.filter { (it.shuttleType == "DH" || it.shuttleType == "DJ") && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![0].toLong()) }
+            }
+            val timetableByStopDJ = if(position == 0){
+                shuttleTimetable.filter { it.shuttleType == "DJ" && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![3].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![3].toLong()) }
+            } else {
+                shuttleTimetable.filter { it.shuttleType == "DJ" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![3].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![3].toLong()) }
             }
             val timetableByStopDY = if(position == 0){
                 shuttleTimetable.filter { it.shuttleType == "DY" && it.startStop == "Dormitory" && LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) > now }.map { LocalTime.parse(it.shuttleTime, formatter).plusMinutes(timeDelta[stopList[position].nameID]!![1].toLong()) }
@@ -66,6 +75,9 @@ class ShuttleArrivalListAdapter(private val context: Context,
             val shuttleDHAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDH){
                 onClickCard(stopList[position].nameID, "DH")
             }
+            val shuttleDJAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDJ){
+                onClickCard(stopList[position].nameID, "DJ")
+            }
             val shuttleDYAdapter = ShuttleArrivalTimeAdapter(context, now, timetableByStopDY){
                 onClickCard(stopList[position].nameID, "DY")
             }
@@ -78,6 +90,8 @@ class ShuttleArrivalListAdapter(private val context: Context,
             binding.shuttleDYTime.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             binding.shuttleCTime.adapter = shuttleCAdapter
             binding.shuttleCTime.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.shuttleDJTime.adapter = shuttleDJAdapter
+            binding.shuttleDJTime.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             if (timetableByStopDH.isEmpty()){
                 binding.shuttleDHNoData.visibility = View.VISIBLE
                 binding.shuttleDHTime.visibility = View.GONE
@@ -92,6 +106,13 @@ class ShuttleArrivalListAdapter(private val context: Context,
                 binding.shuttleDYNoData.visibility = View.GONE
                 binding.shuttleDYTime.visibility = View.VISIBLE
             }
+            if (timetableByStopDJ.isEmpty()){
+                binding.shuttleDJNoData.visibility = View.VISIBLE
+                binding.shuttleDJTime.visibility = View.GONE
+            } else {
+                binding.shuttleDJNoData.visibility = View.GONE
+                binding.shuttleDJTime.visibility = View.VISIBLE
+            }
             if (timetableByStopC.isEmpty()){
                 binding.shuttleCNoData.visibility = View.VISIBLE
                 binding.shuttleCTime.visibility = View.GONE
@@ -105,6 +126,7 @@ class ShuttleArrivalListAdapter(private val context: Context,
             }
             binding.expandButton.setOnClickListener {
                 binding.expandButton.isSelected = !binding.expandButton.isSelected
+                shuttleDJAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 3
                 shuttleDHAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 2
                 shuttleDYAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 2
                 shuttleCAdapter.itemCount = if(binding.expandButton.isSelected) 5 else 2
@@ -117,6 +139,9 @@ class ShuttleArrivalListAdapter(private val context: Context,
             }
             binding.shuttleC.setOnClickListener {
                 onClickCard(stopList[position].nameID, "C")
+            }
+            binding.shuttleDJ.setOnClickListener {
+                onClickCard(stopList[position].nameID, "DJ")
             }
         }
     }

@@ -13,6 +13,7 @@
     <string name="shuttlecock_i">Across from Shuttlecock</string>
     <string name="shuttle_type_DH">For station</string>
     <string name="shuttle_type_DY">For terminal</string>
+    <string name="shuttle_type_DJ">For Jungang Stn.</string>
     <string name="shuttle_type_C">Cycle</string>
     <string name="shuttle_type_D">Direct</string>
     <string name="shuttle_timetable">%1$s:%2$s</string>
