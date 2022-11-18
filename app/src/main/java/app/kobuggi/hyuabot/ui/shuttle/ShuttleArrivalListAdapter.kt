@@ -27,6 +27,7 @@ class ShuttleArrivalListAdapter(private val context: Context,
         R.string.dormitory to arrayListOf(-5, -5, -5, -5),
         R.string.shuttlecock_o to arrayListOf(0, 0, 0, 0),
         R.string.station to arrayListOf(10, 0, 10, 10),
+        R.string.jungang_station to arrayListOf(0, 0, 0, 13),
         R.string.terminal to arrayListOf(0, 10, 15, 0),
         R.string.shuttlecock_i to arrayListOf(20, 20, 25, 23)
     )
@@ -39,6 +40,7 @@ class ShuttleArrivalListAdapter(private val context: Context,
                 binding.shuttleDH.visibility = View.VISIBLE
                 binding.shuttleDJ.visibility = View.VISIBLE
                 binding.shuttleDY.visibility = View.GONE
+                binding.shuttleC.visibility = View.VISIBLE
                 binding.shuttleStopDivider.visibility = View.VISIBLE
                 binding.shuttleStopDivider2.visibility = View.GONE
                 binding.shuttleTypeDH.text = context.getString(R.string.shuttle_type_D)
@@ -46,9 +48,18 @@ class ShuttleArrivalListAdapter(private val context: Context,
                 binding.shuttleDH.visibility = View.GONE
                 binding.shuttleDY.visibility = View.VISIBLE
                 binding.shuttleDJ.visibility = View.GONE
+                binding.shuttleC.visibility = View.VISIBLE
                 binding.shuttleStopDivider.visibility = View.GONE
                 binding.shuttleStopDivider2.visibility = View.GONE
                 binding.shuttleTypeDY.text = context.getString(R.string.shuttle_type_D)
+            } else if (stopList[position].nameID == R.string.jungang_station){
+                binding.shuttleDH.visibility = View.GONE
+                binding.shuttleDY.visibility = View.GONE
+                binding.shuttleDJ.visibility = View.VISIBLE
+                binding.shuttleC.visibility = View.GONE
+                binding.shuttleStopDivider.visibility = View.GONE
+                binding.shuttleStopDivider2.visibility = View.GONE
+                binding.shuttleStopDivider3.visibility = View.GONE
             }
 
             val now = LocalTime.now()

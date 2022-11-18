@@ -38,6 +38,7 @@ class ShuttleViewModel @Inject constructor(private val client: ApolloClient) : V
         ShuttleStopInfo(R.string.dormitory, LatLng(37.29339607529377, 126.83630604103446), null),
         ShuttleStopInfo(R.string.shuttlecock_o, LatLng(37.29875417910844, 126.83784054072336), null),
         ShuttleStopInfo(R.string.station, LatLng(37.308494476826155, 126.85310236423418), null),
+        ShuttleStopInfo(R.string.jungang_station, LatLng(37.3147818, 126.8397399), null),
         ShuttleStopInfo(R.string.terminal, LatLng(37.31945164682341, 126.8455453372041), null),
         ShuttleStopInfo(R.string.shuttlecock_i, LatLng(37.29869328231496, 126.8377767466817), null)
     )

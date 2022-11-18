@@ -170,6 +170,7 @@
                 android:orientation="vertical" />
         </LinearLayout>
         <View
+            android:id="@+id/shuttle_stop_divider_3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#7f7f7f"
