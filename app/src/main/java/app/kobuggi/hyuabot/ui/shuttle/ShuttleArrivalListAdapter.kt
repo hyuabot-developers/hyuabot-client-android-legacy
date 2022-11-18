@@ -36,31 +36,63 @@ class ShuttleArrivalListAdapter(private val context: Context,
         fun bind(position: Int) {
             binding.shuttleStopName.text = context.getString(stopList[position].nameID)
 
-            if (stopList[position].nameID == R.string.station) {
-                binding.shuttleDH.visibility = View.VISIBLE
-                binding.shuttleDJ.visibility = View.VISIBLE
-                binding.shuttleDY.visibility = View.GONE
-                binding.shuttleC.visibility = View.VISIBLE
-                binding.shuttleStopDivider.visibility = View.VISIBLE
-                binding.shuttleStopDivider2.visibility = View.GONE
-                binding.shuttleTypeDH.text = context.getString(R.string.shuttle_type_D)
-            } else if (stopList[position].nameID == R.string.terminal) {
-                binding.shuttleDH.visibility = View.GONE
-                binding.shuttleDY.visibility = View.VISIBLE
-                binding.shuttleDJ.visibility = View.GONE
-                binding.shuttleC.visibility = View.VISIBLE
-                binding.shuttleStopDivider.visibility = View.GONE
-                binding.shuttleStopDivider2.visibility = View.GONE
-                binding.shuttleStopDivider3.visibility = View.VISIBLE
-                binding.shuttleTypeDY.text = context.getString(R.string.shuttle_type_D)
-            } else if (stopList[position].nameID == R.string.jungang_station){
-                binding.shuttleDH.visibility = View.GONE
-                binding.shuttleDY.visibility = View.GONE
-                binding.shuttleDJ.visibility = View.VISIBLE
-                binding.shuttleC.visibility = View.GONE
-                binding.shuttleStopDivider.visibility = View.GONE
-                binding.shuttleStopDivider2.visibility = View.GONE
-                binding.shuttleStopDivider3.visibility = View.GONE
+            when (stopList[position].nameID) {
+                R.string.dormitory -> {
+                    binding.shuttleDH.visibility = View.VISIBLE
+                    binding.shuttleDJ.visibility = View.VISIBLE
+                    binding.shuttleDY.visibility = View.VISIBLE
+                    binding.shuttleC.visibility = View.VISIBLE
+                    binding.shuttleStopDivider.visibility = View.VISIBLE
+                    binding.shuttleStopDivider2.visibility = View.VISIBLE
+                    binding.shuttleStopDivider3.visibility = View.VISIBLE
+                }
+                R.string.shuttlecock_o -> {
+                    binding.shuttleDH.visibility = View.VISIBLE
+                    binding.shuttleDJ.visibility = View.VISIBLE
+                    binding.shuttleDY.visibility = View.VISIBLE
+                    binding.shuttleC.visibility = View.VISIBLE
+                    binding.shuttleStopDivider.visibility = View.VISIBLE
+                    binding.shuttleStopDivider2.visibility = View.VISIBLE
+                    binding.shuttleStopDivider3.visibility = View.VISIBLE
+                }
+                R.string.station -> {
+                    binding.shuttleDH.visibility = View.VISIBLE
+                    binding.shuttleDJ.visibility = View.VISIBLE
+                    binding.shuttleDY.visibility = View.GONE
+                    binding.shuttleC.visibility = View.VISIBLE
+                    binding.shuttleStopDivider.visibility = View.VISIBLE
+                    binding.shuttleStopDivider2.visibility = View.GONE
+                    binding.shuttleTypeDH.text = context.getString(R.string.shuttle_type_D)
+                }
+                R.string.terminal -> {
+                    binding.shuttleDH.visibility = View.GONE
+                    binding.shuttleDY.visibility = View.VISIBLE
+                    binding.shuttleDJ.visibility = View.GONE
+                    binding.shuttleC.visibility = View.VISIBLE
+                    binding.shuttleStopDivider.visibility = View.GONE
+                    binding.shuttleStopDivider2.visibility = View.GONE
+                    binding.shuttleStopDivider3.visibility = View.VISIBLE
+                    binding.shuttleTypeDY.text = context.getString(R.string.shuttle_type_D)
+                }
+                R.string.jungang_station -> {
+                    binding.shuttleDH.visibility = View.GONE
+                    binding.shuttleDY.visibility = View.GONE
+                    binding.shuttleDJ.visibility = View.VISIBLE
+                    binding.shuttleC.visibility = View.GONE
+                    binding.shuttleStopDivider.visibility = View.GONE
+                    binding.shuttleStopDivider2.visibility = View.GONE
+                    binding.shuttleStopDivider3.visibility = View.GONE
+                }
+                R.string.shuttlecock_i -> {
+                    binding.shuttleDH.visibility = View.VISIBLE
+                    binding.shuttleDY.visibility = View.GONE
+                    binding.shuttleDJ.visibility = View.GONE
+                    binding.shuttleC.visibility = View.VISIBLE
+                    binding.shuttleStopDivider.visibility = View.GONE
+                    binding.shuttleStopDivider2.visibility = View.GONE
+                    binding.shuttleStopDivider3.visibility = View.VISIBLE
+                    binding.shuttleTypeDH.text = context.getString(R.string.shuttle_type_D)
+                }
             }
 
             val now = LocalTime.now()
