@@ -51,6 +51,7 @@ class ShuttleArrivalListAdapter(private val context: Context,
                 binding.shuttleC.visibility = View.VISIBLE
                 binding.shuttleStopDivider.visibility = View.GONE
                 binding.shuttleStopDivider2.visibility = View.GONE
+                binding.shuttleStopDivider3.visibility = View.VISIBLE
                 binding.shuttleTypeDY.text = context.getString(R.string.shuttle_type_D)
             } else if (stopList[position].nameID == R.string.jungang_station){
                 binding.shuttleDH.visibility = View.GONE
