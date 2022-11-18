@@ -67,6 +67,9 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
             binding.shuttleTimetableList.smoothScrollToPosition(
                     (modifiedTimetable.indexOf(modifiedTimetable.firstOrNull { it.isAfter(LocalTime.now()) } ?: modifiedTimetable.last()) + 5).coerceAtMost(modifiedTimetable.size - 1)
             )
+        } else {
+            binding.shuttleTimetableList.visibility = View.GONE
+            binding.noShuttleTimetable.visibility = View.VISIBLE
         }
         vm.showShuttleRouteDialog.observe(viewLifecycleOwner){
             if(it.peekContent()){
