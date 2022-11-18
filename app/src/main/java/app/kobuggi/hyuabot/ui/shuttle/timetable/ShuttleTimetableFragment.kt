@@ -45,6 +45,7 @@ class ShuttleTimetableFragment: Fragment() {
             "DH" -> R.string.shuttle_type_DH
             "DY" -> R.string.shuttle_type_DY
             "C" -> R.string.shuttle_type_C
+            "DJ" -> R.string.shuttle_type_DJ
             else -> R.string.shuttle_type_C
         }
 
