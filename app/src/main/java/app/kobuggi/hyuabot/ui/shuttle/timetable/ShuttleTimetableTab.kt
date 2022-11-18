@@ -26,6 +26,7 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         R.string.shuttle_type_DH -> 0
         R.string.shuttle_type_DY -> 1
         R.string.shuttle_type_C -> 2
+        R.string.shuttle_type_DJ -> 3
         else -> 0
     }
 
@@ -33,15 +34,17 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         R.string.shuttle_type_DH -> "DH"
         R.string.shuttle_type_DY -> "DY"
         R.string.shuttle_type_C -> "C"
+        R.string.shuttle_type_DJ -> "DJ"
         else -> "DH"
     }
 
     private val timeDelta = hashMapOf(
-        R.string.dormitory to arrayListOf(-5, -5, -5),
-        R.string.shuttlecock_o to arrayListOf(0, 0, 0),
-        R.string.station to arrayListOf(10, 0, 10),
-        R.string.terminal to arrayListOf(0, 10, 15),
-        R.string.shuttlecock_i to arrayListOf(20, 20, 25)
+        R.string.dormitory to arrayListOf(-5, -5, -5, -5),
+        R.string.shuttlecock_o to arrayListOf(0, 0, 0, 0),
+        R.string.station to arrayListOf(10, 0, 10, 10),
+        R.string.terminal to arrayListOf(0, 10, 15, 0),
+        R.string.shuttlecock_i to arrayListOf(20, 20, 25, 23),
+        R.string.jungang_station to arrayListOf(0, 0, 0, 13),
     )
 
     override fun onCreateView(
@@ -67,6 +70,9 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
             binding.shuttleTimetableList.smoothScrollToPosition(
                     (modifiedTimetable.indexOf(modifiedTimetable.firstOrNull { it.isAfter(LocalTime.now()) } ?: modifiedTimetable.last()) + 5).coerceAtMost(modifiedTimetable.size - 1)
             )
+        } else {
+            binding.shuttleTimetableList.visibility = View.GONE
+            binding.noShuttleTimetable.visibility = View.VISIBLE
         }
         vm.showShuttleRouteDialog.observe(viewLifecycleOwner){
             if(it.peekContent()){
