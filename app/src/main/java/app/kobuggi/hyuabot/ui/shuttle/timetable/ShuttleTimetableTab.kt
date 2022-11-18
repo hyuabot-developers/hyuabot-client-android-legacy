@@ -43,7 +43,8 @@ class ShuttleTimetableTab(private val timetable : List<ShuttleTimetableQuery.Tim
         R.string.shuttlecock_o to arrayListOf(0, 0, 0, 0),
         R.string.station to arrayListOf(10, 0, 10, 10),
         R.string.terminal to arrayListOf(0, 10, 15, 0),
-        R.string.shuttlecock_i to arrayListOf(20, 20, 25, 23)
+        R.string.shuttlecock_i to arrayListOf(20, 20, 25, 23),
+        R.string.jungang_station to arrayListOf(0, 0, 0, 13),
     )
 
     override fun onCreateView(
